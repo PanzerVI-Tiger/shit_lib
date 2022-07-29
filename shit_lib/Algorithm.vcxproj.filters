@@ -168,6 +168,9 @@
     <ClCompile Include="mylib.binary_tree.ixx">
       <Filter>mylib\not_standard\container\tree</Filter>
     </ClCompile>
+    <ClCompile Include="mylib.pointer.ixx">
+      <Filter>mylib\not_standard\utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="my_binary_tree.cd" />

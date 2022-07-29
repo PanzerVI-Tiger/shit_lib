@@ -3,13 +3,11 @@ export module mylib.pointer;
 
 export namespace mylib::inline pointer {
     
-        template<typename ValueType>
+    template<typename ValueType>
     struct compressive_pointer {
         using value_type = ValueType;
         using pointer = value_type*;
         using const_pointer = const value_type*;
-
-        using mylib_tag = mylib_auxiliary_class_tag;
 
         constexpr compressive_pointer(const_pointer pointer) noexcept :
             compressedPointer{ reinterpret_cast<size_t>(pointer) } {}
