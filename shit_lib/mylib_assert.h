@@ -23,56 +23,56 @@ import mylib.container_traits;
 #define MYLIB_OPTION_CONTAINER_POINTER_INITIALIZE , container{ pContainer }
 
 #define MYLIB_ASSERT_COMMON(condition, message) \
-	{if (condition) { \
-		fprintf(stderr, \
-				"in file:  " __FILE__ ",\n" \
-				"function: %s,\n" \
-				"line:	   %d:\n    " \
-				message, \
-				__func__, \
-				__LINE__ \
-		); \
-		abort(); \
-	}}
+    {if (condition) { \
+        fprintf(stderr, \
+                "in file:  " __FILE__ ",\n" \
+                "function: %s,\n" \
+                "line:	   %d:\n    " \
+                message, \
+                __func__, \
+                __LINE__ \
+        ); \
+        abort(); \
+    }}
 
 #define MYLIB_OPTION_IS_MYLIB_CLASS(object, condition, message) \
-	{if constexpr (mylib::is_mylib_class_v<decltype(object)>) { \
-		MYLIB_ASSERT_COMMON(condition, message); \
-	}}
+    {if constexpr (mylib::is_mylib_class_v<decltype(object)>) { \
+        MYLIB_ASSERT_COMMON(condition, message); \
+    }}
 
-	//else { \
-	//    fputs("MYLIB_OPTION_IS_MYLIB_CLASS: " #object " is not a mylib class\n", stderr); \
-	//    fputs(typeid(object).name(), stderr); \
-	//    abort(); \
-	//}
+    //else { \
+    //    fputs("MYLIB_OPTION_IS_MYLIB_CLASS: " #object " is not a mylib class\n", stderr); \
+    //    fputs(typeid(object).name(), stderr); \
+    //    abort(); \
+    //}
 
 #define MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(a, b) \
-			MYLIB_OPTION_IS_MYLIB_CLASS( \
-				a, \
-				(a).container != (b).container, \
-				"iterator " #a "'s and " #b "'s containers are not same!\n" \
-			)
+            MYLIB_OPTION_IS_MYLIB_CLASS( \
+                a, \
+                (a).container != (b).container, \
+                "iterator " #a "'s and " #b "'s containers are not same!\n" \
+            )
 
 #define MYLIB_CHECK_ITERATOR_IS_BEGIN(a) \
-			MYLIB_OPTION_IS_MYLIB_CLASS( \
-				a, \
-				(a).container->begin() == (a), \
-				"iterator " #a " is begin iterator, can't be decrease!\n" \
-			)
+            MYLIB_OPTION_IS_MYLIB_CLASS( \
+                a, \
+                (a).container->begin() == (a), \
+                "iterator " #a " is begin iterator, can't be decrease!\n" \
+            )
 
 #define MYLIB_CHECK_ITERATOR_IS_END(a) \
-			MYLIB_OPTION_IS_MYLIB_CLASS( \
-				a, \
-				(a).container->end() == (a), \
-				"iterator " #a " is end iterator, can't be increase, deference or remove!\n" \
-			)
+            MYLIB_OPTION_IS_MYLIB_CLASS( \
+                a, \
+                (a).container->end() == (a), \
+                "iterator " #a " is end iterator, can't be increase, deference or remove!\n" \
+            )
 
 #define MYLIB_CHECK_CONTAINER_IS_EMPTY(c) \
-			MYLIB_OPTION_IS_MYLIB_CLASS( \
-				c, \
-				(c).empty(), \
-				"container " #c " is empty, not element can be use or remove!!\n" \
-			)
+            MYLIB_OPTION_IS_MYLIB_CLASS( \
+                c, \
+                (c).empty(), \
+                "container " #c " is empty, not element can be use or remove!!\n" \
+            )
 
 #else 
 

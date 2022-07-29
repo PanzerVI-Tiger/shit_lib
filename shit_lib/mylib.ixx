@@ -54,12 +54,12 @@ export import mylib.timer;
 export import mylib.container_traits; // traits of mylib container and iterator
 
 export {
-	// test assmebly code
-	extern "C" void test_asm();
+    // test assmebly code
+    extern "C" void test_asm();
 
-	// standard namespace alias
-	namespace stdr = std::ranges;
-	namespace stdc = std::chrono;
-	namespace stdv = std::views;
-	namespace stdl = std::literals;
+    // standard namespace alias
+    namespace stdr = std::ranges;
+    namespace stdc = std::chrono;
+    namespace stdv = std::views;
+    namespace stdl = std::literals;
 }
