@@ -5,8 +5,8 @@ export namespace mylib::inline pointer {
     
     template<typename ValueType>
     struct compressive_pointer {
-        using value_type = ValueType;
-        using pointer = value_type*;
+        using value_type    = ValueType;
+        using pointer       = value_type*;
         using const_pointer = const value_type*;
 
         constexpr compressive_pointer(const_pointer pointer) noexcept :
