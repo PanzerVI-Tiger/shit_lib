@@ -357,11 +357,11 @@ export namespace mylib {
             constexpr value_compare& operator=(value_compare&&) noexcept = default;
 
             constexpr bool operator()(const value_type& left, const value_type& right) const noexcept {
-                return left.first < right.first;
+                return comp(left.first, right.first);
             }
              
         private:
-            key_compare _Comp;
+            key_compare comp;
         };
         
         constexpr bool has_parent_node() const noexcept {
