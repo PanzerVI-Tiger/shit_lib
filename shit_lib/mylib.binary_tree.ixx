@@ -5,28 +5,28 @@ import mylib.queue;
 
 export namespace mylib {
 
-    template<typename _BinaryTreeNodeType>
-    typename _BinaryTreeNodeType::size_type tree_size(
-        const    _BinaryTreeNodeType*           _PNode,
-        typename _BinaryTreeNodeType::size_type _Count = 0
+    template<typename BinaryTreeNodeType>
+    typename BinaryTreeNodeType::size_type tree_size(
+        const    BinaryTreeNodeType*           pNode,
+        typename BinaryTreeNodeType::size_type _Count = 0
     ) noexcept {
-        if (_PNode == nullptr) {
+        if (pNode == nullptr) {
             return _Count;
         }
-        return tree_size(_PNode->pLeftNode, _Count + 1) + tree_size(_PNode->pRightNode, _Count + 1);
+        return tree_size(pNode->leftNode, _Count + 1) + tree_size(pNode->rightNode, _Count + 1);
     }
 
-    template<typename _KeyType, typename _Allocator>
+    template<typename KeyType, typename Allocator>
     struct key_binary_tree_node {
-        using value_type      = std::remove_reference_t<_KeyType>;
+        using value_type      = std::remove_reference_t<KeyType>;
         using key_type        = value_type;
 
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
         using node_type       = key_binary_tree_node;
         using node_pointer    = node_type*;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
@@ -36,63 +36,63 @@ export namespace mylib {
             return false;
         }
 
-        constexpr key_binary_tree_node(const value_type& _Data, node_pointer _PLeftNode = nullptr,
-            node_pointer _PRightNode = nullptr) noexcept :
-                valueData{ _Data }, pLeftNode{ _PLeftNode }, pRightNode{ _PRightNode } {}
+        constexpr key_binary_tree_node(const value_type& data, node_pointer pLeftNode = nullptr,
+            node_pointer pRightNode = nullptr) noexcept :
+                valueData{ data }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
 
-        constexpr key_binary_tree_node(value_type&& _Data, node_pointer _PLeftNode = nullptr,
-            node_pointer _PRightNode = nullptr) noexcept :
-                valueData{ std::move(_Data) }, pLeftNode{ _PLeftNode }, pRightNode{ _PRightNode } {}
+        constexpr key_binary_tree_node(value_type&& value, node_pointer pLeftNode = nullptr,
+            node_pointer pRightNode = nullptr) noexcept :
+                valueData{ std::move(value) }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
 
-        constexpr key_binary_tree_node() noexcept : valueData{}, pLeftNode{ nullptr }, pRightNode{ nullptr } {}
+        constexpr key_binary_tree_node() noexcept : valueData{}, leftNode{ nullptr }, rightNode{ nullptr } {}
 
         constexpr key_binary_tree_node(const key_binary_tree_node&) noexcept = delete;
 
-        constexpr key_binary_tree_node(key_binary_tree_node&& _Other) noexcept {
-            *this = std::move(_Other);
+        constexpr key_binary_tree_node(key_binary_tree_node&& other) noexcept {
+            *this = std::move(other);
         }
 
         constexpr ~key_binary_tree_node() noexcept {
-            if (pLeftNode != nullptr) {
-                delete pLeftNode;
+            if (leftNode != nullptr) {
+                delete leftNode;
             }
-            if (pRightNode != nullptr) {
-                delete pRightNode;
+            if (rightNode != nullptr) {
+                delete rightNode;
             }
         }
 
         constexpr node_type& operator =(const key_binary_tree_node&) noexcept = delete;
 
-        constexpr node_type& operator =(key_binary_tree_node&& _Right) noexcept {
-            valueData = std::move(_Right.valueData);
-            pLeftNode = _Right.pLeftNode;
-            pRightNode = _Right.pRightNode;
-            _Right.pLeftNode = nullptr;
-            _Right.pRightNode = nullptr;
+        constexpr node_type& operator =(key_binary_tree_node&& right) noexcept {
+            valueData = std::move(right.valueData);
+            leftNode = right.leftNode;
+            rightNode = right.rightNode;
+            right.leftNode = nullptr;
+            right.rightNode = nullptr;
             return *this;
         }
 
-        constexpr static node_pointer make_new(const node_pointer _PNode) noexcept {
-            if (_PNode == nullptr) {
+        constexpr static node_pointer make_new(const node_pointer pNode) noexcept {
+            if (pNode == nullptr) {
                 return nullptr;
             }
-            return new node_type{ _PNode->value(), make_new(_PNode->left()), make_new(_PNode->right()) };
+            return new node_type{ pNode->value(), make_new(pNode->left()), make_new(pNode->right()) };
         }
 
         constexpr node_pointer& left() noexcept {
-            return pLeftNode;
+            return leftNode;
         }
 
         constexpr const node_pointer& left() const noexcept {
-            return pLeftNode;
+            return leftNode;
         }
 
         constexpr node_pointer& right() noexcept {
-            return pRightNode;
+            return rightNode;
         }
 
         constexpr const node_pointer& right() const noexcept {
-            return pRightNode;
+            return rightNode;
         }
 
         constexpr reference value() noexcept {
@@ -103,86 +103,92 @@ export namespace mylib {
             return valueData;
         }
 
-        node_pointer pLeftNode;
-        node_pointer pRightNode;
+        node_pointer leftNode;
+        node_pointer rightNode;
         value_type   valueData;
     };
 
-    template<typename _KeyType, typename _MappedType, typename _Allocator>
+    template<typename KeyType, typename MappedType, typename Allocator>
     struct pair_binary_tree_node :
-        public key_binary_tree_node<std::pair<_KeyType, _MappedType>, _Allocator> {
+        public key_binary_tree_node<std::pair<KeyType, MappedType>, Allocator> {
 
-        using base_type       = key_binary_tree_node<std::pair<_KeyType, _MappedType>, _Allocator>;
+        using base_type       = key_binary_tree_node<std::pair<KeyType, MappedType>, Allocator>;
 
-        using key_type        = _KeyType;
-        using mapped_type     = _MappedType;
-        using value_type      = std::pair<_KeyType, _MappedType>;
+        using key_type        = KeyType;
+        using mapped_type     = MappedType;
+        using value_type      = std::pair<KeyType, MappedType>;
 
         using size_type       = typename base_type::size_type;
 
         using node_type       = pair_binary_tree_node;
         using node_pointer    = pair_binary_tree_node*;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
         using const_reference = const value_type&;
 
-        using base_type::pLeftNode;
-        using base_type::pRightNode;
+        using base_type::leftNode;
+        using base_type::rightNode;
         using base_type::valueData;
 
         constexpr bool has_parent_node() const noexcept {
             return false;
         }
 
-        constexpr pair_binary_tree_node(const value_type& _Pair, node_pointer _PLeftNode = nullptr,
-            node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ _Pair, _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_tree_node(const value_type& value, node_pointer pLeftNode = nullptr,
+            node_pointer pRightNode = nullptr) noexcept :
+            base_type{ value, pLeftNode, pRightNode } {}
 
-        constexpr pair_binary_tree_node(value_type&& _Pair, node_pointer _PLeftNode = nullptr,
-            node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ std::move(_Pair), _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_tree_node(value_type&& value, node_pointer pLeftNode = nullptr,
+            node_pointer pRightNode = nullptr) noexcept :
+            base_type{ std::move(value), pLeftNode, pRightNode } {}
 
-        constexpr pair_binary_tree_node(const key_type& _Key, const mapped_type& _Mapped, node_pointer _PLeftNode, node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ std::make_pair(_Key, _Mapped), _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_tree_node(
+            const key_type& key,       const mapped_type& mapped, 
+            node_pointer    pLeftNode, node_pointer       pRightNode = nullptr
+        ) noexcept :
+            base_type{ std::make_pair(key, mapped), pLeftNode, pRightNode } {}
 
-        constexpr pair_binary_tree_node(key_type&& _Key, mapped_type&& _Mapped, node_pointer _PLeftNode = nullptr, node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ std::make_pair(std::move(_Key), std::move(_Mapped)), _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_tree_node(
+            key_type&&   key,                 mapped_type&& mapped, 
+            node_pointer pLeftNode = nullptr, node_pointer  pRightNode = nullptr
+        ) noexcept :
+            base_type{ std::make_pair(std::move(key), std::move(mapped)), pLeftNode, pRightNode } {}
 
         constexpr pair_binary_tree_node() noexcept : base_type{} {}
 
         constexpr pair_binary_tree_node(const pair_binary_tree_node&) noexcept = delete;
 
-        constexpr pair_binary_tree_node(pair_binary_tree_node&& _Other) noexcept :
-            base_type{ std::move(_Other) } {}
+        constexpr pair_binary_tree_node(pair_binary_tree_node&& other) noexcept :
+            base_type{ std::move(other) } {}
 
-        constexpr node_type& operator =(const pair_binary_tree_node& _Right) noexcept = delete;
+        constexpr node_type& operator =(const pair_binary_tree_node&) noexcept = delete;
 
-        constexpr node_type& operator =(pair_binary_tree_node&& _Right) noexcept {
-            return base_type::operator =(std::move(_Right));
+        constexpr node_type& operator =(pair_binary_tree_node&& right) noexcept {
+            return base_type::operator =(std::move(right));
         }
 
-        constexpr static node_pointer make_new(const node_pointer _PNode) noexcept {
+        constexpr static node_pointer make_new(const node_pointer pNode) noexcept {
             
-            return reinterpret_cast<node_pointer>(base_type::make_new(_PNode));
+            return reinterpret_cast<node_pointer>(base_type::make_new(pNode));
         }
 
         constexpr node_pointer& left() noexcept {
-            return reinterpret_cast<node_pointer&>(pLeftNode);
+            return reinterpret_cast<node_pointer&>(leftNode);
         }
 
         constexpr const node_pointer& left() const noexcept {
-            return reinterpret_cast<node_pointer&>(pLeftNode);
+            return reinterpret_cast<node_pointer&>(leftNode);
         }
 
         constexpr node_pointer& right() noexcept {
-            return reinterpret_cast<node_pointer&>(pRightNode);
+            return reinterpret_cast<node_pointer&>(rightNode);
         }
 
         constexpr const node_pointer& right() const noexcept {
-            return reinterpret_cast<node_pointer&>(pRightNode);
+            return reinterpret_cast<node_pointer&>(rightNode);
         }
 
         constexpr mapped_type& mapped() noexcept {
@@ -202,140 +208,140 @@ export namespace mylib {
         }
     };
 
-    template<typename _KeyType, typename _Compare, typename _Allocator>
+    template<typename KeyType, typename Compare, typename Allocator>
     struct key_binary_search_tree_node : 
-        public key_binary_tree_node<_KeyType, _Allocator> {
+        public key_binary_tree_node<KeyType, Allocator> {
 
-        using base_type       = key_binary_tree_node<_KeyType, _Allocator>;
-        using value_type      = std::remove_reference_t<_KeyType>;
+        using base_type       = key_binary_tree_node<KeyType, Allocator>;
+        using value_type      = std::remove_reference_t<KeyType>;
         using key_type        = value_type;
         
-        using value_compare   = _Compare;
+        using value_compare   = Compare;
         using key_compare     = value_compare;
 
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
         using node_type       = key_binary_search_tree_node;
         using node_pointer    = node_type*;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
         using const_reference = const value_type&;
 
-        using base_type::pLeftNode;
-        using base_type::pRightNode;
+        using base_type::leftNode;
+        using base_type::rightNode;
         using base_type::valueData;
 
         constexpr bool has_parent_node() const noexcept {
             return false;
         }
 
-        constexpr key_binary_search_tree_node(const value_type& _Data, node_pointer _PLeftNode = nullptr,
-                node_pointer _PRightNode = nullptr) noexcept :
-            valueData{ _Data }, pLeftNode{ _PLeftNode }, pRightNode{ _PRightNode } {}
+        constexpr key_binary_search_tree_node(const value_type& data, node_pointer pLeftNode = nullptr,
+                node_pointer pRightNode = nullptr) noexcept :
+            valueData{ data }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
 
-        constexpr key_binary_search_tree_node(value_type&& _Data, node_pointer _PLeftNode = nullptr,
-            node_pointer _PRightNode = nullptr) noexcept :
-            valueData{ std::move(_Data) }, pLeftNode{ _PLeftNode }, pRightNode{ _PRightNode } {}
+        constexpr key_binary_search_tree_node(value_type&& data, node_pointer pLeftNode = nullptr,
+            node_pointer pRightNode = nullptr) noexcept :
+            valueData{ std::move(data) }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
 
-        constexpr key_binary_search_tree_node() noexcept : valueData{}, pLeftNode{ nullptr }, pRightNode{ nullptr } {}
+        constexpr key_binary_search_tree_node() noexcept : valueData{}, leftNode{ nullptr }, rightNode{ nullptr } {}
 
         constexpr key_binary_search_tree_node(const key_binary_search_tree_node&) noexcept = delete;
         
-        constexpr key_binary_search_tree_node(key_binary_search_tree_node&& _Other) noexcept{
-            *this = std::move(_Other);
+        constexpr key_binary_search_tree_node(key_binary_search_tree_node&& other) noexcept{
+            *this = std::move(other);
         }
 
         constexpr ~key_binary_search_tree_node() noexcept {
-            if (pLeftNode != nullptr) {
-                delete pLeftNode;
+            if (leftNode != nullptr) {
+                delete leftNode;
             }
-            if (pRightNode != nullptr) {
-                delete pRightNode;
+            if (rightNode != nullptr) {
+                delete rightNode;
             }
         }
         
         constexpr node_type& operator =(const key_binary_search_tree_node&) noexcept = delete;
         
-        constexpr node_type& operator =(key_binary_search_tree_node&& _Right) noexcept {
-            return base_type::operator =(std::move(_Right));
+        constexpr node_type& operator =(key_binary_search_tree_node&& right) noexcept {
+            return base_type::operator =(std::move(right));
         }
         
-        constexpr bool operator <(const value_type& _Right) const noexcept {
-            return value_compare{}(this->value(), _Right);
+        constexpr bool operator <(const value_type& right) const noexcept {
+            return value_compare{}(this->value(), right);
         }
 
-        constexpr bool operator >(const value_type& _Right) const noexcept {
-            return value_compare{}(_Right, this->value());
+        constexpr bool operator >(const value_type& right) const noexcept {
+            return value_compare{}(right, this->value());
         }
 
-        constexpr bool operator ==(const value_type& _Right) const noexcept {
-            return value_compare{}(this->value(), _Right) == false && value_compare{}(_Right, this->value()) == false;
+        constexpr bool operator ==(const value_type& right) const noexcept {
+            return value_compare{}(this->value(), right) == false && value_compare{}(right, this->value()) == false;
         }
 
-        constexpr bool operator <(const node_type& _Right) const noexcept {
-            return value_compare{}(this->value(), _Right.value());
+        constexpr bool operator <(const node_type& right) const noexcept {
+            return value_compare{}(this->value(), right.value());
         }
 
-        constexpr bool operator >(const node_type& _Right) const noexcept {
-            return value_compare{}(_Right.value(), this->value());
+        constexpr bool operator >(const node_type& right) const noexcept {
+            return value_compare{}(right.value(), this->value());
         }
 
-        constexpr bool operator ==(const node_type& _Right) const noexcept {
-            return value_compare{}(this->value(), _Right.value()) == false && value_compare{}(_Right.value(), this->value()) == false;
+        constexpr bool operator ==(const node_type& right) const noexcept {
+            return value_compare{}(this->value(), right.value()) == false && value_compare{}(right.value(), this->value()) == false;
         }
 
-        constexpr static node_pointer make_new(const node_pointer _PNode) noexcept {
-            if (_PNode == nullptr) {
+        constexpr static node_pointer make_new(const node_pointer pNode) noexcept {
+            if (pNode == nullptr) {
                 return nullptr;
             }
-            return new node_type{ _PNode->value(), make_new(_PNode->left()), make_new(_PNode->right()) };
+            return new node_type{ pNode->value(), make_new(pNode->left()), make_new(pNode->right()) };
         }
         
         constexpr node_pointer& left() noexcept {
-            return reinterpret_cast<node_pointer&>(pLeftNode);
+            return reinterpret_cast<node_pointer&>(leftNode);
         }
 
         constexpr const node_pointer& left() const noexcept {
-            return reinterpret_cast<node_pointer&>(pLeftNode);
+            return reinterpret_cast<node_pointer&>(leftNode);
         }
 
         constexpr node_pointer& right() noexcept {
-            return reinterpret_cast<node_pointer&>(pRightNode);
+            return reinterpret_cast<node_pointer&>(rightNode);
         }
 
         constexpr const node_pointer& right() const noexcept {
-            return reinterpret_cast<node_pointer&>(pRightNode);
+            return reinterpret_cast<node_pointer&>(rightNode);
         }
     };
 
-    template<typename _KeyType, typename _MappedType, typename _Compare, typename _Allocator>
+    template<typename KeyType, typename MappedType, typename Compare, typename Allocator>
     struct pair_binary_search_tree_node : 
-            public key_binary_search_tree_node<std::pair<_KeyType, _MappedType>, _Compare, _Allocator> {
+            public key_binary_search_tree_node<std::pair<KeyType, MappedType>, Compare, Allocator> {
 
-        using base_type       = key_binary_search_tree_node<std::pair<_KeyType, _MappedType>, _Compare, _Allocator>;
+        using base_type       = key_binary_search_tree_node<std::pair<KeyType, MappedType>, Compare, Allocator>;
         
-        using key_type        = std::remove_reference_t<_KeyType>;
-        using mapped_type     = std::remove_reference_t<_MappedType>;
-        using value_type      = std::pair<_KeyType, _MappedType>;
+        using key_type        = std::remove_reference_t<KeyType>;
+        using mapped_type     = std::remove_reference_t<MappedType>;
+        using value_type      = std::pair<KeyType, MappedType>;
         
-        using key_compare     = _Compare;
+        using key_compare     = Compare;
         
         using size_type       = typename base_type::size_type;
         
         using node_type       = pair_binary_search_tree_node;
         using node_pointer    = pair_binary_search_tree_node*;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
         using const_reference = const value_type&;
 
-        using base_type::pLeftNode;
-        using base_type::pRightNode;
+        using base_type::leftNode;
+        using base_type::rightNode;
         using base_type::valueData;
         
         class value_compare {
@@ -350,8 +356,8 @@ export namespace mylib {
 
             constexpr value_compare& operator=(value_compare&&) noexcept = default;
 
-            constexpr bool operator()(const value_type& _Left, const value_type& _Right) const noexcept {
-                return _Left.first < _Right.first;
+            constexpr bool operator()(const value_type& left, const value_type& right) const noexcept {
+                return left.first < right.first;
             }
              
         private:
@@ -362,90 +368,96 @@ export namespace mylib {
             return false;
         }
 
-        constexpr pair_binary_search_tree_node(const value_type& _Pair, node_pointer _PLeftNode = nullptr,
-                node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ _Pair, _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_search_tree_node(const value_type& value, node_pointer pLeftNode = nullptr,
+                node_pointer pRightNode = nullptr) noexcept :
+            base_type{ value, pLeftNode, pRightNode } {}
         
-        constexpr pair_binary_search_tree_node(value_type&& _Pair, node_pointer _PLeftNode = nullptr,
-            node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ std::move(_Pair), _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_search_tree_node(value_type&& value, node_pointer pLeftNode = nullptr,
+            node_pointer pRightNode = nullptr) noexcept :
+            base_type{ std::move(value), pLeftNode, pRightNode } {}
         
-        constexpr pair_binary_search_tree_node(const key_type& _Key, const mapped_type& _Mapped, node_pointer _PLeftNode, node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ std::make_pair(_Key, _Mapped), _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_search_tree_node(
+            const key_type& key,       const mapped_type& mapped, 
+            node_pointer    pLeftNode, node_pointer       pRightNode = nullptr
+        ) noexcept :
+            base_type{ std::make_pair(key, mapped), pLeftNode, pRightNode } {}
         
-        constexpr pair_binary_search_tree_node(key_type&& _Key, mapped_type&& _Mapped, node_pointer _PLeftNode = nullptr, node_pointer _PRightNode = nullptr) noexcept :
-            base_type{ std::make_pair(std::move(_Key), std::move(_Mapped)), _PLeftNode, _PRightNode } {}
+        constexpr pair_binary_search_tree_node(
+            key_type&&   key,                 mapped_type&& mapped, 
+            node_pointer pLeftNode = nullptr, node_pointer pRightNode = nullptr
+        ) noexcept :
+            base_type{ std::make_pair(std::move(key), std::move(mapped)), pLeftNode, pRightNode } {}
         
         constexpr pair_binary_search_tree_node() noexcept : base_type{} {}
         
         constexpr pair_binary_search_tree_node(const pair_binary_search_tree_node&) noexcept = delete;
         
-        constexpr pair_binary_search_tree_node(pair_binary_search_tree_node&& _Other) noexcept :
-            base_type{ std::move(_Other) } {}
+        constexpr pair_binary_search_tree_node(pair_binary_search_tree_node&& other) noexcept :
+            base_type{ std::move(other) } {}
 
-        constexpr node_type& operator =(const pair_binary_search_tree_node& _Right) noexcept = delete;
+        constexpr node_type& operator =(const pair_binary_search_tree_node& right) noexcept = delete;
 
-        constexpr node_type& operator =(pair_binary_search_tree_node&& _Right) noexcept {
-            return base_type::operator =(std::move(_Right));
+        constexpr node_type& operator =(pair_binary_search_tree_node&& right) noexcept {
+            return base_type::operator =(std::move(right));
         }
 
-        constexpr bool operator <(const value_type& _Right) const noexcept {
-            return key_compare{}(this->key(), _Right.first);
-        }
-        
-        constexpr bool operator >(const value_type& _Right) const noexcept {
-            return key_compare{}(_Right.first, this->key());
-        }
-
-        constexpr bool operator ==(const value_type& _Right) const noexcept {
-            return key_compare{}(this->key(), _Right.first) == false && key_compare{}(_Right.first, this->key()) == false;
-        }
-
-        constexpr bool operator <(const key_type& _Right) const noexcept {
-            return key_compare{}(this->key(), _Right);
-        }
-
-        constexpr bool operator >(const key_type& _Right) const noexcept {
-            return key_compare{}(_Right, this->key());
-        }
-
-        constexpr bool operator ==(const key_type& _Right) const noexcept {
-            return key_compare{}(this->key(), _Right) == false && key_compare{}(_Right, this->key()) == false;
-        }
-
-        constexpr bool operator <(const node_type& _Right) const noexcept {
-            return key_compare{}(this->key(), _Right.key());
-        }
-
-        constexpr bool operator >(const node_type& _Right) const noexcept {
-            return key_compare{}(_Right.key(), this->key());
-        }
-
-        constexpr bool operator ==(const node_type& _Right) const noexcept {
-            return key_compare{}(this->key(), _Right.key()) == false && key_compare{}(_Right.key(), this->key()) == false;
+        constexpr bool operator <(const value_type& right) const noexcept {
+            return key_compare{}(this->key(), right.first);
         }
         
-        constexpr static node_pointer make_new(const node_pointer _PNode) noexcept {
-            if (_PNode == nullptr) {
+        constexpr bool operator >(const value_type& right) const noexcept {
+            return key_compare{}(right.first, this->key());
+        }
+
+        constexpr bool operator ==(const value_type& right) const noexcept {
+            return key_compare{}(this->key(), right.first) == false && key_compare{}(right.first, this->key()) == false;
+        }
+
+        constexpr bool operator <(const key_type& right) const noexcept {
+            return key_compare{}(this->key(), right);
+        }
+
+        constexpr bool operator >(const key_type& right) const noexcept {
+            return key_compare{}(right, this->key());
+        }
+
+        constexpr bool operator ==(const key_type& right) const noexcept {
+            return key_compare{}(this->key(), right) == false && key_compare{}(right, this->key()) == false;
+        }
+
+        constexpr bool operator <(const node_type& right) const noexcept {
+            return key_compare{}(this->key(), right.key());
+        }
+
+        constexpr bool operator >(const node_type& right) const noexcept {
+            return key_compare{}(right.key(), this->key());
+        }
+
+        constexpr bool operator ==(const node_type& right) const noexcept {
+            return key_compare{}(this->key(), right.key()) == false && key_compare{}(right.key(), this->key()) == false;
+        }
+        
+        constexpr static node_pointer make_new(const node_pointer pNode) noexcept {
+            if (pNode == nullptr) {
                 return nullptr;
             }
-            return new node_type{ _PNode->value(), make_new(_PNode->left()), make_new(_PNode->right()) };
+            return new node_type{ pNode->value(), make_new(pNode->left()), make_new(pNode->right()) };
         }
         
         constexpr node_pointer& left() noexcept {
-            return reinterpret_cast<node_pointer&>(pLeftNode);
+            return reinterpret_cast<node_pointer&>(leftNode);
         }
 
         constexpr const node_pointer& left() const noexcept {
-            return reinterpret_cast<node_pointer&>(pLeftNode);
+            return reinterpret_cast<node_pointer&>(leftNode);
         }
 
         constexpr node_pointer& right() noexcept {
-            return reinterpret_cast<node_pointer&>(pRightNode);
+            return reinterpret_cast<node_pointer&>(rightNode);
         }
 
         constexpr const node_pointer& right() const noexcept {
-            return reinterpret_cast<node_pointer&>(pRightNode);
+            return reinterpret_cast<node_pointer&>(rightNode);
         }
         
         constexpr mapped_type& mapped() noexcept {
@@ -466,19 +478,19 @@ export namespace mylib {
     };
         
     template<
-        typename _KeyType,
-        typename _Allocator,
-        typename _NodeType = key_binary_tree_node<_KeyType, _Allocator>
+        typename KeyType,
+        typename Allocator,
+        typename NodeType = key_binary_tree_node<KeyType, Allocator>
     >
     struct key_binary_tree_root_node {
-        using value_type      = _KeyType;
+        using value_type      = KeyType;
 
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
-        using node_type       = _NodeType;
+        using node_type       = NodeType;
         using node_pointer    = node_type*;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
@@ -489,43 +501,43 @@ export namespace mylib {
             return false;
         }
 
-        constexpr key_binary_tree_root_node() noexcept : pRootNode{ nullptr }, numberOfNodes{ size_type{ 0 } } {}
+        constexpr key_binary_tree_root_node() noexcept : pRootNode{ nullptr }, nodesSize{ size_type{ 0 } } {}
         
-        constexpr key_binary_tree_root_node(node_pointer _PRootNode) noexcept :
-            pRootNode{ _PRootNode }, numberOfNodes{ tree_size(_PRootNode) } {}
+        constexpr key_binary_tree_root_node(node_pointer pRootNode) noexcept :
+            pRootNode{ pRootNode }, nodesSize{ tree_size(pRootNode) } {}
         
-        constexpr key_binary_tree_root_node(node_pointer _PRootNode, size_type _NumberOfNodes) noexcept :
-            pRootNode{ _PRootNode }, numberOfNodes{ _NumberOfNodes } {}
+        constexpr key_binary_tree_root_node(node_pointer pRootNode, size_type _nodeSize) noexcept :
+            pRootNode{ pRootNode }, nodesSize{ _nodeSize } {}
 
-        constexpr key_binary_tree_root_node(const key_binary_tree_root_node& _Other) noexcept :
-            pRootNode{ node_type::make_new(_Other.pRootNode) }, numberOfNodes{_Other.numberOfNodes} {}
+        constexpr key_binary_tree_root_node(const key_binary_tree_root_node& other) noexcept :
+            pRootNode{ node_type::make_new(other.pRootNode) }, nodesSize{other.nodesSize} {}
 
-        constexpr key_binary_tree_root_node(key_binary_tree_root_node&& _Other) noexcept :
-            pRootNode{ _Other.pRootNode }, numberOfNodes{ _Other.numberOfNodes } {
-            _Other.pRootNode     = nullptr;
-            _Other.numberOfNodes = 0;
+        constexpr key_binary_tree_root_node(key_binary_tree_root_node&& other) noexcept :
+            pRootNode{ other.pRootNode }, nodesSize{ other.nodesSize } {
+            other.pRootNode     = nullptr;
+            other.nodesSize = 0;
         }
 
-        constexpr key_binary_tree_root_node& operator =(const key_binary_tree_root_node& _Right) noexcept {
-            if (this != &_Right) {
+        constexpr key_binary_tree_root_node& operator =(const key_binary_tree_root_node& right) noexcept {
+            if (this != &right) {
                 if (pRootNode != nullptr) {
                     ::delete pRootNode;
                 }
-                pRootNode     = node_type::make_new(_Right.pRootNode);
-                numberOfNodes = _Right.numberOfNodes;
+                pRootNode     = node_type::make_new(right.pRootNode);
+                nodesSize = right.nodesSize;
             }
             return *this;
         }
 
-        constexpr key_binary_tree_root_node& operator =(key_binary_tree_root_node&& _Right) noexcept {
-            if (this != &_Right) {
+        constexpr key_binary_tree_root_node& operator =(key_binary_tree_root_node&& right) noexcept {
+            if (this != &right) {
                 if (pRootNode != nullptr) {
                     ::delete pRootNode;
                 }
-                pRootNode            = _Right.pRootNode;
-                numberOfNodes        = _Right.numberOfNodes;
-                _Right.pRootNode     = nullptr;
-                _Right.numberOfNodes = 0;
+                pRootNode            = right.pRootNode;
+                nodesSize        = right.nodesSize;
+                right.pRootNode     = nullptr;
+                right.nodesSize = 0;
             }
             return *this;
         }
@@ -545,62 +557,74 @@ export namespace mylib {
         }
 
         constexpr size_type size() const noexcept {
-            return numberOfNodes;
+            return nodesSize;
         }
         
-        constexpr void preorder_traversal(std::function<void(value_type&)> _Predicate) const noexcept {
-            preorder_traversal(pRootNode, _Predicate);
+        constexpr void preorder_traversal(std::function<void(value_type&)> unaryFunc) const noexcept {
+            preorder_traversal(pRootNode, unaryFunc);
         }
 
-        constexpr void inorder_traversal(std::function<void(value_type&)> _Predicate) const noexcept {
-            inorder_traversal(pRootNode, _Predicate);
+        constexpr void inorder_traversal(std::function<void(value_type&)> unaryFunc) const noexcept {
+            inorder_traversal(pRootNode, unaryFunc);
         }
 
-        constexpr void postorder_traversal(std::function<void(value_type&)> _Predicate) const noexcept {
-            postorder_traversal(pRootNode, _Predicate);
+        constexpr void postorder_traversal(std::function<void(value_type&)> unaryFunc) const noexcept {
+            postorder_traversal(pRootNode, unaryFunc);
         }
 
-        constexpr void levelorder_traversal(std::function<void(node_pointer&)> _Predicate) const noexcept {
-            levelorder_traversal(pRootNode, _Predicate);
+        constexpr void levelorder_traversal(std::function<void(node_pointer&)> unaryFunc) const noexcept {
+            levelorder_traversal(pRootNode, unaryFunc);
         }
 
-        constexpr void preorder_traversal(node_pointer _PNode, std::function<void(node_pointer&)> _Predicate) const noexcept {
-            if (_PNode != nullptr) {
-                _Predicate(_PNode->value());
-                preorder_traversal(_PNode->left(), _Predicate);
-                preorder_traversal(_PNode->right(), _Predicate);
+        constexpr void preorder_traversal(
+            node_pointer pNode, std::function<void(node_pointer&)> unaryFunc
+        ) const noexcept {
+            
+            if (pNode != nullptr) {
+                unaryFunc(pNode->value());
+                preorder_traversal(pNode->left(), unaryFunc);
+                preorder_traversal(pNode->right(), unaryFunc);
             }
         }
 
-        constexpr void inorder_traversal(node_pointer _PNode, std::function<void(node_pointer&)> _Predicate) const noexcept {
-            if (_PNode != nullptr) {
-                inorder_traversal(_PNode->left(), _Predicate);
-                _Predicate(_PNode->value());
-                inorder_traversal(_PNode->right(), _Predicate);
+        constexpr void inorder_traversal(
+            node_pointer pNode, std::function<void(node_pointer&)> unaryFunc
+        ) const noexcept {
+            
+            if (pNode != nullptr) {
+                inorder_traversal(pNode->left(), unaryFunc);
+                unaryFunc(pNode->value());
+                inorder_traversal(pNode->right(), unaryFunc);
             }
         }
 
-        constexpr void postorder_traversal(node_pointer _PNode, std::function<void(node_pointer&)> _Predicate) const noexcept {
-            if (_PNode != nullptr) {
-                postorder_traversal(_PNode->left(), _Predicate);
-                postorder_traversal(_PNode->right(), _Predicate);
-                _Predicate(_PNode->value());
+        constexpr void postorder_traversal(
+            node_pointer pNode, std::function<void(node_pointer&)> unaryFunc
+        ) const noexcept {
+            
+            if (pNode != nullptr) {
+                postorder_traversal(pNode->left(), unaryFunc);
+                postorder_traversal(pNode->right(), unaryFunc);
+                unaryFunc(pNode->value());
             }
         }
 
-        constexpr void levelorder_traversal(node_pointer _PNode, std::function<void(value_type&)> _Predicate) const noexcept {
-            if (_PNode != nullptr) {
+        constexpr void levelorder_traversal(
+            node_pointer pNode, std::function<void(value_type&)> unaryFunc
+        ) const noexcept {
+            
+            if (pNode != nullptr) {
                 queue<node_pointer> _Queue;
-                _Queue.push(_PNode);
+                _Queue.push(pNode);
                 while (!_Queue.empty()) {
-                    node_pointer _PNode = _Queue.front();
+                    node_pointer pNode = _Queue.front();
                     _Queue.pop();
-                    _Predicate(_PNode->value());
-                    if (_PNode->left() != nullptr) {
-                        _Queue.push(_PNode->left());
+                    unaryFunc(pNode->value());
+                    if (pNode->left() != nullptr) {
+                        _Queue.push(pNode->left());
                     }
-                    if (_PNode->right() != nullptr) {
-                        _Queue.push(_PNode->right());
+                    if (pNode->right() != nullptr) {
+                        _Queue.push(pNode->right());
                     }
                 }
             }
@@ -610,13 +634,13 @@ export namespace mylib {
             return to_vector(*this);
         }
 
-        constexpr void append_to_vector(std::vector<value_type>& _Result) const noexcept {
-            to_vector(root(), _Result);
+        constexpr void append_to_vector(std::vector<value_type>& result) const noexcept {
+            to_vector(root(), result);
         }
             
-        constexpr static std::vector<value_type> to_vector(const key_binary_tree_root_node& _RootNode) noexcept {
+        constexpr static std::vector<value_type> to_vector(const key_binary_tree_root_node& rootNode) noexcept {
             std::vector<value_type> result;
-            append_to_vector(_RootNode.root(), result);
+            append_to_vector(rootNode.root(), result);
             return result;
         }
 
@@ -632,8 +656,8 @@ export namespace mylib {
             return depth(*this);
         }
 
-        constexpr static const size_type depth(const key_binary_tree_root_node& _RootNode) noexcept {
-            return depth(_RootNode.pRootNode);
+        constexpr static const size_type depth(const key_binary_tree_root_node& rootNode) noexcept {
+            return depth(rootNode.pRootNode);
         }
 
         constexpr static const size_type depth(const node_pointer pNode) noexcept {
@@ -647,16 +671,24 @@ export namespace mylib {
             return (leftDepth > rightDepth) ? (leftDepth + 1) : (rightDepth + 1);
         }
         
-        constexpr void draw_tree(char _NodeChar = 'O', char _EmptyChar = 'X', char _MidLineChar = ' ', std::ostream & _Os = std::cout) noexcept {
-            draw_tree(*this, _NodeChar, _EmptyChar, _MidLineChar, _Os);
+        constexpr void draw_tree(
+            char nodeChar = 'O', char emptyChar = 'X', char middleLineChar = ' ', std::ostream& os = std::cout
+        ) noexcept {
+            
+            draw_tree(*this, nodeChar, emptyChar, middleLineChar, os);
         }
 
-        constexpr static void draw_tree(key_binary_tree_root_node& _RootNode, char _NodeChar = 'O', char _EmptyChar = 'X', char _MidLineChar = ' ', std::ostream& _Os = std::cout) noexcept {
+        constexpr static void draw_tree(
+            key_binary_tree_root_node& rootNode, 
+            char nodeChar = 'O',       char emptyChar = 'X', 
+            char middleLineChar = ' ', std::ostream& os = std::cout
+        ) noexcept {
+            
             std::vector<std::vector<node_pointer>> tree;
-            size_type treeDepth = depth(_RootNode);
+            size_type treeDepth = depth(rootNode);
             tree.resize(treeDepth);
             
-            tree[0].push_back(_RootNode.root());
+            tree[0].push_back(rootNode.root());
 
             for (size_type i = 0; i < treeDepth - 1; ++i) {
                 tree[i + 1].resize(1 << (i + 1));
@@ -672,26 +704,27 @@ export namespace mylib {
             for (const auto& i : tree) {
                 std::string previousSpace((interval >> 1) - 1, ' ');
                 std::string middleSpace(interval - 1, ' ');
-                _Os << previousSpace;
+                os << previousSpace;
                 std::string line;
                 for (const auto& j : i) {
                     if (j != nullptr) {
-                        line += _NodeChar;
+                        line += nodeChar;
                     } else {
-                        line += _EmptyChar;
+                        line += emptyChar;
                     }
                     line += middleSpace;
                 }
-                _Os << line << '\n' 
-                    << previousSpace << std::string(line.size() - middleSpace.size(), _MidLineChar) << '\n';
+                os << line << '\n' 
+                    << previousSpace << std::string(line.size() - middleSpace.size(), middleLineChar) << '\n';
                 interval >>= 1;
             }
-            _Os << '\n';
+            os << '\n';
         }
 
         // char type specific draw_tree reload
-        constexpr void draw_tree(char _EmptyChar = ' ', std::ostream& _Os = std::cout) noexcept
-                requires std::is_same_v<value_type, char> {
+        constexpr void draw_tree(char emptyChar = ' ', std::ostream& os = std::cout) noexcept
+            requires std::is_same_v<value_type, char> {
+            
             std::vector<std::vector<node_pointer>> tree;
             size_type treeDepth = depth(*this);
             tree.resize(treeDepth);
@@ -712,102 +745,102 @@ export namespace mylib {
             for (const auto& i : tree) {
                 std::string previousSpace((interval >> 1) - 1, ' ');
                 std::string middleSpace(interval - 1, ' ');
-                _Os << previousSpace;
+                os << previousSpace;
                 std::string line;
                 for (const auto& j : i) {
                     if (j != nullptr) {
                         line += j->value();
                     } else {
-                        line += _EmptyChar;
+                        line += emptyChar;
                     }
                     line += middleSpace;
                 }
-                _Os << line << '\n'
+                os << line << '\n'
                     << previousSpace << std::string(line.size() - middleSpace.size(), ' ') << '\n';
                 interval >>= 1;
             }
-            _Os << '\n';
+            os << '\n';
         }
         
         node_pointer pRootNode;
-        size_type    numberOfNodes;
+        size_type    nodesSize;
     };
 
     template<
-        typename _KeyType,
-        typename _MappedType,
-        typename _Allocator,
-        typename _NodeType = pair_binary_tree_node<_KeyType, _MappedType, _Allocator>
+        typename KeyType,
+        typename MappedType,
+        typename Allocator,
+        typename NodeType = pair_binary_tree_node<KeyType, MappedType, Allocator>
     >
     struct pair_binary_tree_root_node :
-        public key_binary_tree_root_node<std::pair<_KeyType, _MappedType>, _Allocator, _NodeType> {
+        public key_binary_tree_root_node<std::pair<KeyType, MappedType>, Allocator, NodeType> {
 
-        using base_type = key_binary_tree_root_node<std::pair<_KeyType, _MappedType>, _Allocator, _NodeType>;
+        using base_type       = key_binary_tree_root_node<std::pair<KeyType, MappedType>, Allocator, NodeType>;
 
-        using size_type = typename base_type::size_type;
+        using size_type       = typename base_type::size_type;
 
-        using node_type = _NodeType;
-        using node_pointer = node_type*;
+        using node_type       = NodeType;
+        using node_pointer    = node_type*;
 
-        using key_type = _KeyType;
-        using Mapped_type = _MappedType;
-        using value_type = std::pair<_KeyType, _MappedType>;
+        using key_type        = KeyType;
+        using Mapped_type     = MappedType;
+        using value_type      = std::pair<KeyType, MappedType>;
 
-        using value_comapre = typename node_type::value_compare;
+        using value_comapre   = typename node_type::value_compare;
 
-        using reference = std::pair<_KeyType, _MappedType>&;
-        using const_reference = const std::pair<_KeyType, _MappedType>&;
+        using reference       = std::pair<KeyType, MappedType>&;
+        using const_reference = const std::pair<KeyType, MappedType>&;
 
         using base_type::pRootNode;
-        using base_type::numberOfNodes;
+        using base_type::nodesSize;
 
         constexpr pair_binary_tree_root_node() noexcept : base_type{} {}
 
-        constexpr pair_binary_tree_root_node(const pair_binary_tree_root_node& _Other) noexcept :
-            base_type{ _Other } {}
+        constexpr pair_binary_tree_root_node(const pair_binary_tree_root_node& other) noexcept :
+            base_type{ other } {}
 
-        constexpr pair_binary_tree_root_node(pair_binary_tree_root_node&& _Other) noexcept :
-            base_type{ std::move(_Other) } {}
+        constexpr pair_binary_tree_root_node(pair_binary_tree_root_node&& other) noexcept :
+            base_type{ std::move(other) } {}
 
-        constexpr pair_binary_tree_root_node& operator=(const pair_binary_tree_root_node& _Other) noexcept {
-            base_type::operator=(_Other);
+        constexpr pair_binary_tree_root_node& operator=(const pair_binary_tree_root_node& other) noexcept {
+            base_type::operator=(other);
             return *this;
         }
 
-        constexpr pair_binary_tree_root_node& operator=(pair_binary_tree_root_node&& _Other) noexcept {
-            base_type::operator=(std::move(_Other));
+        constexpr pair_binary_tree_root_node& operator=(pair_binary_tree_root_node&& other) noexcept {
+            base_type::operator=(std::move(other));
             return *this;
         }
     };
 
     template<
-        typename _KeyType,
-        typename _Compare,
-        typename _Allocator,
-        typename _NodeType = key_binary_search_tree_node<_KeyType, _Compare, _Allocator>
+        typename KeyType,
+        typename Compare,
+        typename Allocator,
+        typename NodeType = key_binary_search_tree_node<KeyType, Compare, Allocator>
     >
     struct key_binary_search_tree_root_node :
-        public key_binary_tree_root_node<_KeyType, _Allocator, _NodeType> {
+        public key_binary_tree_root_node<KeyType, Allocator, NodeType> {
 
-        using base_type       = key_binary_tree_root_node<_KeyType, _Allocator, _NodeType>;
+        using base_type       = key_binary_tree_root_node<KeyType, Allocator, NodeType>;
 
-        using value_type      = _KeyType;
+        using value_type      = KeyType;
 
-        using value_compare   = _Compare;
+        using value_compare   = Compare;
 
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
-        using node_type       = _NodeType;
+        using node_type       = NodeType;
         using node_pointer    = node_type*;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
         using const_reference = const value_type&;
 
         using base_type::pRootNode;
-        using base_type::numberOfNodes;
+        using base_type::nodesSize;
 
         constexpr bool has_parent_node() const noexcept
         {
@@ -816,75 +849,87 @@ export namespace mylib {
 
         constexpr key_binary_search_tree_root_node() noexcept : base_type{} {}
 
-        constexpr key_binary_search_tree_root_node(node_pointer _PRootNode) noexcept :
-            base_type{ _PRootNode } {}
+        constexpr key_binary_search_tree_root_node(node_pointer pRootNode) noexcept :
+            base_type{ pRootNode } {}
 
-        constexpr key_binary_search_tree_root_node(node_pointer _PRootNode, size_type _NumberOfNodes) noexcept :
-            base_type{ _PRootNode, _NumberOfNodes } {}
+        constexpr key_binary_search_tree_root_node(node_pointer pRootNode, size_type _nodeSize) noexcept :
+            base_type{ pRootNode, _nodeSize } {}
 
-        constexpr key_binary_search_tree_root_node(const key_binary_search_tree_root_node& _Other) noexcept :
-            base_type{ _Other } {}
+        constexpr key_binary_search_tree_root_node(const key_binary_search_tree_root_node& other) noexcept :
+            base_type{ other } {}
 
-        constexpr key_binary_search_tree_root_node(key_binary_search_tree_root_node&& _Other) noexcept :
-            base_type{ std::move(_Other) } {}
+        constexpr key_binary_search_tree_root_node(key_binary_search_tree_root_node&& other) noexcept :
+            base_type{ std::move(other) } {}
 
-        constexpr key_binary_search_tree_root_node& operator =(const key_binary_search_tree_root_node& _Right) noexcept {
-            if (this != &_Right) {
+        constexpr key_binary_search_tree_root_node& operator =(const key_binary_search_tree_root_node& right) noexcept {
+            if (this != &right) {
                 if (pRootNode != nullptr) {
                     ::delete pRootNode;
                 }
-                pRootNode = node_type::make_new(_Right.pRootNode);
-                numberOfNodes = _Right.numberOfNodes;
+                pRootNode = node_type::make_new(right.pRootNode);
+                nodesSize = right.nodesSize;
             }
             return *this;
         }
 
-        constexpr key_binary_search_tree_root_node& operator =(key_binary_search_tree_root_node&& _Right) noexcept {
-            if (this != &_Right) {
+        constexpr key_binary_search_tree_root_node& operator =(key_binary_search_tree_root_node&& right) noexcept {
+            if (this != &right) {
                 if (pRootNode != nullptr) {
                     ::delete pRootNode;
                 }
-                pRootNode = _Right.pRootNode;
-                numberOfNodes = _Right.numberOfNodes;
-                _Right.pRootNode = nullptr;
-                _Right.numberOfNodes = 0;
+                pRootNode = right.pRootNode;
+                nodesSize = right.nodesSize;
+                right.pRootNode = nullptr;
+                right.nodesSize = 0;
             }
             return *this;
         }
 
         // if not found, return nullptr
-        constexpr node_pointer& find(const value_type& _FindValue) noexcept {
-            return find(_FindValue, *this);
+        constexpr node_pointer& find(const value_type& value) noexcept {
+            return find(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr const node_pointer& find(const value_type& _FindValue) const noexcept {
-            return find(_FindValue, *this);
+        constexpr const node_pointer& find(const value_type& value) const noexcept {
+            return find(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& find(const value_type& _FindValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            return find(_FindValue, _RootNode.root());
+        constexpr static node_pointer& find(
+            const value_type& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return find(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& find(const value_type& _FindValue, const key_binary_search_tree_root_node& _RootNode) noexcept {
-            return find(_FindValue, _RootNode.root());
+        constexpr static const node_pointer& find(
+            const value_type& value, const key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return find(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& find(const value_type& _FindValue, node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(find(_FindValue, static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& find(
+            const value_type& value, node_pointer& pRootNode
+        ) noexcept {
+            
+            return const_cast<node_pointer&>(find(value, static_cast<const node_pointer&>(pRootNode)));
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& find(const value_type& _FindValue, const node_pointer& _PRootNode) noexcept {
-            const node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& find(
+            const value_type& value, const node_pointer& pRootNode
+        ) noexcept {
+            
+            const node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
-                if (**result > _FindValue) {
+                if (**result > value) {
                     result = &(*result)->left();
-                } else if (**result < _FindValue) {
+                } else if (**result < value) {
                     result = &(*result)->right();
                 } else {
                     break;
@@ -905,13 +950,13 @@ export namespace mylib {
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& min(node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(min(static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& min(node_pointer& pRootNode) noexcept {
+            return const_cast<node_pointer&>(min(static_cast<const node_pointer&>(pRootNode)));
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& min(const node_pointer& _PRootNode) noexcept {
-            const node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& min(const node_pointer& pRootNode) noexcept {
+            const node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
                 result = &(*result)->left();
@@ -931,13 +976,13 @@ export namespace mylib {
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& max(node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(max(static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& max(node_pointer& pRootNode) noexcept {
+            return const_cast<node_pointer&>(max(static_cast<const node_pointer&>(pRootNode)));
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& max(const node_pointer& _PRootNode) noexcept {
-            const node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& max(const node_pointer& pRootNode) noexcept {
+            const node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
                 result = &(*result)->right();
@@ -947,41 +992,53 @@ export namespace mylib {
         }
 
         // if not found, return nullptr
-        constexpr node_pointer& floor(const value_type& _FindValue) noexcept {
-            return floor(_FindValue, *this);
+        constexpr node_pointer& floor(const value_type& value) noexcept {
+            return floor(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr const node_pointer& floor(const value_type& _FindValue) const noexcept {
-            return floor(_FindValue, *this);
+        constexpr const node_pointer& floor(const value_type& value) const noexcept {
+            return floor(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& floor(const value_type& _FindValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            return floor(_FindValue, _RootNode.root());
+        constexpr static node_pointer& floor(
+            const value_type& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return floor(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& floor(const value_type& _FindValue, const key_binary_search_tree_root_node& _RootNode) noexcept {
-            return floor(_FindValue, _RootNode.root());
+        constexpr static const node_pointer& floor(
+            const value_type& value, const key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return floor(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& floor(const value_type& _FindValue, node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(floor(_FindValue, static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& floor(
+            const value_type& value, node_pointer& pRootNode
+        ) noexcept {
+            
+            return const_cast<node_pointer&>(floor(value, static_cast<const node_pointer&>(pRootNode)));
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& floor(const value_type& _FindValue, const node_pointer& _PRootNode) noexcept {
-            node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& floor(
+            const value_type& value, const node_pointer& pRootNode
+        ) noexcept {
+            
+            node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
-                if (**result > _FindValue) {
+                if (**result > value) {
                     result = &(*result)->left();
-                } else if (**result == _FindValue) {
+                } else if (**result == value) {
                     break;
                 } else {
-                    node_pointer* subFloor = &floor(_FindValue, (*result)->right());
+                    node_pointer* subFloor = &floor(value, (*result)->right());
                     if (*subFloor == nullptr) {
                         break;
                     } else if (**subFloor > **result) {
@@ -996,41 +1053,53 @@ export namespace mylib {
         }
 
         // if not found, return nullptr
-        constexpr node_pointer& ceil(const value_type& _FindValue) noexcept {
-            return ceil(_FindValue, *this);
+        constexpr node_pointer& ceil(const value_type& value) noexcept {
+            return ceil(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr const node_pointer& ceil(const value_type& _FindValue) const noexcept {
-            return ceil(_FindValue, *this);
+        constexpr const node_pointer& ceil(const value_type& value) const noexcept {
+            return ceil(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& ceil(const value_type& _FindValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            return ceil(_FindValue, _RootNode.root());
+        constexpr static node_pointer& ceil(
+            const value_type& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return ceil(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& ceil(const value_type& _FindValue, const key_binary_search_tree_root_node& _RootNode) noexcept {
-            return ceil(_FindValue, _RootNode.root());
+        constexpr static const node_pointer& ceil(
+            const value_type& value, const key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return ceil(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& ceil(const value_type& _FindValue, node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(ceil(_FindValue, static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& ceil(
+            const value_type& value, node_pointer& pRootNode
+        ) noexcept {
+            
+            return const_cast<node_pointer&>(ceil(value, static_cast<const node_pointer&>(pRootNode)));
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& ceil(const value_type& _FindValue, const node_pointer& _PRootNode) noexcept {
-            const node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& ceil(
+            const value_type& value, const node_pointer& pRootNode
+        ) noexcept {
+            
+            const node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
-                if (**result < _FindValue) {
+                if (**result < value) {
                     result = &(*result)->right();
-                } else if (**result == _FindValue) {
+                } else if (**result == value) {
                     break;
                 } else {
-                    const node_pointer* subFloor = ceil(_FindValue, result->left());
+                    const node_pointer* subFloor = ceil(value, result->left());
                     if (*subFloor == nullptr) {
                         break;
                     } else if (**subFloor < **result) {
@@ -1044,92 +1113,108 @@ export namespace mylib {
             return *result;
         }
 
-        // if existed value equal to _FindValue, don't insert
-        constexpr node_pointer& insert_unique(const value_type& _InsertValue) noexcept {
-            return insert_unique(_InsertValue, *this);
+        // if existed value equal to value, don't insert
+        constexpr node_pointer& insert_unique(const value_type& value) noexcept {
+            
+            return insert_unique(value, *this);
         }
 
-        // if existed value equal to _FindValue, don't insert
-        constexpr node_pointer& insert_unique(value_type&& _InsertValue) noexcept {
-            return insert_unique(std::move(_InsertValue), *this);
+        // if existed value equal to value, don't insert
+        constexpr node_pointer& insert_unique(value_type&& value) noexcept {
+            return insert_unique(std::move(value), *this);
         }
 
-        // if existed value equal to _FindValue, don't insert
-        constexpr static node_pointer& insert_unique(const value_type& _InsertValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, don't insert
+        constexpr static node_pointer& insert_unique(
+            const value_type& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(_InsertValue);
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(value);
+                ++rootNode.nodesSize;
             }
 
             return insertWhere;
         }
 
-        // if existed value equal to _FindValue, don't insert
-        constexpr static node_pointer& insert_unique(value_type&& _InsertValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, don't insert
+        constexpr static node_pointer& insert_unique(
+            value_type&& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(std::move(_InsertValue));
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(std::move(value));
+                ++rootNode.nodesSize;
             }
 
             return insertWhere;
         }
 
-        // if existed value equal to _FindValue, replace it
-        constexpr node_pointer& insert_replace(const value_type& _InsertValue) noexcept {
-            return insert_replace(_InsertValue, *this);
+        // if existed value equal to value, replace it
+        constexpr node_pointer& insert_replace(const value_type& value) noexcept {
+            return insert_replace(value, *this);
         }
 
-        // if existed value equal to _FindValue, replace it
-        constexpr node_pointer& insert_replace(value_type&& _InsertValue) noexcept {
-            return insert_replace(std::move(_InsertValue), *this);
+        // if existed value equal to value, replace it
+        constexpr node_pointer& insert_replace(value_type&& value) noexcept {
+            return insert_replace(std::move(value), *this);
         }
 
-        // if existed value equal to _FindValue, replace it
-        constexpr static node_pointer& insert_replace(const value_type& _InsertValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, replace it
+        constexpr static node_pointer& insert_replace(
+            const value_type& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(_InsertValue);
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(value);
+                ++rootNode.nodesSize;
             } else {
-                insertWhere->value() = _InsertValue;
-                ::delete _InsertValue;
+                insertWhere->value() = value;
+                ::delete value;
             }
 
             return insertWhere;
         }
 
-        // if existed value equal to _FindValue, replace it
-        constexpr static node_pointer& insert_replace(value_type&& _InsertValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, replace it
+        constexpr static node_pointer& insert_replace(
+            value_type&& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(std::move(_InsertValue));
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(std::move(value));
+                ++rootNode.nodesSize;
             } else {
-                insertWhere->value() = std::move(_InsertValue);
-                ::delete _InsertValue;
+                insertWhere->value() = std::move(value);
+                ::delete value;
             }
 
             return insertWhere;
         }
 
-        // if existed value equal to _FindValue, insert it
-        constexpr node_pointer& insert_equal(const value_type& _InsertValue) noexcept {
-            return insert_equal(_InsertValue, *this);
+        // if existed value equal to value, insert it
+        constexpr node_pointer& insert_equal(const value_type& value) noexcept {
+            return insert_equal(value, *this);
         }
 
-        // if existed value equal to _FindValue, insert it
-        constexpr node_pointer& insert_equal(value_type&& _InsertValue) noexcept {
-            return insert_equal(std::move(_InsertValue), *this);
+        // if existed value equal to value, insert it
+        constexpr node_pointer& insert_equal(value_type&& value) noexcept {
+            return insert_equal(std::move(value), *this);
         }
 
-        // if existed value equal to _FindValue, insert it
-        constexpr static node_pointer& insert_equal(const value_type& _InsertValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, insert it
+        constexpr static node_pointer& insert_equal(
+            const value_type& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(_InsertValue);
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(value);
+                ++rootNode.nodesSize;
             } else {
                 // TODO: implement insert in equal case
             }
@@ -1137,12 +1222,15 @@ export namespace mylib {
             return insertWhere;
         }
 
-        // if existed value equal to _FindValue, insert it
-        constexpr static node_pointer& insert_equal(value_type&& _InsertValue, key_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, insert it
+        constexpr static node_pointer& insert_equal(
+            value_type&& value, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(std::move(_InsertValue));
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(std::move(value));
+                ++rootNode.nodesSize;
             } else {
                 // TODO: implement insert in equal case
             }
@@ -1150,100 +1238,103 @@ export namespace mylib {
             return insertWhere;
         }
 
-        constexpr node_pointer& erase(node_pointer& _Where) noexcept {
-            return erase(_Where, *this);
+        constexpr node_pointer& erase(node_pointer& where) noexcept {
+            return erase(where, *this);
         }
 
-        constexpr static node_pointer& erase(node_pointer& _Where, key_binary_search_tree_root_node& _RootNode) noexcept {
-            ::delete _Where;
-            --_RootNode.numberOfNodes;
-            node_pointer& max_node = max(_Where->left());
+        constexpr static node_pointer& erase(
+            node_pointer& where, key_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            ::delete where;
+            --rootNode.nodesSize;
+            node_pointer& max_node = max(where->left());
             if (max_node == nullptr) {
-                _Where   = _Where->right();
+                where   = where->right();
             } else {
-                _Where   = max_node;
+                where   = max_node;
                 max_node = nullptr;
             }
 
-            return _Where;
+            return where;
         }
     };
 
     template<
-        typename _KeyType,
-        typename _MappedType,
-        typename _Compare,
-        typename _Allocator,
-        typename _NodeType = pair_binary_search_tree_node<_KeyType, _MappedType, _Compare, _Allocator>
+        typename KeyType,
+        typename MappedType,
+        typename Compare,
+        typename Allocator,
+        typename NodeType = pair_binary_search_tree_node<KeyType, MappedType, Compare, Allocator>
     >
     struct pair_binary_search_tree_root_node :
-        public key_binary_search_tree_root_node<std::pair<_KeyType, _MappedType>, _Compare, _Allocator, _NodeType> {
+        public key_binary_search_tree_root_node<std::pair<KeyType, MappedType>, Compare, Allocator, NodeType> {
     
-        using base_type       = key_binary_search_tree_root_node<std::pair<_KeyType, _MappedType>, _Compare, _Allocator, _NodeType>;
+        using base_type       = key_binary_search_tree_root_node<std::pair<KeyType, MappedType>, Compare, Allocator, NodeType>;
         
         using size_type       = typename base_type::size_type;
         
-        using node_type       = _NodeType;
+        using node_type       = NodeType;
         using node_pointer    = node_type*;
         
-        using key_type        = _KeyType;
-        using Mapped_type     = _MappedType;
-        using value_type      = std::pair<_KeyType, _MappedType>;
+        using key_type        = KeyType;
+        using Mapped_type     = MappedType;
+        using value_type      = std::pair<KeyType, MappedType>;
         
-        using key_compare     = _Compare;
+        using key_compare     = Compare;
         using value_comapre   = typename node_type::value_compare;
 
-        using reference       = std::pair<_KeyType, _MappedType>&;
-        using const_reference = const std::pair<_KeyType, _MappedType>&;
+        using reference       = std::pair<KeyType, MappedType>&;
+        using const_reference = const std::pair<KeyType, MappedType>&;
 
         using base_type::pRootNode;
-        using base_type::numberOfNodes;
+        using base_type::nodesSize;
         
         constexpr pair_binary_search_tree_root_node() noexcept : base_type{} {}
 
-        constexpr pair_binary_search_tree_root_node(const pair_binary_search_tree_root_node& _Other) noexcept :
-            base_type{ _Other } {}
+        constexpr pair_binary_search_tree_root_node(const pair_binary_search_tree_root_node& other) noexcept :
+            base_type{ other } {}
 
-        constexpr pair_binary_search_tree_root_node(pair_binary_search_tree_root_node&& _Other) noexcept :
-            base_type{ std::move(_Other) } {}
+        constexpr pair_binary_search_tree_root_node(pair_binary_search_tree_root_node&& other) noexcept :
+            base_type{ std::move(other) } {}
 
-        constexpr pair_binary_search_tree_root_node& operator=(const pair_binary_search_tree_root_node& _Other) noexcept {
-            base_type::operator=(_Other);
+        constexpr pair_binary_search_tree_root_node& operator=(const pair_binary_search_tree_root_node& other) noexcept {
+            base_type::operator=(other);
             return *this;
         }
 
-        constexpr pair_binary_search_tree_root_node& operator=(pair_binary_search_tree_root_node&& _Other) noexcept {
-            base_type::operator=(std::move(_Other));
+        constexpr pair_binary_search_tree_root_node& operator=(pair_binary_search_tree_root_node&& other) noexcept {
+            base_type::operator=(std::move(other));
             return *this;
         }
         
-        constexpr node_pointer& find(const key_type& _Key) noexcept {
-            return find(_Key, *this);
+        constexpr node_pointer& find(const key_type& key) noexcept {
+            return find(key, *this);
         }
         
-        constexpr const node_pointer& find(const key_type& _Key) const noexcept {
-            return find(_Key, *this);
+        constexpr const node_pointer& find(const key_type& key) const noexcept {
+            return find(key, *this);
         }
 
-        constexpr static node_pointer& find(const key_type& _Key, pair_binary_search_tree_root_node& _RootNode) noexcept {
-            return find(_Key, _RootNode.pRootNode);
+        constexpr static node_pointer& find(const key_type& key, pair_binary_search_tree_root_node& rootNode) noexcept {
+            return find(key, rootNode.pRootNode);
         }
 
-        constexpr static const node_pointer& find(const key_type& _Key, const pair_binary_search_tree_root_node& _RootNode) noexcept {
-            return find(_Key, _RootNode.pRootNode);
+        constexpr static const node_pointer& find(const key_type& key, const pair_binary_search_tree_root_node& rootNode) noexcept {
+            return find(key, rootNode.pRootNode);
         }
 
-        constexpr static node_pointer& find(const key_type& _Key, node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(find(_Key, static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& find(const key_type& key, node_pointer& pRootNode) noexcept {
+            return const_cast<node_pointer&>(find(key, static_cast<const node_pointer&>(pRootNode)));
         }
 
-        constexpr static const node_pointer& find(const key_type& _Key, const node_pointer& _PRootNode) noexcept {
-            const node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& find(const key_type& key, const node_pointer& pRootNode) noexcept {
+            const node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
-                if (**result > _Key) {
+                if (**result > key) {
                     result = &(*result)->left();
-                } else if (**result < _Key) {
+                } else if (**result < key) {
                     result = &(*result)->right();
                 } else {
                     break;
@@ -1254,41 +1345,53 @@ export namespace mylib {
         }
 
         // if not found, return nullptr
-        constexpr node_pointer& floor(const key_type& _FindValue) noexcept {
-            return floor(_FindValue, *this);
+        constexpr node_pointer& floor(const key_type& value) noexcept {
+            return floor(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr const node_pointer& floor(const key_type& _FindValue) const noexcept {
-            return floor(_FindValue, *this);
+        constexpr const node_pointer& floor(const key_type& value) const noexcept {
+            return floor(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& floor(const key_type& _FindValue, pair_binary_search_tree_root_node& _RootNode) noexcept {
-            return floor(_FindValue, _RootNode.root());
+        constexpr static node_pointer& floor(
+            const key_type& value, pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return floor(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& floor(const key_type& _FindValue, const pair_binary_search_tree_root_node& _RootNode) noexcept {
-            return floor(_FindValue, _RootNode.root());
+        constexpr static const node_pointer& floor(
+            const key_type& value, const pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return floor(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& floor(const key_type& _FindValue, node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(floor(_FindValue, static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& floor(
+            const key_type& value, node_pointer& pRootNode
+        ) noexcept {
+            
+            return const_cast<node_pointer&>(floor(value, static_cast<const node_pointer&>(pRootNode)));
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& floor(const key_type& _FindValue, const node_pointer& _PRootNode) noexcept {
-            node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& floor(
+            const key_type& value, const node_pointer& pRootNode
+        ) noexcept {
+            
+            node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
-                if (**result > _FindValue) {
+                if (**result > value) {
                     result = &(*result)->left();
-                } else if (**result == _FindValue) {
+                } else if (**result == value) {
                     break;
                 } else {
-                    node_pointer* subFloor = &floor(_FindValue, (*result)->right());
+                    node_pointer* subFloor = &floor(value, (*result)->right());
                     if (*subFloor == nullptr) {
                         break;
                     } else if (**subFloor > **result) {
@@ -1303,41 +1406,53 @@ export namespace mylib {
         }
 
         // if not found, return nullptr
-        constexpr node_pointer& ceil(const key_type& _FindValue) noexcept {
-            return ceil(_FindValue, *this);
+        constexpr node_pointer& ceil(const key_type& value) noexcept {
+            return ceil(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr const node_pointer& ceil(const key_type& _FindValue) const noexcept {
-            return ceil(_FindValue, *this);
+        constexpr const node_pointer& ceil(const key_type& value) const noexcept {
+            return ceil(value, *this);
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& ceil(const key_type& _FindValue, pair_binary_search_tree_root_node& _RootNode) noexcept {
-            return ceil(_FindValue, _RootNode.root());
+        constexpr static node_pointer& ceil(
+            const key_type& value, pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return ceil(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& ceil(const key_type& _FindValue, const pair_binary_search_tree_root_node& _RootNode) noexcept {
-            return ceil(_FindValue, _RootNode.root());
+        constexpr static const node_pointer& ceil(
+            const key_type& value, const pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            return ceil(value, rootNode.root());
         }
 
         // if not found, return nullptr
-        constexpr static node_pointer& ceil(const key_type& _FindValue, node_pointer& _PRootNode) noexcept {
-            return const_cast<node_pointer&>(ceil(_FindValue, static_cast<const node_pointer&>(_PRootNode)));
+        constexpr static node_pointer& ceil(
+            const key_type& value, node_pointer& pRootNode
+        ) noexcept {
+            
+            return const_cast<node_pointer&>(ceil(value, static_cast<const node_pointer&>(pRootNode)));
         }
 
         // if not found, return nullptr
-        constexpr static const node_pointer& ceil(const key_type& _FindValue, const node_pointer& _PRootNode) noexcept {
-            const node_pointer* result = &_PRootNode;
+        constexpr static const node_pointer& ceil(
+            const key_type& value, const node_pointer& pRootNode
+        ) noexcept {
+            
+            const node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
-                if (**result < _FindValue) {
+                if (**result < value) {
                     result = &(*result)->right();
-                } else if (**result == _FindValue) {
+                } else if (**result == value) {
                     break;
                 } else {
-                    const node_pointer* subFloor = ceil(_FindValue, result->left());
+                    const node_pointer* subFloor = ceil(value, result->left());
                     if (*subFloor == nullptr) {
                         break;
                     } else if (**subFloor < **result) {
@@ -1351,39 +1466,44 @@ export namespace mylib {
             return *result;
         }
         
-        // if existed value equal to _FindValue, replace it
-        constexpr node_pointer& insert_replace(const value_type& _InsertValue) noexcept {
-            return insert_replace(_InsertValue, *this);
+        // if existed value equal to value, replace it
+        constexpr node_pointer& insert_replace(const value_type& value) noexcept {
+            return insert_replace(value, *this);
         }
 
-        // if existed value equal to _FindValue, replace it
-        constexpr node_pointer& insert_replace(value_type&& _InsertValue) noexcept {
-            return insert_replace(std::move(_InsertValue), *this);
+        // if existed value equal to value, replace it
+        constexpr node_pointer& insert_replace(value_type&& value) noexcept {
+            return insert_replace(std::move(value), *this);
         }
 
-        // if existed value equal to _FindValue, replace it
-        constexpr static node_pointer& insert_replace(const value_type& _InsertValue, pair_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, replace it
+        constexpr static node_pointer& insert_replace(
+            const value_type& value, pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(_InsertValue);
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(value);
+                ++rootNode.nodesSize;
             } else {
-                insertWhere->mapped() = _InsertValue.first;
-                ::delete _InsertValue;
+                insertWhere->mapped() = value.first;
+                ::delete value;
             }
 
             return insertWhere;
         }
 
-        // if existed value equal to _FindValue, replace it
-        constexpr static node_pointer& insert_replace(value_type&& _InsertValue, pair_binary_search_tree_root_node& _RootNode) noexcept {
-            node_pointer& insertWhere = find(_InsertValue, _RootNode);
+        // if existed value equal to value, replace it
+        constexpr static node_pointer& insert_replace(
+            value_type&& value, pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
+            
+            node_pointer& insertWhere = find(value, rootNode);
             if (insertWhere == nullptr) {
-                insertWhere = new node_type(std::move(_InsertValue));
-                ++_RootNode.numberOfNodes;
+                insertWhere = new node_type(std::move(value));
+                ++rootNode.nodesSize;
             } else {
-                insertWhere->mapped() = std::move(_InsertValue.first);
-                ::delete _InsertValue;
+                insertWhere->mapped() = std::move(value.first);
+                ::delete value;
             }
 
             return insertWhere;
@@ -1391,16 +1511,16 @@ export namespace mylib {
     };
     
     template<
-        typename _KeyType,
-        typename _Allocator    = std::allocator  <_KeyType>,
-        typename _RootNodeType = key_binary_tree_root_node<_KeyType, _Allocator>
+        typename KeyType,
+        typename Allocator    = std::allocator  <KeyType>,
+        typename _RootNodeType = key_binary_tree_root_node<KeyType, Allocator>
     >
     class base_key_binary_tree {
     public:
-        using key_type        = _KeyType;
+        using key_type        = KeyType;
         using value_type      = key_type;
 
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
         using node_type       = typename _RootNodeType::node_type;
 
@@ -1408,7 +1528,7 @@ export namespace mylib {
 
         using root_node_type  = _RootNodeType;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
@@ -1417,17 +1537,19 @@ export namespace mylib {
 
         constexpr base_key_binary_tree() noexcept : rootNode{} {}
 
-        constexpr base_key_binary_tree(const base_key_binary_tree& _Other) noexcept : rootNode{ _Other.rootNode } {}
+        constexpr base_key_binary_tree(const base_key_binary_tree& other) noexcept : 
+            rootNode{ other.rootNode } {}
 
-        constexpr base_key_binary_tree(base_key_binary_tree&& _Other) noexcept : rootNode{ std::move(_Other.rootNode) } {}
+        constexpr base_key_binary_tree(base_key_binary_tree&& other) noexcept : 
+            rootNode{ std::move(other.rootNode) } {}
 
-        constexpr base_key_binary_tree& operator=(const base_key_binary_tree& _Other) noexcept {
-            rootNode = _Other.rootNode;
+        constexpr base_key_binary_tree& operator=(const base_key_binary_tree& other) noexcept {
+            rootNode = other.rootNode;
             return *this;
         }
 
-        constexpr base_key_binary_tree& operator=(base_key_binary_tree&& _Other) noexcept {
-            rootNode = std::move(_Other.rootNode);
+        constexpr base_key_binary_tree& operator=(base_key_binary_tree&& other) noexcept {
+            rootNode = std::move(other.rootNode);
             return *this;
         }
 
@@ -1447,14 +1569,18 @@ export namespace mylib {
             return rootNode.depth();
         }
 
-        constexpr void draw_tree(char _NodeChar = 'O', char _EmptyChar = 'X', char _MidLineChar = ' ', std::ostream& _Os = std::cout) noexcept {
-            rootNode.draw_tree(_NodeChar, _EmptyChar, _MidLineChar, _Os);
+        constexpr void draw_tree(
+            char nodeChar = 'O', char emptyChar = 'X', char middleLineChar = ' ', 
+            std::ostream& os = std::cout
+        ) noexcept {
+            
+            rootNode.draw_tree(nodeChar, emptyChar, middleLineChar, os);
         }
 
         // char type specific draw_tree reload
-        constexpr void draw_tree(char _EmptyChar = ' ', std::ostream& _Os = std::cout) noexcept
-            requires std::is_same_v<_KeyType, char> {
-            rootNode.draw_tree(_EmptyChar, _Os);
+        constexpr void draw_tree(char emptyChar = ' ', std::ostream& os = std::cout) noexcept
+            requires std::is_same_v<KeyType, char> {
+            rootNode.draw_tree(emptyChar, os);
         }
 
         constexpr size_type size() const noexcept {
@@ -1462,102 +1588,102 @@ export namespace mylib {
         }
 
     private:
-        template<typename _KeyType, typename _MappedType, typename _Allocator, typename _RootNodeType>
+        template<typename KeyType, typename MappedType, typename Allocator, typename _RootNodeType>
         friend class base_pair_binary_tree;
 
         root_node_type rootNode;
 
         // char type specific draw_tree reload
-        constexpr node_pointer insert_by_string(std::string_view _InitialString, size_t& _Index) noexcept
-            requires std::is_same_v<_KeyType, char> {
+        constexpr node_pointer insert_by_string(std::string_view initialString, size_t& index) noexcept
+            requires std::is_same_v<KeyType, char> {
 
-            if (_Index >= _InitialString.size() || _InitialString[_Index] == '#') {
+            if (index >= initialString.size() || initialString[index] == '#') {
                 return nullptr;
             } else {
-                ++rootNode.numberOfNodes;
-                node_pointer result = new node_type{ _InitialString[_Index], nullptr, nullptr };
-                result->left()      = insert_by_string(_InitialString, ++_Index);
-                result->right()     = insert_by_string(_InitialString, ++_Index);
+                ++rootNode.nodesSize;
+                node_pointer result = new node_type{ initialString[index], nullptr, nullptr };
+                result->left()      = insert_by_string(initialString, ++index);
+                result->right()     = insert_by_string(initialString, ++index);
                 return result;
             }
         }
 
     public:
         // char type specific draw_tree reload
-        constexpr base_key_binary_tree(std::string_view _InitialString) noexcept
-            requires std::is_same_v<_KeyType, char> {
+        constexpr base_key_binary_tree(std::string_view initialString) noexcept
+            requires std::is_same_v<KeyType, char> {
             size_t index = 0;
-            rootNode.pRootNode = insert_by_string(_InitialString, index);
+            rootNode.pRootNode = insert_by_string(initialString, index);
         }
 
-        template<typename _KeyType, typename _Compare, typename _Allocator, typename _RootNodeType>
+        template<typename KeyType, typename Compare, typename Allocator, typename _RootNodeType>
         friend class base_key_binary_search_tree;
     };
 
     template<
-        typename _KeyType,
-        typename _MappedType,
-        typename _Allocator    = std::allocator<_KeyType>,
-        typename _RootNodeType = pair_binary_tree_root_node<_KeyType, _MappedType, _Allocator>
+        typename KeyType,
+        typename MappedType,
+        typename Allocator    = std::allocator<KeyType>,
+        typename _RootNodeType = pair_binary_tree_root_node<KeyType, MappedType, Allocator>
     >
     class base_pair_binary_tree :
-        public base_key_binary_tree<std::pair<_KeyType, _MappedType>, _Allocator, _RootNodeType> {
+        public base_key_binary_tree<std::pair<KeyType, MappedType>, Allocator, _RootNodeType> {
 
     public:
-        using key_type        = _KeyType;
-        using mapped_type     = _MappedType;
+        using key_type        = KeyType;
+        using mapped_type     = MappedType;
         using value_type      = std::pair<key_type, mapped_type>;
 
         using node_type       = typename _RootNodeType::node_type;
 
         using node_pointer    = node_type*;
 
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
         using root_node_type  = _RootNodeType;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
         using const_reference = const value_type&;
 
-        using base_type       = base_key_binary_tree<std::pair<_KeyType, _MappedType>, _Allocator, _RootNodeType>;
+        using base_type       = base_key_binary_tree<std::pair<KeyType, MappedType>, Allocator, _RootNodeType>;
 
         constexpr base_pair_binary_tree() : base_type{} {}
 
-        constexpr base_pair_binary_tree(const base_pair_binary_tree& _Other) : base_type{ _Other } {}
+        constexpr base_pair_binary_tree(const base_pair_binary_tree& other) : base_type{ other } {}
 
-        constexpr base_pair_binary_tree(base_pair_binary_tree&& _Other) : base_type{ std::move(_Other) } {}
+        constexpr base_pair_binary_tree(base_pair_binary_tree&& other) : base_type{ std::move(other) } {}
 
-        constexpr base_pair_binary_tree& operator=(const base_pair_binary_tree& _Other) {
-            return base_type::operator =(_Other);
+        constexpr base_pair_binary_tree& operator=(const base_pair_binary_tree& other) {
+            return base_type::operator =(other);
         }
 
-        constexpr base_pair_binary_tree& operator=(base_pair_binary_tree&& _Other) {
-            return base_type::operator =(std::move(_Other));
+        constexpr base_pair_binary_tree& operator=(base_pair_binary_tree&& other) {
+            return base_type::operator =(std::move(other));
         }
     };
 
     template<
-        typename _KeyType                                   ,
-        typename _Compare       = std::less       <_KeyType>,
-        typename _Allocator     = std::allocator  <_KeyType>,
-        typename _RootNodeType  = key_binary_search_tree_root_node<_KeyType, _Compare, _Allocator>
+        typename KeyType                                   ,
+        typename Compare       = std::less       <KeyType>,
+        typename Allocator     = std::allocator  <KeyType>,
+        typename _RootNodeType  = key_binary_search_tree_root_node<KeyType, Compare, Allocator>
     >
     class base_key_binary_search_tree :
-        public base_key_binary_tree<_KeyType, _Allocator, _RootNodeType> {
+        public base_key_binary_tree<KeyType, Allocator, _RootNodeType> {
 
     public:
-        using base_type       = base_key_binary_tree<_KeyType, _Allocator, _RootNodeType>;
+        using base_type       = base_key_binary_tree<KeyType, Allocator, _RootNodeType>;
 
-        using key_type        = _KeyType;
+        using key_type        = KeyType;
         using value_type      = key_type;
 
-        using key_compare     = _Compare;
+        using key_compare     = Compare;
         using value_compare   = key_compare;
 
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
         using node_type       = typename _RootNodeType::node_type;
 
@@ -1565,7 +1691,7 @@ export namespace mylib {
         
         using root_node_type  = _RootNodeType;
         
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
 
@@ -1575,76 +1701,76 @@ export namespace mylib {
 
         constexpr base_key_binary_search_tree() noexcept : base_type{} {}
 
-        constexpr base_key_binary_search_tree(const base_key_binary_search_tree& _Other) noexcept : base_type{ _Other } {}
+        constexpr base_key_binary_search_tree(const base_key_binary_search_tree& other) noexcept : base_type{ other } {}
 
-        constexpr base_key_binary_search_tree(base_key_binary_search_tree&& _Other) noexcept : base_type{ std::move(_Other) } {}
+        constexpr base_key_binary_search_tree(base_key_binary_search_tree&& other) noexcept : base_type{ std::move(other) } {}
 
-        constexpr base_key_binary_search_tree(std::initializer_list<_KeyType> _InitializerList) noexcept : base_type{} {
+        constexpr base_key_binary_search_tree(std::initializer_list<KeyType> _InitializerList) noexcept : base_type{} {
             for (const auto& value : _InitializerList) {
                 insert_unique(value);
             }
         }
         
-        constexpr base_key_binary_search_tree& operator=(const base_key_binary_search_tree& _Other) noexcept {
-            return base_type::operator =(_Other);
+        constexpr base_key_binary_search_tree& operator=(const base_key_binary_search_tree& other) noexcept {
+            return base_type::operator =(other);
         }
 
-        constexpr base_key_binary_search_tree& operator=(base_key_binary_search_tree&& _Other) noexcept {
-            return base_type::operator =(std::move(_Other));
+        constexpr base_key_binary_search_tree& operator=(base_key_binary_search_tree&& other) noexcept {
+            return base_type::operator =(std::move(other));
         }
 
             
         // TODO: following methon return value change to iterator
-        constexpr node_pointer& find(const value_type& _FindValue) noexcept {
-            return rootNode.find(_FindValue);
+        constexpr node_pointer& find(const value_type& value) noexcept {
+            return rootNode.find(value);
         }
 
-        constexpr const node_pointer& find(const value_type& _FindValue) const noexcept {
-            return rootNode.find(_FindValue);
+        constexpr const node_pointer& find(const value_type& value) const noexcept {
+            return rootNode.find(value);
         }
 
-        constexpr node_pointer& floor(const value_type& _FindValue) noexcept {
-            return rootNode.floor(_FindValue);
+        constexpr node_pointer& floor(const value_type& value) noexcept {
+            return rootNode.floor(value);
         }
 
-        constexpr const node_pointer& floor(const value_type& _FindValue) const noexcept {
-            return rootNode.floor(_FindValue);
+        constexpr const node_pointer& floor(const value_type& value) const noexcept {
+            return rootNode.floor(value);
         }
         
-        constexpr node_pointer& ceil(const value_type& _FindValue) noexcept {
-            return rootNode.ceil(_FindValue);
+        constexpr node_pointer& ceil(const value_type& value) noexcept {
+            return rootNode.ceil(value);
         }
         
-        constexpr const node_pointer& celi(const value_type& _FindValue) const noexcept {
-            return rootNode.ceil(_FindValue);
+        constexpr const node_pointer& celi(const value_type& value) const noexcept {
+            return rootNode.ceil(value);
         }
             
-        constexpr node_pointer& insert_unique(const value_type& _InsertValue) noexcept {
-            return rootNode.insert_unique(_InsertValue);
+        constexpr node_pointer& insert_unique(const value_type& value) noexcept {
+            return rootNode.insert_unique(value);
         }
 
-        constexpr node_pointer& insert_unique(value_type&& _InsertValue) noexcept {
-            return rootNode.insert_unique(std::move(_InsertValue));
+        constexpr node_pointer& insert_unique(value_type&& value) noexcept {
+            return rootNode.insert_unique(std::move(value));
         }
 
-        constexpr node_pointer& insert_replace(const value_type& _InsertValue) noexcept {
-            return rootNode.insert_replace(_InsertValue);
+        constexpr node_pointer& insert_replace(const value_type& value) noexcept {
+            return rootNode.insert_replace(value);
         }
 
-        constexpr node_pointer& insert_replace(value_type&& _InsertValue) noexcept {
-            return rootNode.insert_replace(std::move(_InsertValue));
+        constexpr node_pointer& insert_replace(value_type&& value) noexcept {
+            return rootNode.insert_replace(std::move(value));
         }
         
-        constexpr node_pointer& insert_equal(const value_type& _InsertValue) noexcept {
-            return rootNode.insert_equal(_InsertValue);
+        constexpr node_pointer& insert_equal(const value_type& value) noexcept {
+            return rootNode.insert_equal(value);
         }
 
-        constexpr node_pointer& insert_equal(value_type&& _InsertValue) noexcept {
-            return rootNode.insert_equal(std::move(_InsertValue));
+        constexpr node_pointer& insert_equal(value_type&& value) noexcept {
+            return rootNode.insert_equal(std::move(value));
         }
 
-        constexpr node_pointer& erase(node_pointer& _Where) noexcept {
-            return rootNode.erase(_Where);
+        constexpr node_pointer& erase(node_pointer& where) noexcept {
+            return rootNode.erase(where);
         }
 
         constexpr std::vector<value_type> to_vector() noexcept {
@@ -1655,14 +1781,14 @@ export namespace mylib {
             return rootNode.depth();
         }
 
-        constexpr void draw_tree(char _NodeChar = 'O', char _EmptyChar = 'X', char _MidLineChar = ' ', std::ostream& _Os = std::cout) noexcept {
-            rootNode.draw_tree(_NodeChar, _EmptyChar, _MidLineChar, _Os);
+        constexpr void draw_tree(char nodeChar = 'O', char emptyChar = 'X', char middleLineChar = ' ', std::ostream& os = std::cout) noexcept {
+            rootNode.draw_tree(nodeChar, emptyChar, middleLineChar, os);
         }
 
         // char type specific draw_tree reload
-        constexpr void draw_tree(char _EmptyChar = ' ', std::ostream & _Os = std::cout) noexcept
-                requires std::is_same_v<_KeyType, char> {
-            rootNode.draw_tree(_EmptyChar, _Os);
+        constexpr void draw_tree(char emptyChar = ' ', std::ostream & os = std::cout) noexcept
+                requires std::is_same_v<KeyType, char> {
+            rootNode.draw_tree(emptyChar, os);
         }
 
         constexpr size_type size() const noexcept {
@@ -1670,93 +1796,93 @@ export namespace mylib {
         }
 
     private:
-        template<typename _KeyType, typename _MappedType, typename _Compare, typename _Allocator, typename _RootNodeType>
+        template<typename KeyType, typename MappedType, typename Compare, typename Allocator, typename _RootNodeType>
         friend class base_pair_binary_search_tree;
 
     public:
         // char type specific draw_tree reload
-        constexpr base_key_binary_search_tree(std::string_view _InitialString) noexcept
-                requires std::is_same_v<_KeyType, char> : base_type{ _InitialString } {}
+        constexpr base_key_binary_search_tree(std::string_view initialString) noexcept
+                requires std::is_same_v<KeyType, char> : base_type{ initialString } {}
     };
 
     template<
-        typename _KeyType                                   ,
-        typename _MappedType                                ,
-        typename _Compare       = std::less       <_KeyType>,
-        typename _Allocator     = std::allocator  <_KeyType>,
-        typename _RootNodeType  = pair_binary_search_tree_root_node<_KeyType, _MappedType, _Compare, _Allocator>
+        typename KeyType                                   ,
+        typename MappedType                                ,
+        typename Compare       = std::less       <KeyType>,
+        typename Allocator     = std::allocator  <KeyType>,
+        typename _RootNodeType  = pair_binary_search_tree_root_node<KeyType, MappedType, Compare, Allocator>
     >
     class base_pair_binary_search_tree : 
-        public base_key_binary_search_tree<std::pair<_KeyType, _MappedType>, _Compare, _Allocator, _RootNodeType> {
+        public base_key_binary_search_tree<std::pair<KeyType, MappedType>, Compare, Allocator, _RootNodeType> {
         
     public:
-        using key_type          = _KeyType;
-        using mapped_type       = _MappedType;
+        using key_type          = KeyType;
+        using mapped_type       = MappedType;
         using value_type        = std::pair<key_type, mapped_type>;
 
         using node_type         = typename _RootNodeType::node_type;
 
         using node_pointer      = node_type*;
         
-        using key_compare       = _Compare;
+        using key_compare       = Compare;
         using value_compare     = typename _RootNodeType::value_compare;
 
-        using size_type         = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type         = typename std::allocator_traits<Allocator>::size_type;
 
         using root_node_type    = _RootNodeType;
 
-        using allocator_type    = _Allocator;
+        using allocator_type    = Allocator;
 
         using reference         = value_type&;
 
         using const_reference   = const value_type&;
         
-        using base_type         = base_key_binary_search_tree<std::pair<_KeyType, _MappedType>, _Compare, _Allocator, _RootNodeType>;
+        using base_type         = base_key_binary_search_tree<std::pair<KeyType, MappedType>, Compare, Allocator, _RootNodeType>;
         
         constexpr base_pair_binary_search_tree() : base_type{} {}
 
-        constexpr base_pair_binary_search_tree(const base_pair_binary_search_tree& _Other) : base_type{ _Other } {}
+        constexpr base_pair_binary_search_tree(const base_pair_binary_search_tree& other) : base_type{ other } {}
 
-        constexpr base_pair_binary_search_tree(base_pair_binary_search_tree&& _Other) : base_type{ std::move(_Other) } {}
+        constexpr base_pair_binary_search_tree(base_pair_binary_search_tree&& other) : base_type{ std::move(other) } {}
 
-        constexpr base_pair_binary_search_tree(std::initializer_list<std::pair<_KeyType, _MappedType>> _InitializerList) noexcept {
+        constexpr base_pair_binary_search_tree(std::initializer_list<std::pair<KeyType, MappedType>> _InitializerList) noexcept {
             for (auto& value : _InitializerList) {
                 this->insert_unique(value);
             }
         }
         
-        constexpr base_pair_binary_search_tree& operator=(const base_pair_binary_search_tree& _Other) {
-            base_type::operator=(_Other);
+        constexpr base_pair_binary_search_tree& operator=(const base_pair_binary_search_tree& other) {
+            base_type::operator=(other);
             return *this;
         }
 
-        constexpr base_pair_binary_search_tree& operator=(base_pair_binary_search_tree&& _Other) {
-            base_type::operator=(std::move(_Other));
+        constexpr base_pair_binary_search_tree& operator=(base_pair_binary_search_tree&& other) {
+            base_type::operator=(std::move(other));
             return *this;
         }
         
-        constexpr node_pointer& find(const key_type& _Key) noexcept {
-            return this->rootNode.find(_Key);
+        constexpr node_pointer& find(const key_type& key) noexcept {
+            return this->rootNode.find(key);
         }
 
-        constexpr const node_pointer& find(const key_type& _Key) const noexcept {
-            return this->rootNode.find(_Key);
+        constexpr const node_pointer& find(const key_type& key) const noexcept {
+            return this->rootNode.find(key);
         }
         
-        constexpr node_pointer& floor(const key_type& _Key) noexcept {
-            return this->rootNode.floor(_Key);
+        constexpr node_pointer& floor(const key_type& key) noexcept {
+            return this->rootNode.floor(key);
         }
 
-        constexpr const node_pointer& floor(const key_type& _Key) const noexcept {
-            return this->rootNode.floor(_Key);
+        constexpr const node_pointer& floor(const key_type& key) const noexcept {
+            return this->rootNode.floor(key);
         }
 
-        constexpr node_pointer& ceil(const key_type& _Key) noexcept {
-            return this->rootNode.ceil(_Key);
+        constexpr node_pointer& ceil(const key_type& key) noexcept {
+            return this->rootNode.ceil(key);
         }
 
-        constexpr const node_pointer& ceil(const key_type& _Key) const noexcept {
-            return this->rootNode.ceil(_Key);
+        constexpr const node_pointer& ceil(const key_type& key) const noexcept {
+            return this->rootNode.ceil(key);
         }
     };
 }

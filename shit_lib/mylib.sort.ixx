@@ -6,61 +6,61 @@ import mylib.algorithm;
 
 export namespace mylib::inline sort {
 
-    template<typename _BidirectionalIterator, typename _Predicate>
-    constexpr void bubble_sort(_BidirectionalIterator _First, _BidirectionalIterator _Last, _Predicate _Pred) noexcept {
-        for (auto i = _Last; i != _First; --i) {
-            for (auto j = _First; j != i;) {
+    template<typename BidirectionalIterator, typename Predicate>
+    constexpr void bubble_sort(BidirectionalIterator first, BidirectionalIterator last, Predicate pred) noexcept {
+        for (auto i = last; i != first; --i) {
+            for (auto j = first; j != i;) {
                 auto temp = j;
-                if (_Pred(*++j, *temp)) {
+                if (pred(*++j, *temp)) {
                     std::swap(*j, *temp);
                 }
             }
         }
     }
 
-    template<typename _BidirectionalIterator>
-    constexpr void bubble_sort(_BidirectionalIterator _First, _BidirectionalIterator _Last) noexcept {
-        bubble_sort(_First, _Last, std::less<>{});
+    template<typename BidirectionalIterator>
+    constexpr void bubble_sort(BidirectionalIterator first, BidirectionalIterator last) noexcept {
+        bubble_sort(first, last, std::less<>{});
     }
 
-    template<typename _ForwardIterator, typename _Predicate>
-    constexpr void selection_sort(_ForwardIterator _First, _ForwardIterator _Last, _Predicate _Pred) noexcept {
-        for (auto i = _First; i != _Last; ++i) {
-            std::swap(*i, *std::min_element(i, _Last, _Pred));
+    template<typename ForwardIterator, typename Predicate>
+    constexpr void selection_sort(ForwardIterator first, ForwardIterator last, Predicate pred) noexcept {
+        for (auto i = first; i != last; ++i) {
+            std::swap(*i, *std::min_element(i, last, pred));
         }
     }
 
-    template<typename _ForwardIterator>
-    constexpr void selection_sort(_ForwardIterator _First, _ForwardIterator _Last) noexcept {
-        selection_sort(_First, _Last, std::less<>{});
+    template<typename ForwardIterator>
+    constexpr void selection_sort(ForwardIterator first, ForwardIterator last) noexcept {
+        selection_sort(first, last, std::less<>{});
     }
 
-    template<typename _BidirectionalIterator, typename _Predicate>
-    constexpr void insertion_sort(_BidirectionalIterator _First, _BidirectionalIterator _Last, _Predicate _Pred) noexcept {
-        if (_First == _Last) {
+    template<typename BidirectionalIterator, typename Predicate>
+    constexpr void insertion_sort(BidirectionalIterator first, BidirectionalIterator last, Predicate pred) noexcept {
+        if (first == last) {
             return;
         }
 
-        auto i = _First;
-        for (++i; i != _Last; ++i) {
+        auto i = first;
+        for (++i; i != last; ++i) {
             auto current{ std::move(*i) };
             auto temp = i;
             auto j    = i;
-            for (; j != _First && _Pred(current, *--j); temp = j) {
+            for (; j != first && pred(current, *--j); temp = j) {
                 *temp = std::move(*j);
             }
             *temp = std::move(current);
         }
     }
 
-    template<typename _BidirectionalIterator>
-    constexpr void insertion_sort(_BidirectionalIterator _First, _BidirectionalIterator _Last) noexcept {
-        insertion_sort(_First, _Last, std::less<>{});
+    template<typename BidirectionalIterator>
+    constexpr void insertion_sort(BidirectionalIterator first, BidirectionalIterator last) noexcept {
+        insertion_sort(first, last, std::less<>{});
     }
 
-    template<typename _RandomAccessIterator, typename _Predicate>
-    constexpr void shell_sort(_RandomAccessIterator _First, _RandomAccessIterator _Last, _Predicate _Pred) noexcept {
-        const size_t buffSize = _Last - _First;
+    template<typename RandomAccessIterator, typename Predicate>
+    constexpr void shell_sort(RandomAccessIterator first, RandomAccessIterator last, Predicate pred) noexcept {
+        const size_t buffSize = last - first;
         size_t       distance = 1;
 
         while (distance < buffSize / 3) {
@@ -69,43 +69,43 @@ export namespace mylib::inline sort {
 
         while (distance >= 1) {
             for (size_t i = distance; i < buffSize; ++i) {
-                auto current{ std::move(_First[i]) };
+                auto current{ std::move(first[i]) };
                 auto temp = i;
                 auto j    = i;
-                for (; j >= distance && _Pred(current, _First[j -= distance]); temp = j) {
-                    _First[temp] = std::move(_First[j]);
+                for (; j >= distance && pred(current, first[j -= distance]); temp = j) {
+                    first[temp] = std::move(first[j]);
                 }
-                _First[temp] = std::move(current);
+                first[temp] = std::move(current);
             }
             distance /= 3;
         }
     }
 
-    template<typename _RandomAccessIterator>
-    constexpr void shell_sort(_RandomAccessIterator _First, _RandomAccessIterator _Last) noexcept {
-        shell_sort(_First, _Last, std::less<>{});
+    template<typename RandomAccessIterator>
+    constexpr void shell_sort(RandomAccessIterator first, RandomAccessIterator last) noexcept {
+        shell_sort(first, last, std::less<>{});
     }
     
-    template<typename _RandomAccessIterator, typename _Predicate>
-    constexpr void merge_sort(_RandomAccessIterator _First, _RandomAccessIterator _Last, _Predicate _Pred) noexcept {
-        using move_iter1 = std::move_iterator<_RandomAccessIterator>;
+    template<typename RandomAccessIterator, typename Predicate>
+    constexpr void merge_sort(RandomAccessIterator first, RandomAccessIterator last, Predicate pred) noexcept {
+        using move_iter1 = std::move_iterator<RandomAccessIterator>;
 
-        auto first = move_iter1{ _First };
-        auto last  = move_iter1{ _Last  };
+        auto first = move_iter1{ first };
+        auto last  = move_iter1{ last  };
         
         const size_t size = last - first;
-        std::vector<std::iter_value_t<_RandomAccessIterator>> auxiliarySpace(size);
+        std::vector<std::iter_value_t<RandomAccessIterator>> auxiliarySpace(size);
         
         using move_iter2 = std::move_iterator<decltype(auxiliarySpace.begin())>;
 
         for (size_t i = 0; i < size; i += 16) {
-            insertion_sort(_First + i, _First + std::min(i + 16, size), _Pred);
+            insertion_sort(first + i, first + std::min(i + 16, size), pred);
         }
 
         /*
         for (size_t i = 16; i < size; i <<= 1) {
             for (size_t j = 0; j + i < size; j += i + i) {
-                mylib::inplace_merge(_First + j, _First + j + i, _First + std::min(j + i + i, size));
+                mylib::inplace_merge(first + j, first + j + i, first + std::min(j + i + i, size));
             }
         }
         */
@@ -120,7 +120,7 @@ export namespace mylib::inline sort {
                 size_t j = 0;
                 for (; j < limit; j += i + i) {
                     mylib::merge(first + j, first + j + i, first + j + i,
-                        first + std::min(j + i + i, size), buffBegin + j, _Pred);
+                        first + std::min(j + i + i, size), buffBegin + j, pred);
                 }
                 if (j < size) {
                     mylib::copy(first + j, first + size, buffBegin + j);
@@ -129,22 +129,22 @@ export namespace mylib::inline sort {
                 size_t j = 0;
                 for (; j < limit; j += i + i) {
                     mylib::merge(moveBuffBegin + j, moveBuffBegin + j + i, moveBuffBegin + j + i,
-                        moveBuffBegin + std::min(j + i + i, size), _First + j, _Pred);
+                        moveBuffBegin + std::min(j + i + i, size), first + j, pred);
                 }
                 if (j < size) {
-                    mylib::copy(moveBuffBegin + j, moveBuffBegin + size, _First + j);
+                    mylib::copy(moveBuffBegin + j, moveBuffBegin + size, first + j);
                 }
             }
             count++;
         }
          
         if ((count & 1) != 0) {
-            mylib::copy(buffBegin, buffEnd, _First);
+            mylib::copy(buffBegin, buffEnd, first);
         }
     }
 
-    template<typename _RandomAccessIterator>
-    constexpr void merge_sort(_RandomAccessIterator _First, _RandomAccessIterator _Last) noexcept {
-        merge_sort(_First, _Last, std::less<>{});
+    template<typename RandomAccessIterator>
+    constexpr void merge_sort(RandomAccessIterator first, RandomAccessIterator last) noexcept {
+        merge_sort(first, last, std::less<>{});
     }
 }

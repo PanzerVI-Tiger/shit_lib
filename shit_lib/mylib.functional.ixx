@@ -3,293 +3,293 @@ export module mylib.functional;
 
 export namespace mylib::inline functional {
     
-    template<typename _FunctionType>
+    template<typename FunctionType>
     class function {
         
     };
     
-    template<typename _Type = void>
+    template<typename Type = void>
     struct plus {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left + _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left + right;
         }
     };
 
     template<>
     struct plus<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left + _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left + right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct minus {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left - _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left - right;
         }
     };
 
     template<>
     struct minus<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left - _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left - right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct multiplies {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left * _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left * right;
         }
     };
 
     template<>
     struct multiplies<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left * _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left * right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct divides {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left / _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left / right;
         }
     };
 
     template<>
     struct divides<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left / _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left / right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct modulus {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left % _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left % right;
         }
     };
     
     template<>
     struct modulus<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left % _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left % right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct negate {
-        _Type operator()(const _Type& _Left) const noexcept {
-            return -_Left;
+        Type operator()(const Type& left) const noexcept {
+            return -left;
         }
     };
 
     template<>
     struct negate<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left) const noexcept {
-            return -_Left;
+        template<typename Type>
+        Type operator()(const Type& left) const noexcept {
+            return -left;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct equal_to {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left == _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left == right;
         }
     };
 
     template<>
     struct equal_to<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left == _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left == right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct not_equal_to {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left != _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left != right;
         }
     };
 
     template<>
     struct not_equal_to<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left != _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left != right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct greater {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left > _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left > right;
         }
     };
 
     template<>
     struct greater<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left > _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left > right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct less {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left < _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left < right;
         }
     };
 
     template<>
     struct less<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left < _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left < right;
         }
     };
     
-    template<typename _Type = void>
+    template<typename Type = void>
     struct greater_equal {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left >= _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left >= right;
         }
     };
 
     template<>
     struct greater_equal<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left >= _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left >= right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct less_equal {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left <= _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left <= right;
         }
     };
 
     template<>
     struct less_equal<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left <= _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left <= right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct logical_and {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left && _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left && right;
         }
     };
 
     template<>
     struct logical_and<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left && _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left && right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct logical_or {
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left || _Right;
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left || right;
         }
     };
 
     template<>
     struct logical_or<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left || _Right;
+        template<typename Type>
+        bool operator()(const Type& left, const Type& right) const noexcept {
+            return left || right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct logical_not {
-        bool operator()(const _Type& _Left) const noexcept {
-            return !_Left;
+        bool operator()(const Type& left) const noexcept {
+            return !left;
         }
     };
 
     template<>
     struct logical_not<void> {
-        template<typename _Type>
-        bool operator()(const _Type& _Left) const noexcept {
-            return !_Left;
+        template<typename Type>
+        bool operator()(const Type& left) const noexcept {
+            return !left;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct bit_and {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left & _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left & right;
         }
     };
 
     template<>
     struct bit_and<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left & _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left & right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct bit_or {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left | _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left | right;
         }
     };
 
     template<>
     struct bit_or<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left | _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left | right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct bit_xor {
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left ^ _Right;
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left ^ right;
         }
     };
 
     template<>
     struct bit_xor<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left, const _Type& _Right) const noexcept {
-            return _Left ^ _Right;
+        template<typename Type>
+        Type operator()(const Type& left, const Type& right) const noexcept {
+            return left ^ right;
         }
     };
 
-    template<typename _Type = void>
+    template<typename Type = void>
     struct bit_not {
-        _Type operator()(const _Type& _Left) const noexcept {
-            return ~_Left;
+        Type operator()(const Type& left) const noexcept {
+            return ~left;
         }
     };
 
     template<>
     struct bit_not<void> {
-        template<typename _Type>
-        _Type operator()(const _Type& _Left) const noexcept {
-            return ~_Left;
+        template<typename Type>
+        Type operator()(const Type& left) const noexcept {
+            return ~left;
         }
     };
 }

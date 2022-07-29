@@ -6,25 +6,25 @@ import mylib.binary_tree;
 
 export namespace mylib {
      
-    template<typename _IndexType>
-    using edge = std::pair<_IndexType, _IndexType>;
+    template<typename IndexType>
+    using edge = std::pair<IndexType, IndexType>;
     
-    template<typename _ElementType, typename _Allocator = std::allocator<_ElementType>>
+    template<typename ElementType, typename Allocator = std::allocator<ElementType>>
     class am_graph {
     public:
-        using size_type              = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type              = typename std::allocator_traits<Allocator>::size_type;
 
-        using value_type             = _ElementType;
+        using value_type             = ElementType;
 
-        using allocator_type         = _Allocator;
+        using allocator_type         = Allocator;
 
         using reference              = value_type&;
         using const_reference        = const value_type&;
 
-        using difference_type        = typename std::allocator_traits<_Allocator>::difference_type;
+        using difference_type        = typename std::allocator_traits<Allocator>::difference_type;
 
-        using pointer                = typename std::allocator_traits<_Allocator>::pointer;
-        using const_pointer          = typename std::allocator_traits<_Allocator>::const_pointer;
+        using pointer                = typename std::allocator_traits<Allocator>::pointer;
+        using const_pointer          = typename std::allocator_traits<Allocator>::const_pointer;
 
         //using iterator               = deque_iterator<block_type>;
         //using reverse_iterator       = std::reverse_iterator<iterator>;
@@ -59,8 +59,8 @@ export namespace mylib {
         constexpr am_graph() noexcept : edgesMax{ 0 }, edgesSize{ 0 },
             vertexesSize{ 0 }, vertexes{ nullptr }, edgesMatrix{ nullptr } {}
 
-        constexpr am_graph(std::initializer_list<_ElementType> _InitializerList) noexcept :
-                vertexesSize{ _InitializerList.size() }, edgesSize{0} {
+        constexpr am_graph(std::initializer_list<ElementType> initialValueList) noexcept :
+                vertexesSize{ initialValueList.size() }, edgesSize{0} {
 
             // TODO: use taylor expansion to calculate the max number of edges
             vertexesMax       = std::ceil(std::log(vertexesSize) / std::log(1.5));
@@ -68,7 +68,7 @@ export namespace mylib {
             vertexes          = new value_type[vertexesMax];
             edgesMatrix       = new bool[edgesMax]{};
             
-            std::copy(_InitializerList.begin(), _InitializerList.end(), vertexes);
+            std::copy(initialValueList.begin(), initialValueList.end(), vertexes);
         }
         
         constexpr ~am_graph() noexcept {
@@ -84,37 +84,37 @@ export namespace mylib {
             edgesMatrix = nullptr;
         }
 
-        constexpr void insert_edge(size_type _First, size_type _Second) noexcept {
-            edgesMatrix[_First  * vertexesMax + _Second] = true;
-            edgesMatrix[_Second * vertexesMax + _First ] = true;
+        constexpr void insert_edge(size_type first, size_type second) noexcept {
+            edgesMatrix[first  * vertexesMax + second] = true;
+            edgesMatrix[second * vertexesMax + first ] = true;
             ++edgesSize;
         }
 
-        constexpr void insert_edge(edge<size_type> _Edge) noexcept {
-            insert_edge(_Edge.first, _Edge.second);
+        constexpr void insert_edge(edge<size_type> edge) noexcept {
+            insert_edge(edge.first, edge.second);
         }
 
         // return the index of vertex
-        constexpr size_type insert_vertex(const value_type& _Value) noexcept {
+        constexpr size_type insert_vertex(const value_type& value) noexcept {
             extend();
-            vertexes[++vertexesSize] = _Value;
+            vertexes[++vertexesSize] = value;
 
             return vertexesSize;
         }
         
         // return the index of vertex
-        constexpr size_type insert_vertex(value_type&& _Value) noexcept {
+        constexpr size_type insert_vertex(value_type&& value) noexcept {
             extend();
-            vertexes[++vertexesSize] = std::move(_Value);
+            vertexes[++vertexesSize] = std::move(value);
 
             return vertexesSize;
         }
 
-        constexpr std::vector<size_type> adjacent_vertexes(size_t _Index) const noexcept {
+        constexpr std::vector<size_type> adjacent_vertexes(size_t index) const noexcept {
             std::vector<size_type> result;
 
             const size_type vertexesSize = vertexes_size();
-            for (size_type limit = _Index * vertexesSize, i = limit - vertexesSize; i < limit; ++i) {
+            for (size_type limit = index * vertexesSize, i = limit - vertexesSize; i < limit; ++i) {
                 if (edgesMatrix[i]) {
                     result.push_back(i % limit);
                 }
@@ -123,11 +123,11 @@ export namespace mylib {
             return result;
         }
 
-        constexpr size_type degree(size_type _Index) const noexcept {
+        constexpr size_type degree(size_type index) const noexcept {
             size_type result{};
 
             const size_type vertexesSize = vertexes_size();
-            for (size_type limit = _Index * vertexesSize, i = limit - vertexesSize; i < limit; ++i) {
+            for (size_type limit = index * vertexesSize, i = limit - vertexesSize; i < limit; ++i) {
                 if (edgesMatrix[i]) {
                     ++result;
                 }
@@ -165,12 +165,12 @@ export namespace mylib {
             return edgesSize;
         }
 
-        constexpr const value_type& operator [](size_type _Index) const noexcept {
-            return vertexes[_Index];
+        constexpr const value_type& operator [](size_type index) const noexcept {
+            return vertexes[index];
         }
 
-        constexpr value_type& operator [](size_type _Index) noexcept {
-            return vertexes[_Index];
+        constexpr value_type& operator [](size_type index) noexcept {
+            return vertexes[index];
         }
         
     private:
@@ -184,75 +184,75 @@ export namespace mylib {
     };
 
     template<
-        typename _ElementType, 
-        typename _Allocator                       = std::allocator<_ElementType>, 
-        template<typename _ElementType> 
-            class _AdjacencyEdgeContainerTemplate = std::vector
+        typename ElementType, 
+        typename Allocator                       = std::allocator<ElementType>, 
+        template<typename ElementType> 
+            class AdjacencyEdgeContainerTemplate = std::vector
     >
     class al_graph {
     public:
-        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
-        using value_type      = _ElementType;
+        using value_type      = ElementType;
 
-        using allocator_type  = _Allocator;
+        using allocator_type  = Allocator;
 
         using reference       = value_type&;
         using const_reference = const value_type&;
 
-        using difference_type = typename std::allocator_traits<_Allocator>::difference_type;
+        using difference_type = typename std::allocator_traits<Allocator>::difference_type;
 
-        using pointer         = typename std::allocator_traits<_Allocator>::pointer;
-        using const_pointer   = typename std::allocator_traits<_Allocator>::const_pointer;
+        using pointer         = typename std::allocator_traits<Allocator>::pointer;
+        using const_pointer   = typename std::allocator_traits<Allocator>::const_pointer;
 
         struct node {
             size_type                                  index;
-            _ElementType                               value;
-            _AdjacencyEdgeContainerTemplate<size_type> adjacency_node;
+            ElementType                               value;
+            AdjacencyEdgeContainerTemplate<size_type> adjacency_node;
         };
 
         constexpr al_graph() noexcept : edgesSize{}, adjacency_list {} {}
 
-        constexpr al_graph(std::initializer_list<_ElementType> _InitializerList) noexcept :
+        constexpr al_graph(std::initializer_list<ElementType> initialValueList) noexcept :
             edgesSize{}, adjacency_list {} {
             
-            auto iterBegin = _InitializerList.begin();
-            auto iterEnd   = _InitializerList.end();
+            auto iterBegin = initialValueList.begin();
+            auto iterEnd   = initialValueList.end();
             for (size_type i = 0; iterBegin != iterEnd; ++i, ++iterBegin) {
                 adjacency_list.emplace_back(i, *iterBegin);
             }
         }
 
-        constexpr void insert_edge(size_type _First, size_type _Second) noexcept {
-            adjacency_list[_First ].adjacency_node.push_back(_Second);
-            adjacency_list[_Second].adjacency_node.push_back(_First );
+        constexpr void insert_edge(size_type first, size_type second) noexcept {
+            adjacency_list[first ].adjacency_node.push_back(second);
+            adjacency_list[second].adjacency_node.push_back(first );
             ++edgesSize;
         }
 
-        constexpr void insert_edge(edge<size_type> _Edge) noexcept {
-            insert_edge(_Edge.first, _Edge.second);
+        constexpr void insert_edge(edge<size_type> edge) noexcept {
+            insert_edge(edge.first, edge.second);
         }
 
-        constexpr size_type insert_vertex(const value_type& _Value) noexcept {
+        constexpr size_type insert_vertex(const value_type& value) noexcept {
             const size_type result = adjacency_list.size();
-            adjacency_list.emplace_back(result, _Value);
+            adjacency_list.emplace_back(result, value);
 
             return result;
         }
 
-        constexpr size_type insert_vertex(value_type&& _Value) noexcept {
+        constexpr size_type insert_vertex(value_type&& value) noexcept {
             const size_type result = adjacency_list.size();
-            adjacency_list.emplace_back(result, std::move(_Value));
+            adjacency_list.emplace_back(result, std::move(value));
 
             return result;
         }
 
-        constexpr std::vector<size_type> adjacent_vertexes(size_t _Index) const noexcept {
-            return adjacency_list[_Index].adjacency_node;
+        constexpr std::vector<size_type> adjacent_vertexes(size_t index) const noexcept {
+            return adjacency_list[index].adjacency_node;
         }
 
-        constexpr size_type degree(size_type _Index) const noexcept {
-            return adjacency_list[_Index].adjacency_node.size();
+        constexpr size_type degree(size_type index) const noexcept {
+            return adjacency_list[index].adjacency_node.size();
         }
 
         constexpr size_type max_degree() const noexcept {
@@ -284,12 +284,12 @@ export namespace mylib {
             return adjacency_list.size();
         }
 
-        constexpr const value_type& operator [](size_type _Index) const noexcept {
-            return adjacency_list[_Index].value;
+        constexpr const value_type& operator [](size_type index) const noexcept {
+            return adjacency_list[index].value;
         }
 
-        constexpr value_type& operator [](size_type _Index) noexcept {
-            return adjacency_list[_Index].value;
+        constexpr value_type& operator [](size_type index) noexcept {
+            return adjacency_list[index].value;
         }
 
     private:
@@ -298,19 +298,19 @@ export namespace mylib {
     };
 
     template<
-        typename _ElementType, 
-        typename _Allocator = std::allocator<_ElementType>, 
-        typename _BaseGraph = al_graph<_ElementType, _Allocator>
+        typename ElementType, 
+        typename Allocator = std::allocator<ElementType>, 
+        typename BaseGraph = al_graph<ElementType, Allocator>
     >
     class graph {
     public:
-        using base_graph      = _BaseGraph;
+        using base_graph      = BaseGraph;
 
         using allocator_type  = typename base_graph::allocator_type;
 
         using size_type       = typename base_graph::size_type;
 
-        using value_type      = _ElementType;
+        using value_type      = ElementType;
 
         using reference       = typename base_graph::reference;
 
@@ -323,35 +323,35 @@ export namespace mylib {
 
         constexpr graph() : base{} {}
 
-        constexpr graph(const _BaseGraph& _Base) : base{ _Base } {}
+        constexpr graph(const BaseGraph& baseGraph) : base{ baseGraph } {}
 
-        constexpr graph(_BaseGraph&& _Base) : base{ std::move(_Base) } {}
+        constexpr graph(BaseGraph&& baseGraph) : base{ std::move(baseGraph) } {}
 
-        constexpr graph(std::initializer_list<_ElementType> _InitializerList) noexcept :
-            base{ _InitializerList } {}
+        constexpr graph(std::initializer_list<ElementType> initialValueList) noexcept :
+            base{ initialValueList } {}
 
-        constexpr void insert_edge(size_type _First, size_type _Second) noexcept {
-            base.insert_edge(_First, _Second);
+        constexpr void insert_edge(size_type first, size_type second) noexcept {
+            base.insert_edge(first, second);
         }
 
-        constexpr void insert_edge(edge<size_type> _Edge) noexcept {
-            base.insert_edge(_Edge);
+        constexpr void insert_edge(edge<size_type> edge) noexcept {
+            base.insert_edge(edge);
         }
 
-        constexpr size_type insert_vertex(const value_type& _Value) noexcept {
-            return base.insert_vertex(_Value);
+        constexpr size_type insert_vertex(const value_type& value) noexcept {
+            return base.insert_vertex(value);
         }
 
-        constexpr size_type insert_vertex(value_type&& _Value) noexcept {
-            return base.insert_vertex(std::move(_Value));
+        constexpr size_type insert_vertex(value_type&& value) noexcept {
+            return base.insert_vertex(std::move(value));
         }
 
-        constexpr std::vector<size_type> adjacent_vertexes(size_t _Index) const noexcept {
-            return base.adjacent_vertexes(_Index);
+        constexpr std::vector<size_type> adjacent_vertexes(size_t index) const noexcept {
+            return base.adjacent_vertexes(index);
         }
 
-        constexpr size_type degree(size_type _Index) const noexcept {
-            return base.degree(_Index);
+        constexpr size_type degree(size_type index) const noexcept {
+            return base.degree(index);
         }
 
         constexpr size_type max_degree() const noexcept {
@@ -370,77 +370,77 @@ export namespace mylib {
             return base.vertexes_size();
         }
 
-        constexpr const value_type& operator [](size_type _Index) const noexcept {
-            return base[_Index];
+        constexpr const value_type& operator [](size_type index) const noexcept {
+            return base[index];
         }
 
-        constexpr value_type& operator [](size_type _Index) noexcept {
-            return base[_Index];
+        constexpr value_type& operator [](size_type index) noexcept {
+            return base[index];
         }
 
-        constexpr std::vector<size_type> dfs(size_type _Source) const noexcept {
+        constexpr std::vector<size_type> dfs(size_type source) const noexcept {
             const size_type        vertexesSize = vertexes_size();
             bool*                  marked       = new bool[vertexesSize]{};
             std::vector<size_type> result;
 
-            [&result, marked, this](this const auto& self, size_type _S) constexpr -> void {
-                result.push_back(_S);
-                marked[_S] = true;
+            [&result, marked, this](this const auto& self, size_type s) constexpr -> void {
+                result.push_back(s);
+                marked[s] = true;
 
-                for (size_type i : adjacent_vertexes(_S)) {
+                for (size_type i : adjacent_vertexes(s)) {
                     if (!marked[i]) {
                         self(i);
                     }
                 }
-            }(_Source);
+            }(source);
 
             delete[] marked;
 
             return result;
         }
 
-        constexpr void dfs(size_type _Source, std::function<void(value_type&)> _Predicate) noexcept {
+        constexpr void dfs(size_type source, std::function<void(value_type&)> unaryFunc) noexcept {
             const size_type        vertexesSize = vertexes_size();
             bool*                  marked       = new bool[vertexesSize] {};
 
-            [marked, this, _Predicate](this const auto& self, size_type _S) constexpr -> void {
-                _Predicate((*this)[_S]);
-                marked[_S] = true;
+            [marked, this, unaryFunc](this const auto& self, size_type s) constexpr -> void {
+                unaryFunc((*this)[s]);
+                marked[s] = true;
 
-                for (size_type i : adjacent_vertexes(_S)) {
+                for (size_type i : adjacent_vertexes(s)) {
                     if (!marked[i]) {
                         self(i);
                     }
                 }
-            }(_Source);
+            }(source);
 
             delete[] marked;
         }
 
-        constexpr void dfs(size_type _Source, std::function<void(value_type&)> _Predicate) const noexcept {
+        constexpr void dfs(size_type source, std::function<void(value_type&)> unaryFunc) const noexcept {
             const size_type        vertexesSize = vertexes_size();
             bool*                  marked       = new bool[vertexesSize] {};
 
-            [marked, this, _Predicate](this const auto& self, size_type _S) constexpr -> void {
-                _Predicate((*this)[_S]);
-                marked[_S] = true;
+            [marked, this, unaryFunc](this const auto& self, size_type s) constexpr -> void {
+                unaryFunc((*this)[s]);
+                marked[s] = true;
 
-                for (size_type i : adjacent_vertexes(_S)) {
+                for (size_type i : adjacent_vertexes(s)) {
                     if (!marked[i]) {
                         self(i);
                     }
                 }
-            }(_Source);
+            }(source);
 
             delete[] marked;
         }
 
-        constexpr std::vector<size_type> bfs(size_type _Source) const noexcept {
+        constexpr std::vector<size_type> bfs(size_type source) const noexcept {
             const size_type        vertexesSize = vertexes_size();
             bool*                  marked       = new bool[vertexesSize]{};
             std::vector<size_type> result;
             queue<size_type>       next;
-            next.push(_Source);
+            next.push(source);
             
             while (!next.empty()) {
                 const size_type s = next.front();
@@ -461,18 +461,18 @@ export namespace mylib {
             return result;
         }
 
-        constexpr void bfs(size_type _Source, std::function<void(value_type&)> _Predicate) noexcept {
+        constexpr void bfs(size_type source, std::function<void(value_type&)> unaryFunc) noexcept {
             const size_type        vertexesSize = vertexes_size();
             bool*                  marked       = new bool[vertexesSize] {};
             queue<size_type>       next;
-            next.push(_Source);
+            next.push(source);
 
             while (!next.empty()) {
                 const size_type s = next.front();
 
                 next.pop();
                 marked[s] = true;
-                _Predicate((*this)[s]);
+                unaryFunc((*this)[s]);
 
                 for (size_type i : adjacent_vertexes(s)) {
                     if (!marked[i]) {
@@ -484,18 +484,18 @@ export namespace mylib {
             delete[] marked;
         }
 
-        constexpr void bfs(size_type _Source, std::function<void(value_type&)> _Predicate) const noexcept {
+        constexpr void bfs(size_type source, std::function<void(value_type&)> unaryFunc) const noexcept {
             const size_type        vertexesSize = vertexes_size();
             bool*                  marked       = new bool[vertexesSize] {};
             queue<size_type>       next;
-            next.push(_Source);
+            next.push(source);
 
             while (!next.empty()) {
                 const size_type s = next.front();
 
                 next.pop();
                 marked[s] = true;
-                _Predicate((*this)[s]);
+                unaryFunc((*this)[s]);
 
                 for (size_type i : adjacent_vertexes(s)) {
                     if (!marked[i]) {
@@ -507,7 +507,7 @@ export namespace mylib {
             delete[] marked;
         }
 
-        base_key_binary_tree<_ElementType> minimum_spanning_tree(size_type _Source) const noexcept {
+        base_key_binary_tree<ElementType> minimum_spanning_tree(size_type source) const noexcept {
              
         }
         
