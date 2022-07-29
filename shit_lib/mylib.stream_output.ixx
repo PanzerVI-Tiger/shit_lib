@@ -9,10 +9,10 @@ export namespace mylib {
         requires
           (!requires(const Container& c) { // not a string
               c.c_str();
-          })							   &&
+          })                               &&
           (!requires(const Container& c) { // and not a c style string
               printf(c);
-          })						       &&
+          })                               &&
           (!requires(const Container& c) { // ^^ same as above
               wprintf(c);
           })
@@ -64,7 +64,7 @@ export namespace mylib {
 
     template<typename KeyType, typename MappedType, typename Compare, typename Allocator>
     std::ostream& operator <<(
-        std::ostream&											 os, 
+        std::ostream&                                            os, 
         const std::map<KeyType, MappedType, Compare, Allocator>& map
     ) noexcept {
         

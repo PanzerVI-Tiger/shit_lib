@@ -40,7 +40,7 @@ export namespace mylib {
         }
 
     private:
-        FILETIME							     starTime;
+        FILETIME                                 starTime;
         std::function<void(long long _duration)> callback;
     };
 
@@ -61,8 +61,8 @@ export namespace mylib {
         }
     
     private:
-        std::function<void()>				  callback;
-        std::thread							  timerThread;
+        std::function<void()>                 callback;
+        std::thread                           timerThread;
         std::chrono::steady_clock::duration   duration;
     };
 }

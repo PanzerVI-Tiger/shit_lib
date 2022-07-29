@@ -10,13 +10,13 @@ export namespace mylib {
 
     template<typename _ElementType>
     struct head_node {
-        using node_type		= list_node<_ElementType>;
+        using node_type     = list_node<_ElementType>;
         using node_pointer  = node_type*;
 
         constexpr head_node(node_pointer _Prior, node_pointer _Next) noexcept :
             prior{ _Prior }, next{ _Next } {}
 
-        constexpr head_node() noexcept							   = default;
+        constexpr head_node() noexcept                             = default;
         
         constexpr head_node(const head_node&) noexcept             = delete;
             
@@ -55,14 +55,14 @@ export namespace mylib {
 
     template<typename _ListType>
     struct list_const_iterator {
-        using value_type        = typename _ListType::value_type;	
+        using value_type        = typename _ListType::value_type;
         
         using difference_type   = typename _ListType::difference_type;
         
-        using reference		    = typename _ListType::reference;
+        using reference         = typename _ListType::reference;
         using const_reference   = typename _ListType::const_reference;
         
-        using pointer		    = typename _ListType::pointer;
+        using pointer           = typename _ListType::pointer;
         using const_pointer     = typename _ListType::const_pointer;
         
         using iterator_category = std::bidirectional_iterator_tag;
@@ -175,12 +175,12 @@ export namespace mylib {
         
         using difference_type   = typename _ListType::difference_type;
 
-        using reference		    = typename _ListType::reference;
+        using reference         = typename _ListType::reference;
         using const_reference   = typename _ListType::const_reference;
 
-        using pointer		    = typename _ListType::pointer;		
+        using pointer           = typename _ListType::pointer;
         
-        using base_type			= list_const_iterator<_ListType>;
+        using base_type         = list_const_iterator<_ListType>;
         
         using iterator_category = std::bidirectional_iterator_tag;
         
@@ -284,30 +284,30 @@ export namespace mylib {
     template<typename _ElementType, typename _Allocator = std::allocator<_ElementType>>
     class list {
     public:
-        using size_type				 = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type              = typename std::allocator_traits<_Allocator>::size_type;
 
-        using value_type			 = _ElementType;
+        using value_type             = _ElementType;
 
-        using allocator_type		 = _Allocator;
+        using allocator_type         = _Allocator;
 
-        using reference				 = value_type&;
+        using reference              = value_type&;
 
-        using const_reference		 = const value_type&;
+        using const_reference        = const value_type&;
 
-        using difference_type		 = typename std::allocator_traits<_Allocator>::difference_type;
+        using difference_type        = typename std::allocator_traits<_Allocator>::difference_type;
 
-        using pointer				 = typename std::allocator_traits<_Allocator>::pointer;
-        using const_pointer			 = typename std::allocator_traits<_Allocator>::const_pointer;
+        using pointer                = typename std::allocator_traits<_Allocator>::pointer;
+        using const_pointer          = typename std::allocator_traits<_Allocator>::const_pointer;
 
-        using iterator				 = list_iterator<list<value_type, _Allocator>>;
-        using reverse_iterator		 = typename std::reverse_iterator<iterator>;
-        using const_iterator		 = list_const_iterator<list<value_type, _Allocator>>;
+        using iterator               = list_iterator<list<value_type, _Allocator>>;
+        using reverse_iterator       = typename std::reverse_iterator<iterator>;
+        using const_iterator         = list_const_iterator<list<value_type, _Allocator>>;
         using const_reverse_iterator = typename std::reverse_iterator<const_iterator>;
 
-        using node_type				 = list_node<value_type>;
-        using node_pointer			 = node_type*;
-        using const_node_pointer	 = const node_type*;
-        using head_node_type		 = head_node<value_type>;
+        using node_type              = list_node<value_type>;
+        using node_pointer           = node_type*;
+        using const_node_pointer     = const node_type*;
+        using head_node_type         = head_node<value_type>;
 
     public:
         constexpr list() noexcept = default;
@@ -320,14 +320,14 @@ export namespace mylib {
 
         constexpr explicit list(list&& _Right) noexcept {
             if (_Right.size() != 0) {
-                headNode.next		  = _Right.headNode.next;
-                headNode.prior		  = _Right.headNode.prior;
+                headNode.next         = _Right.headNode.next;
+                headNode.prior        = _Right.headNode.prior;
                 headNode.next->prior  = make_list_node_ptr(&headNode);
                 headNode.prior->next  = make_list_node_ptr(&headNode);
-                numOfNode			  = _Right.numOfNode;
+                numOfNode             = _Right.numOfNode;
                 _Right.headNode.next  = make_list_node_ptr(&_Right.headNode);
                 _Right.headNode.prior = make_list_node_ptr(&_Right.headNode);
-                _Right.numOfNode	  = 0;
+                _Right.numOfNode      = 0;
             }
         }
 
@@ -363,48 +363,48 @@ export namespace mylib {
         }
         
         constexpr void swap(list& _Right) noexcept {
-            std::swap(numOfNode,	  _Right.numOfNode);
+            std::swap(numOfNode,      _Right.numOfNode);
             std::swap(headNode.next,  _Right.headNode.next);
             std::swap(headNode.prior, _Right.headNode.prior);
         }
 
         constexpr void push_back(value_type&& _Value) noexcept {
             headNode.prior->next = ::new node_type{ std::move(_Value), headNode.prior, make_list_node_ptr(&headNode) };
-            headNode.prior		 = headNode.prior->next;
+            headNode.prior       = headNode.prior->next;
             numOfNode++;
         }
 
         constexpr void push_back(const value_type& _Value) noexcept {
             headNode.prior->next = ::new node_type{ _Value, headNode.prior, make_list_node_ptr(&headNode) };
-            headNode.prior		 = headNode.prior->next;
+            headNode.prior       = headNode.prior->next;
             numOfNode++;
         }
 
         constexpr void push_front(value_type&& _Value) noexcept {
             headNode.next->prior = ::new node_type{ std::move(_Value), make_list_node_ptr(&headNode), headNode.next };
-            headNode.next		 = headNode.next->prior;
+            headNode.next        = headNode.next->prior;
             numOfNode++;
         }
 
         constexpr void push_front(const value_type& _Value) noexcept {
             headNode.next->prior = ::new node_type{ _Value, make_list_node_ptr(&headNode), headNode.next };
-            headNode.next		 = headNode.next->prior;
+            headNode.next        = headNode.next->prior;
             numOfNode++;
         }
 
         constexpr void pop_back() noexcept {
             numOfNode--;
             headNode.prior->prior->next = &headNode;
-            auto temp					= headNode.prior;
-            headNode.prior				= headNode.prior->prior;
+            auto temp                   = headNode.prior;
+            headNode.prior              = headNode.prior->prior;
             delete temp;
         }
 
         constexpr void pop_front() noexcept {
             numOfNode--;
             headNode.next->next->prior = &headNode;
-            auto temp				   = headNode.next;
-            headNode.next			   = headNode.next->next;
+            auto temp                  = headNode.next;
+            headNode.next              = headNode.next->next;
             delete temp;
         }
 
@@ -418,7 +418,7 @@ export namespace mylib {
 
         constexpr iterator insert(const_iterator _Where, value_type&& _Value) noexcept {
             _Where.pNode->prior->next = ::new node_type{ std::move(_Value), _Where.pNode->prior, _Where.pNode };
-            _Where.pNode->prior		  = _Where.pNode->prior->next;
+            _Where.pNode->prior       = _Where.pNode->prior->next;
             numOfNode++;
 
             return iterator{ _Where.pNode->prior };
@@ -426,7 +426,7 @@ export namespace mylib {
 
         constexpr iterator insert(const_iterator _Where, const value_type& _Value) noexcept {
             _Where.pNode->prior->next = ::new node_type{ _Value, _Where.pNode->prior, _Where.pNode };
-            _Where.pNode->prior		  = _Where.pNode->prior->next;
+            _Where.pNode->prior       = _Where.pNode->prior->next;
             numOfNode++;
 
             return iterator{ _Where.pNode->prior };
@@ -434,7 +434,7 @@ export namespace mylib {
 
         constexpr iterator erase(const_iterator _Where) noexcept {
             numOfNode--;
-            auto const temp			  = _Where.pNode->next;
+            auto const temp           = _Where.pNode->next;
             _Where.pNode->prior->next = _Where.pNode->next;
             _Where.pNode->next->prior = _Where.pNode->prior;
             ::delete _Where.pNode;
@@ -444,7 +444,7 @@ export namespace mylib {
 
         constexpr iterator erase(const_iterator _Frist, const_iterator _Last) noexcept {
             _Frist.pNode->prior->next = _Last.pNode;
-            _Last.pNode->prior		  = _Frist.pNode->prior;
+            _Last.pNode->prior        = _Frist.pNode->prior;
             for (auto i = _Frist; i != _Last; ) {
                 numOfNode--;
                 ::delete (i++).pNode;
@@ -608,7 +608,7 @@ export namespace mylib {
         }
 
     private:
-        size_type	   numOfNode{};
+        size_type      numOfNode{};
         head_node_type headNode { make_list_node_ptr(&headNode), make_list_node_ptr(&headNode) };
     };
 }

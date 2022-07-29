@@ -22,8 +22,8 @@ export namespace mylib::inline numeric {
 
     template<typename InputIterator, typename ValueType, typename BinaryFunction>
     constexpr ValueType accumulate(
-        InputIterator first,		InputIterator  last, 
-        ValueType	  initialValue, BinaryFunction binaryFunc
+        InputIterator first,        InputIterator  last, 
+        ValueType     initialValue, BinaryFunction binaryFunc
     ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
@@ -38,7 +38,7 @@ export namespace mylib::inline numeric {
     template<typename InputIterator, typename ValueType>
     constexpr ValueType accumulate(
         InputIterator first, InputIterator  last,
-        ValueType	  initialValue
+        ValueType     initialValue
     ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
@@ -49,7 +49,7 @@ export namespace mylib::inline numeric {
     // C++17
     template<typename InputIterator, typename ValueType, typename BinaryFunction>
     constexpr ValueType reduce(
-        InputIterator first,	    InputIterator  last,
+        InputIterator first,        InputIterator  last,
         ValueType     initialValue, BinaryFunction binaryFunc
     ) noexcept {
     
@@ -66,7 +66,7 @@ export namespace mylib::inline numeric {
     template<typename InputIterator, typename ValueType>
     constexpr ValueType reduce(
         InputIterator first, InputIterator last,
-        ValueType	  initialValue
+        ValueType     initialValue
     ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
@@ -95,8 +95,8 @@ export namespace mylib::inline numeric {
         
         while (value2 != 0) {
             std::common_type_t<Type1, Type2> temp = value1 % value2;
-            value1								  = std::move(value2);
-            value2								  = std::move(temp);
+            value1                                = std::move(value2);
+            value2                                = std::move(temp);
         }
 
         return value1;

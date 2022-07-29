@@ -3,39 +3,39 @@ export module mylib;
 import std.core;
 
 /*       standard module       */
-//		   algorthim
+//         algorthim
 export import mylib.algorithm;
 
-//		   container
+//         container
 export import mylib.list;
 export import mylib.deque;
 export import mylib.queue;
 export import mylib.stack;
 export import mylib.vector;
 
-//		    iterator
+//          iterator
 export import mylib.iterator;
 
-//		     memory
+//           memory
 export import mylib.memory;
 
-//			 string
+//           string
 export import mylib.string;
 
-//		     utility
-export import mylib.compare;	 // C++20
+//           utility
+export import mylib.compare;     // C++20
 export import mylib.utility;
 export import mylib.functional;
 export import mylib.type_traits; // C++11
 
-//			 numeric
+//           numeric
 export import mylib.numeric;
 
 /*     not standard module     */
-//			algorthm
+//          algorthm
 export import mylib.sort;
 
-//		    container
+//          container
 export import mylib.fixed;
 export import mylib.grade;
 export import mylib.graph;
@@ -45,11 +45,11 @@ export import mylib.binary_tree;
 export import mylib.huffman_tree;
 export import mylib.red_black_tree;
 
-//			   io
+//             io
 export import mylib.stream_output;    // ouput some container to stream
 
-//			 utility
-export import mylib.eval;			  // calculate C's or scheme's style expression
+//           utility
+export import mylib.eval;             // calculate C's or scheme's style expression
 export import mylib.timer;
 export import mylib.container_traits; // traits of mylib container and iterator
 

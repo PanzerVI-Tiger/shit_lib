@@ -21,7 +21,7 @@ export namespace mylib::inline link_list {
     template<typename ValueType>
     struct compressive_pointer {
         using value_type	= ValueType;
-        using pointer		= value_type*;
+        using pointer       = value_type*;
         using const_pointer = const value_type*;
         
         constexpr compressive_pointer(const_pointer pointer) noexcept : 
@@ -36,13 +36,13 @@ export namespace mylib::inline link_list {
             return *this;
         }
         
-        constexpr pointer		get_another(pointer one)	   const noexcept {
+        constexpr pointer       get_another(pointer one)       const noexcept {
             return reinterpret_cast<pointer>(compressedPointer ^ reinterpret_cast<size_t>(one));
         }
 
         constexpr const_pointer get_another(const_pointer one) const noexcept {
             return reinterpret_cast<const_pointer>(compressedPointer ^ reinterpret_cast<size_t>(one));
-        }		
+        }       
 
         pointer to_pointer() const noexcept {
             return reinterpret_cast<pointer>(compressedPointer);
@@ -63,15 +63,15 @@ export namespace mylib::inline link_list {
     
     template<typename ElementType>
     struct compresive_list_head_node {
-        using node_type			 = compresive_list_node<ElementType>;
-        using node_pointer		 = node_type*;
+        using node_type          = compresive_list_node<ElementType>;
+        using node_pointer       = node_type*;
         using const_node_pointer = const node_type*;
 
         operator node_pointer() noexcept {
             return reinterpret_cast<node_pointer>(this->compressedPointer.compressedPointer);
         }
         
-        constexpr node_pointer		 get_another(node_pointer one)		  const noexcept {
+        constexpr node_pointer       get_another(node_pointer one)        const noexcept {
             return compressedPointer.get_another(one);
         }
 
@@ -88,11 +88,11 @@ export namespace mylib::inline link_list {
         
     template<typename ElementType>
     struct compresive_list_node : public compresive_list_head_node<ElementType> {
-        using node_type			 = compresive_list_node;
-        using node_pointer		 = node_type*;
+        using node_type          = compresive_list_node;
+        using node_pointer       = node_type*;
         using const_node_pointer = const node_type*;
 
-        using base_type			 = compresive_list_head_node<ElementType>;
+        using base_type          = compresive_list_head_node<ElementType>;
 
         constexpr compresive_list_node() noexcept = default;
         
@@ -124,22 +124,22 @@ export namespace mylib::inline link_list {
 
     template<typename _CompressiveListType>
     struct compressive_list_const_iterator {
-        using value_type		 = typename _CompressiveListType::value_type;
+        using value_type         = typename _CompressiveListType::value_type;
 
-        using difference_type	 = typename _CompressiveListType::difference_type;
+        using difference_type    = typename _CompressiveListType::difference_type;
 
-        using reference			 = typename _CompressiveListType::reference;
-        using const_reference	 = typename _CompressiveListType::const_reference;
+        using reference          = typename _CompressiveListType::reference;
+        using const_reference    = typename _CompressiveListType::const_reference;
 
-        using pointer			 = typename _CompressiveListType::pointer;
-        using const_pointer		 = typename _CompressiveListType::const_pointer;
+        using pointer            = typename _CompressiveListType::pointer;
+        using const_pointer      = typename _CompressiveListType::const_pointer;
 
-        using node_pointer		 = typename _CompressiveListType::node_pointer;
+        using node_pointer       = typename _CompressiveListType::node_pointer;
         using const_node_pointer = typename _CompressiveListType::const_node_pointer;
 
         using container_type     = _CompressiveListType;
 
-        using mylib_tag			 = mylib_iterator_tag;
+        using mylib_tag          = mylib_iterator_tag;
 
         using iterator_category  = bidirectional_iterator_tag;
 
@@ -163,9 +163,9 @@ export namespace mylib::inline link_list {
         constexpr compressive_list_const_iterator& operator ++()    noexcept {
             MYLIB_CHECK_ITERATOR_IS_END(*this);
             
-            auto pNext	 = pCurrent->get_another(pPrior);
+            auto pNext   = pCurrent->get_another(pPrior);
             pPrior       = pCurrent;
-            pCurrent	 = pNext;
+            pCurrent     = pNext;
             
             return *this;
         }
@@ -182,9 +182,9 @@ export namespace mylib::inline link_list {
         constexpr compressive_list_const_iterator& operator --() noexcept {
             MYLIB_CHECK_ITERATOR_IS_BEGIN(*this);
             
-            auto pLast	 = pPrior->get_another(pCurrent);
+            auto pLast   = pPrior->get_another(pCurrent);
             pPrior       = pCurrent;
-            pCurrent	 = pLast;
+            pCurrent     = pLast;
             
             return *this;
         }
@@ -220,31 +220,31 @@ export namespace mylib::inline link_list {
     struct compressive_list_iterator :
         public compressive_list_const_iterator<_CompressiveListType> {
         
-        using value_type	     = typename _CompressiveListType::value_type;
+        using value_type         = typename _CompressiveListType::value_type;
 
         using difference_type    = typename _CompressiveListType::difference_type;
 
-        using reference		     = typename _CompressiveListType::reference;
+        using reference          = typename _CompressiveListType::reference;
         using const_reference    = typename _CompressiveListType::const_reference;
 
-        using pointer		     = typename _CompressiveListType::pointer;
+        using pointer            = typename _CompressiveListType::pointer;
         using const_pointer      = typename _CompressiveListType::const_pointer;
 
         using node_pointer       = typename _CompressiveListType::node_pointer;
         using const_node_pointer = typename _CompressiveListType::const_node_pointer;
         
-        using base_type		     = compressive_list_const_iterator<_CompressiveListType>;
+        using base_type          = compressive_list_const_iterator<_CompressiveListType>;
 
         using container_type     = _CompressiveListType;
 
-        using mylib_tag		     = mylib_iterator_tag;
+        using mylib_tag          = mylib_iterator_tag;
         
         using iterator_category  = bidirectional_iterator_tag;
 
         constexpr compressive_list_iterator(
             node_pointer prior = nullptr, node_pointer current = nullptr
             MYLIB_OPTION_CONTAINER_POINTER_PARAMETER
-        ) noexcept :		
+        ) noexcept :
             base_type{ prior, current MYLIB_OPTION_CONTAINER_POINTER_ARGUMENT }
         {};
 
@@ -291,33 +291,33 @@ export namespace mylib::inline link_list {
             
             return old;
         }
-    };	
+    };
     
     template<typename ElementType>
     class compressive_list {
     public:
-        using size_type				  = size_t;
-        using difference_type		  = ptrdiff_t;
+        using size_type               = size_t;
+        using difference_type         = ptrdiff_t;
         
-        using value_type			  = ElementType;
-        using reference				  = value_type&;
-        using const_reference		  = const value_type&;
-        using pointer				  = value_type*;
-        using const_pointer			  = const value_type*;
+        using value_type              = ElementType;
+        using reference               = value_type&;
+        using const_reference         = const value_type&;
+        using pointer                 = value_type*;
+        using const_pointer           = const value_type*;
         
-        using head_node				  = compresive_list_head_node<value_type>;
-        using head_node_pointer		  = head_node*;
+        using head_node               = compresive_list_head_node<value_type>;
+        using head_node_pointer       = head_node*;
         using const_head_node_pointer = const head_node*;
-        using node_type				  = compresive_list_node<ElementType>;
-        using node_pointer			  = node_type*;
-        using const_node_pointer	  = const node_type*;
+        using node_type               = compresive_list_node<ElementType>;
+        using node_pointer            = node_type*;
+        using const_node_pointer      = const node_type*;
         
-        using iterator				  = compressive_list_iterator<compressive_list>;
-        using const_iterator		  = compressive_list_const_iterator<compressive_list>;
-        using reverse_iterator		  = std::reverse_iterator<iterator>;
+        using iterator                = compressive_list_iterator<compressive_list>;
+        using const_iterator          = compressive_list_const_iterator<compressive_list>;
+        using reverse_iterator        = std::reverse_iterator<iterator>;
         using const_reverse_iterator  = std::reverse_iterator<const_iterator>;
         
-        using mylib_tag				  = mylib_container_tag;
+        using mylib_tag               = mylib_container_tag;
         
         constexpr compressive_list()  = default;
 
@@ -328,8 +328,8 @@ export namespace mylib::inline link_list {
         constexpr compressive_list(compressive_list&& other) noexcept {
             head = other.head;
             tail = other.tail;
-            auto* pFirstNode			   = head.compressedPointer.to_pointer();
-            auto* pLastNode				   = tail.compressedPointer.to_pointer();
+            auto* pFirstNode               = head.compressedPointer.to_pointer();
+            auto* pLastNode                = tail.compressedPointer.to_pointer();
             pFirstNode->compressedPointer ^= make_node_pointer(&other.head);
             pFirstNode->compressedPointer ^= make_node_pointer(&head);
             pLastNode ->compressedPointer ^= make_node_pointer(&other.tail);
@@ -354,10 +354,10 @@ export namespace mylib::inline link_list {
             auto* pNewNode = 
                 new node_type{ value, make_node_pointer(&head), head.to_pointer() };
             
-            auto& firstNode				 = *head.compressedPointer.to_pointer();
+            auto& firstNode              = *head.compressedPointer.to_pointer();
             firstNode.compressedPointer ^= make_node_pointer(&head); // now it is containing it's next node pointer
-            firstNode.compressedPointer ^= pNewNode;				 // then compresive newNodePointer and next node pointer
-            head.compressedPointer		 = pNewNode;
+            firstNode.compressedPointer ^= pNewNode;                 // then compresive newNodePointer and next node pointer
+            head.compressedPointer       = pNewNode;
             ++nodeSize;
         }
 
@@ -365,10 +365,10 @@ export namespace mylib::inline link_list {
             auto* pNewNode = 
                 new node_type{ std::move(value), make_node_pointer(&head), head.to_pointer() };
             
-            auto& firstNode				 = *head.compressedPointer.to_pointer();
+            auto& firstNode              = *head.compressedPointer.to_pointer();
             firstNode.compressedPointer ^= make_node_pointer(&head); // now it is containing it's next node pointer
-            firstNode.compressedPointer ^= pNewNode;				 // then compresive newNodePointer and next node pointer
-            head.compressedPointer		 = pNewNode;
+            firstNode.compressedPointer ^= pNewNode;                 // then compresive newNodePointer and next node pointer
+            head.compressedPointer       = pNewNode;
             ++nodeSize;
         }
         
@@ -376,10 +376,10 @@ export namespace mylib::inline link_list {
             auto  pNewNode = 
                 new node_type{ value, tail.to_pointer(), make_node_pointer(&tail)};
             
-            auto& lastNode				 = *tail.compressedPointer.to_pointer();
+            auto& lastNode               = *tail.compressedPointer.to_pointer();
             lastNode.compressedPointer  ^= make_node_pointer(&tail); // now it is containing it's last node pointer
-            lastNode.compressedPointer	^= pNewNode;				 // then compresive newNodePointer and last node pointer
-            tail.compressedPointer		 = pNewNode;
+            lastNode.compressedPointer  ^= pNewNode;                 // then compresive newNodePointer and last node pointer
+            tail.compressedPointer       = pNewNode;
             ++nodeSize;
         }
 
@@ -387,10 +387,10 @@ export namespace mylib::inline link_list {
             auto  pNewNode = 
                 new node_type{ std::move(value), tail.to_pointer(), make_node_pointer(&tail) };
             
-            auto& lastNode				 = *tail.compressedPointer.to_pointer();
+            auto& lastNode               = *tail.compressedPointer.to_pointer();
             lastNode.compressedPointer  ^= make_node_pointer(&tail); // now it is containing it's last node pointer
-            lastNode.compressedPointer	^= pNewNode;				 // then compresive newNodePointer and last node pointer
-            tail.compressedPointer		 = pNewNode;
+            lastNode.compressedPointer  ^= pNewNode;                 // then compresive newNodePointer and last node pointer
+            tail.compressedPointer       = pNewNode;
             ++nodeSize;
         }
 
@@ -398,28 +398,28 @@ export namespace mylib::inline link_list {
             MYLIB_CHECK_CONTAINER_IS_EMPTY(*this);
             
             --nodeSize;
-            auto* pFirstNode			  = head.compressedPointer.to_pointer();
-            auto* pNextNode				  = pFirstNode->get_another(make_node_pointer(&head));
+            auto* pFirstNode              = head.compressedPointer.to_pointer();
+            auto* pNextNode               = pFirstNode->get_another(make_node_pointer(&head));
             pNextNode->compressedPointer ^= pFirstNode;
             pNextNode->compressedPointer ^= make_node_pointer(&head);
             delete pFirstNode;
-            head.compressedPointer		  = pNextNode;
+            head.compressedPointer        = pNextNode;
         }
 
         void pop_back() noexcept {
             MYLIB_CHECK_CONTAINER_IS_EMPTY(*this);
             
             --nodeSize;
-            auto* pLastNode				   = tail.compressedPointer.to_pointer();
-            auto* pPriorNode			   = pLastNode->get_another(make_node_pointer(&tail));
+            auto* pLastNode                = tail.compressedPointer.to_pointer();
+            auto* pPriorNode               = pLastNode->get_another(make_node_pointer(&tail));
             pPriorNode->compressedPointer ^= pLastNode;
             pPriorNode->compressedPointer ^= make_node_pointer(&tail);
             delete pLastNode;
-            tail.compressedPointer		   = pPriorNode;
+            tail.compressedPointer         = pPriorNode;
         }
 
         reference front() noexcept {
-            MYLIB_CHECK_CONTAINER_IS_EMPTY(*this);			
+            MYLIB_CHECK_CONTAINER_IS_EMPTY(*this);          
             
             return head.compressedPointer.to_pointer()->data;
         }
@@ -485,7 +485,7 @@ export namespace mylib::inline link_list {
             };
         }
         
-        iterator insert(const_iterator where, size_type _Count, ElementType&&	value) noexcept {
+        iterator insert(const_iterator where, size_type _Count, ElementType&& value) noexcept {
             
             MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(cbegin(), where);
             
@@ -559,8 +559,8 @@ export namespace mylib::inline link_list {
         }
 
         void reverse() noexcept {
-            auto* pFirstNode			   = head.compressedPointer.to_pointer();
-            auto* pLastNode				   = tail.compressedPointer.to_pointer();
+            auto* pFirstNode               = head.compressedPointer.to_pointer();
+            auto* pLastNode                = tail.compressedPointer.to_pointer();
             pFirstNode->compressedPointer ^= make_node_pointer(&head);
             pFirstNode->compressedPointer ^= make_node_pointer(&tail);
             pLastNode ->compressedPointer ^= make_node_pointer(&tail);
@@ -573,15 +573,15 @@ export namespace mylib::inline link_list {
             std::swap(tail, other.tail);
             std::swap(nodeSize, other.nodeSize);
             
-            auto* pFirstNode			   = head.compressedPointer.to_pointer();
-            auto* pLastNode				   = tail.compressedPointer.to_pointer();
+            auto* pFirstNode               = head.compressedPointer.to_pointer();
+            auto* pLastNode                = tail.compressedPointer.to_pointer();
             pFirstNode->compressedPointer ^= make_node_pointer(&other.head);
             pFirstNode->compressedPointer ^= make_node_pointer(&head);
             pLastNode ->compressedPointer ^= make_node_pointer(&other.tail);
             pLastNode ->compressedPointer ^= make_node_pointer(&tail);
             
-            pFirstNode					   = other.head.compressedPointer.to_pointer();
-            pLastNode					   = other.tail.compressedPointer.to_pointer();
+            pFirstNode                     = other.head.compressedPointer.to_pointer();
+            pLastNode                      = other.tail.compressedPointer.to_pointer();
             pFirstNode->compressedPointer ^= make_node_pointer(&head);
             pFirstNode->compressedPointer ^= make_node_pointer(&other.head);
             pLastNode ->compressedPointer ^= make_node_pointer(&tail);
@@ -726,8 +726,8 @@ export namespace mylib::inline link_list {
             return reinterpret_cast<node_pointer>(const_cast<head_node_pointer>(pointer));
         }
         
-        head_node head	  { make_node_pointer(&tail) };
-        head_node tail	  { make_node_pointer(&head) };
+        head_node head    { make_node_pointer(&tail) };
+        head_node tail    { make_node_pointer(&head) };
         size_type nodeSize{};
     };
 }

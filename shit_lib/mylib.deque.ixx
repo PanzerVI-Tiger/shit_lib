@@ -294,8 +294,8 @@ export namespace mylib {
         constexpr void swap(deque_block& right) noexcept {
             std::swap(numberOfElement, right.numberOfElement);
             std::swap(numberOfBlocks , right.numberOfBlocks );
-            std::swap(head			 , right.head			);
-            std::swap(map			 , right.map			);
+            std::swap(head           , right.head           );
+            std::swap(map            , right.map            );
         }
 
         constexpr size_type get_block_offset(size_type offset) const noexcept {
@@ -365,7 +365,7 @@ export namespace mylib {
             numberOfElement = 0;
         }
 
-        pointer*  map;			  // a array of pointer to value_type
+        pointer*  map;            // a array of pointer to value_type
         size_type head;
         size_type numberOfElement;
         size_type numberOfBlocks; // hold it's value is 2 ^ N or 0
@@ -374,26 +374,26 @@ export namespace mylib {
     template<typename _ElementType, typename _Allocator = std::allocator<_ElementType>>
     class deque {
     public:
-        using size_type				 = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type              = typename std::allocator_traits<_Allocator>::size_type;
 
-        using value_type			 = _ElementType;
+        using value_type             = _ElementType;
 
-        using block_type		     = deque_block<deque<_ElementType, _Allocator>>;
+        using block_type             = deque_block<deque<_ElementType, _Allocator>>;
 
-        using allocator_type		 = _Allocator;
+        using allocator_type         = _Allocator;
 
-        using reference				 = value_type&;
+        using reference              = value_type&;
 
-        using const_reference		 = const value_type&;
+        using const_reference        = const value_type&;
 
-        using difference_type		 = typename std::allocator_traits<_Allocator>::difference_type;
+        using difference_type        = typename std::allocator_traits<_Allocator>::difference_type;
 
-        using pointer				 = typename std::allocator_traits<_Allocator>::pointer;
-        using const_point			 = typename std::allocator_traits<_Allocator>::const_pointer;
+        using pointer                = typename std::allocator_traits<_Allocator>::pointer;
+        using const_point            = typename std::allocator_traits<_Allocator>::const_pointer;
 
-        using iterator				 = deque_iterator<deque<_ElementType, _Allocator>>;
-        using reverse_iterator		 = std::reverse_iterator<iterator>;
-        using const_iterator		 = deque_const_iterator<deque<_ElementType, _Allocator>>;
+        using iterator               = deque_iterator<deque<_ElementType, _Allocator>>;
+        using reverse_iterator       = std::reverse_iterator<iterator>;
+        using const_iterator         = deque_const_iterator<deque<_ElementType, _Allocator>>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     private:
@@ -415,10 +415,10 @@ export namespace mylib {
             }
             
             magnification = std::bit_ceil(magnification); // make magnification equal to 2 ^ N  
-            size_type		 previousMapSize = data.numberOfBlocks;
+            size_type        previousMapSize = data.numberOfBlocks;
             size_type const previousCapacity = data.capacity();
-            data.numberOfBlocks			   <<= std::bit_width(magnification) - 1;
-            size_type			previousHead = data.head;
+            data.numberOfBlocks            <<= std::bit_width(magnification) - 1;
+            size_type           previousHead = data.head;
 
             // change head when head is behind the rear
             if (data.head > (data.get_rear_offset() & (previousCapacity - 1))) {
@@ -443,10 +443,10 @@ export namespace mylib {
             }
 
             // copy from head to rear
-            size_type		 previousBlockOffset = data.get_block_offset   (previousHead,		 previousMapSize);
-            size_type		  currentBlockOffset = data.get_block_offset   (data.head						    );
+            size_type        previousBlockOffset = data.get_block_offset   (previousHead,        previousMapSize);
+            size_type         currentBlockOffset = data.get_block_offset   (data.head                           );
             size_type const      rearBlockOffset = data.get_block_offset   (data.head + data.numberOfElement - 1);
-            size_type const   headRelativeOffset = data.get_relative_offset(data.head							);
+            size_type const   headRelativeOffset = data.get_relative_offset(data.head                           );
             if (previousBlockOffset == rearBlockOffset) {
                 for (size_type i = headRelativeOffset; i < data.block_size; ++i) {
                     data.map[currentBlockOffset][i] = std::move(data.map[previousBlockOffset][i]);
@@ -482,7 +482,7 @@ export namespace mylib {
 
             // move front element when where is in front part, else move before element
             if (where.position > (previousSize >> 1)) {
-                reverse_iterator	   destination{ rbegin() };
+                reverse_iterator       destination{ rbegin() };
                 const_reverse_iterator source{ destination + 1 };
                 const_reverse_iterator beforeWhere{ where + 1 };
                 for (; destination !=  beforeWhere; ++destination, ++source) {
@@ -493,7 +493,7 @@ export namespace mylib {
                 }
             } else {
                 data.head = (data.head - 1) & (data.capacity() - 1);
-                iterator	   destination{ begin() };
+                iterator       destination{ begin() };
                 const_iterator source     { destination + 1 };
                 const_iterator afterWhere { where };
                 for (; destination != afterWhere; ++destination, ++source) {
@@ -638,7 +638,7 @@ export namespace mylib {
             }
 
             if (where.position > (previousSize >> 1)) {
-                reverse_iterator	   destination{ rbegin() };
+                reverse_iterator       destination{ rbegin() };
                 const_reverse_iterator source{ destination + count };
                 const_reverse_iterator beforeWhere{ where + 1 };
                 for (; destination != beforeWhere; ++destination, ++source) {
@@ -646,7 +646,7 @@ export namespace mylib {
                 }
             } else {
                 data.head = (data.head - count) & (data.capacity() - 1);
-                iterator	   destination{ begin() };
+                iterator       destination{ begin() };
                 const_iterator source{ destination + count };
                 const_iterator afterWhere{ where };
                 for (; destination != afterWhere; ++destination, ++source) {
@@ -678,7 +678,7 @@ export namespace mylib {
                 --data.numberOfElement;
                 return begin();
             }
-            const_iterator source	{ where + 1 };
+            const_iterator source   { where + 1 };
             const_iterator afterRear{ cend() };
             for (
                 iterator destination{ &data, where.position };
@@ -699,7 +699,7 @@ export namespace mylib {
                 data.numberOfElement -= numOfEraseElement;
                 return begin();
             }
-            const_iterator source	{ last };
+            const_iterator source   { last };
             const_iterator afterRear{ cend() };
             for (
                 iterator destination{ &data, first.position };
@@ -794,31 +794,31 @@ export namespace mylib {
             // make minification equal to 2 ^ N  
             size_type previousMapSize = data.map_size();
             size_type    minification = std::bit_floor(previousMapSize / ((numOfElement >> block_type::exponent) + bool(numOfElement & (block_type::block_size - 1))));
-            data.numberOfBlocks		>>= std::bit_width(minification) - 1;
+            data.numberOfBlocks     >>= std::bit_width(minification) - 1;
             size_type    previousHead = data.head;
             size_type    previousRear = data.get_rear_offset();
 
             // change head when head is behind the rear
             if (previousHead > (data.get_rear_offset() & (previousCapacity - 1))) {
-                data.head			  = (data.head + (previousMapSize - data.numberOfBlocks) * block_type::block_size) & ((data.numberOfBlocks << block_type::exponent) - 1);
+                data.head             = (data.head + (previousMapSize - data.numberOfBlocks) * block_type::block_size) & ((data.numberOfBlocks << block_type::exponent) - 1);
             } else {
-                data.head			  = data.get_relative_offset(data.head);
+                data.head             = data.get_relative_offset(data.head);
             }
-            pointer*  previousMap	  = ::new pointer[data.numberOfBlocks]; // allocate new memory then swap
+            pointer*  previousMap     = ::new pointer[data.numberOfBlocks]; // allocate new memory then swap
             std::swap(data.map, previousMap);
 
-            size_type const			 currentMapSize = data.map_size		   (							 );
-            size_type			previousBlockOffset	= data.get_block_offset(previousRear, previousMapSize);
-            size_type			 currentBlockOffset = data.get_block_offset(data.get_rear_offset(       ));
-            size_type const  currentHeadBlockOffset = data.get_block_offset(data.head				     );
+            size_type const          currentMapSize = data.map_size        (                             );
+            size_type           previousBlockOffset = data.get_block_offset(previousRear, previousMapSize);
+            size_type            currentBlockOffset = data.get_block_offset(data.get_rear_offset(       ));
+            size_type const  currentHeadBlockOffset = data.get_block_offset(data.head                    );
             size_type const previousHeadBlockOffset = data.get_block_offset(previousHead, previousMapSize);
 
             // copy from rear to head
             if (currentHeadBlockOffset == currentBlockOffset) {
                 while (true) {
                     data.map[currentBlockOffset] = previousMap[previousBlockOffset];
-                    currentBlockOffset			 = (currentBlockOffset  - 1) & (currentMapSize  - 1);
-                    previousBlockOffset			 = (previousBlockOffset - 1) & (previousMapSize - 1);
+                    currentBlockOffset           = (currentBlockOffset  - 1) & (currentMapSize  - 1);
+                    previousBlockOffset          = (previousBlockOffset - 1) & (previousMapSize - 1);
                     if (currentBlockOffset == currentHeadBlockOffset) {
                         break;
                     }

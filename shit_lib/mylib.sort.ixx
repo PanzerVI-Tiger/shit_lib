@@ -45,7 +45,7 @@ export namespace mylib::inline sort {
         for (++i; i != _Last; ++i) {
             auto current{ std::move(*i) };
             auto temp = i;
-            auto j	  = i;
+            auto j    = i;
             for (; j != _First && _Pred(current, *--j); temp = j) {
                 *temp = std::move(*j);
             }
@@ -61,7 +61,7 @@ export namespace mylib::inline sort {
     template<typename _RandomAccessIterator, typename _Predicate>
     constexpr void shell_sort(_RandomAccessIterator _First, _RandomAccessIterator _Last, _Predicate _Pred) noexcept {
         const size_t buffSize = _Last - _First;
-        size_t		 distance = 1;
+        size_t       distance = 1;
 
         while (distance < buffSize / 3) {
             distance = distance * 3 + 1;
@@ -110,10 +110,10 @@ export namespace mylib::inline sort {
         }
         */
         
-        auto buffBegin	   = auxiliarySpace.begin();
+        auto buffBegin     = auxiliarySpace.begin();
         auto moveBuffBegin = move_iter2{ buffBegin };
-        auto buffEnd	   = auxiliarySpace.end();
-        size_t count	   = 0;
+        auto buffEnd       = auxiliarySpace.end();
+        size_t count       = 0;
         for (size_t i = 16; i < size; i <<= 1) {
             const size_t limit = size - i;
             if ((count & 1) == 0) {

@@ -8,10 +8,10 @@ export namespace mylib {
     template<typename _ElementType, typename _Container = deque<_ElementType>>
     class stack {
     public:
-        using value_type	  = typename _Container::value_type;
-        using reference		  = typename _Container::reference;
+        using value_type      = typename _Container::value_type;
+        using reference       = typename _Container::reference;
         using const_reference = typename _Container::const_reference;
-        using size_type		  = typename _Container::size_type;
+        using size_type       = typename _Container::size_type;
         using container_type  = _Container;
 
         stack() = default;

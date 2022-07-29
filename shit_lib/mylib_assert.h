@@ -12,9 +12,9 @@
 
 import mylib.container_traits;
 
-#define MYLIB_OPTION_ARGUMENT(s)				  , s
+#define MYLIB_OPTION_ARGUMENT(s)                  , s
 
-#define MYLIB_OPTION_CONTAINER_POINTER			  const container_type* container
+#define MYLIB_OPTION_CONTAINER_POINTER            const container_type* container
 
 #define MYLIB_OPTION_CONTAINER_POINTER_PARAMETER  , const container_type* pContainer = nullptr
 
@@ -27,7 +27,7 @@ import mylib.container_traits;
         fprintf(stderr, \
                 "in file:  " __FILE__ ",\n" \
                 "function: %s,\n" \
-                "line:	   %d:\n    " \
+                "line:     %d:\n    " \
                 message, \
                 __func__, \
                 __LINE__ \

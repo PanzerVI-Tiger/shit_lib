@@ -12,31 +12,31 @@ export namespace mylib {
     template<typename _ElementType, typename _Allocator = std::allocator<_ElementType>>
     class am_graph {
     public:
-        using size_type				 = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type              = typename std::allocator_traits<_Allocator>::size_type;
 
-        using value_type			 = _ElementType;
+        using value_type             = _ElementType;
 
-        using allocator_type		 = _Allocator;
+        using allocator_type         = _Allocator;
 
-        using reference				 = value_type&;
-        using const_reference		 = const value_type&;
+        using reference              = value_type&;
+        using const_reference        = const value_type&;
 
-        using difference_type		 = typename std::allocator_traits<_Allocator>::difference_type;
+        using difference_type        = typename std::allocator_traits<_Allocator>::difference_type;
 
-        using pointer				 = typename std::allocator_traits<_Allocator>::pointer;
-        using const_pointer			 = typename std::allocator_traits<_Allocator>::const_pointer;
+        using pointer                = typename std::allocator_traits<_Allocator>::pointer;
+        using const_pointer          = typename std::allocator_traits<_Allocator>::const_pointer;
 
-        //using iterator			   = deque_iterator<block_type>;
-        //using reverse_iterator	   = std::reverse_iterator<iterator>;
-        //using const_iterator		   = deque_const_iterator<block_type>;
+        //using iterator               = deque_iterator<block_type>;
+        //using reverse_iterator       = std::reverse_iterator<iterator>;
+        //using const_iterator         = deque_const_iterator<block_type>;
         //using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     private:
         constexpr void extend() noexcept {
             size_type   newVertexesMax = (vertexesMax >> 1) + vertexesMax; // *1.5
-            size_type   newEdgesMax	   = newVertexesMax * newVertexesMax;
+            size_type   newEdgesMax    = newVertexesMax * newVertexesMax;
             value_type* newVertexes    = new value_type[newVertexesMax];
-            bool*		newEdgesMatrix = new bool[newEdgesMax] {};
+            bool*       newEdgesMatrix = new bool[newEdgesMax] {};
             
             memcpy(newVertexes, vertexes, vertexesSize * sizeof(value_type));
             for (size_type i = 0, limit = vertexesMax * sizeof(bool);
@@ -49,7 +49,7 @@ export namespace mylib {
             delete[] vertexes;
             delete[] edgesMatrix;
 
-            vertexes	= newVertexes;
+            vertexes    = newVertexes;
             edgesMatrix = newEdgesMatrix;
             vertexesMax = newVertexesMax;
             edgesMax    = newEdgesMax;
@@ -63,10 +63,10 @@ export namespace mylib {
                 vertexesSize{ _InitializerList.size() }, edgesSize{0} {
 
             // TODO: use taylor expansion to calculate the max number of edges
-            vertexesMax		  = std::ceil(std::log(vertexesSize) / std::log(1.5));
-            edgesMax		  = vertexesMax * vertexesMax;
-            vertexes		  = new value_type[vertexesMax];
-            edgesMatrix		  = new bool[edgesMax]{};
+            vertexesMax       = std::ceil(std::log(vertexesSize) / std::log(1.5));
+            edgesMax          = vertexesMax * vertexesMax;
+            vertexes          = new value_type[vertexesMax];
+            edgesMatrix       = new bool[edgesMax]{};
             
             std::copy(_InitializerList.begin(), _InitializerList.end(), vertexes);
         }
@@ -74,13 +74,13 @@ export namespace mylib {
         constexpr ~am_graph() noexcept {
             vertexesSize = 0;
             vertexesMax  = 0;
-            edgesSize	 = 0;
-            edgesMax	 = 0;
+            edgesSize    = 0;
+            edgesMax     = 0;
             
             delete[] vertexes;
             delete[] edgesMatrix;
             
-            vertexes	= nullptr;
+            vertexes    = nullptr;
             edgesMatrix = nullptr;
         }
 
@@ -174,8 +174,8 @@ export namespace mylib {
         }
         
     private:
-        bool*	  edgesMatrix;   // hold it size equal 4 ^ 3N ( (2 ^ 1.5N) ^ 2 )
-        pointer   vertexes;	     // hold it size equal 2 ^ 1.5N
+        bool*     edgesMatrix;   // hold it size equal 4 ^ 3N ( (2 ^ 1.5N) ^ 2 )
+        pointer   vertexes;      // hold it size equal 2 ^ 1.5N
         
         size_type vertexesSize;
         size_type vertexesMax;
@@ -185,29 +185,29 @@ export namespace mylib {
 
     template<
         typename _ElementType, 
-        typename _Allocator						  = std::allocator<_ElementType>, 
+        typename _Allocator                       = std::allocator<_ElementType>, 
         template<typename _ElementType> 
             class _AdjacencyEdgeContainerTemplate = std::vector
     >
     class al_graph {
     public:
-        using size_type		  = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type       = typename std::allocator_traits<_Allocator>::size_type;
 
-        using value_type	  = _ElementType;
+        using value_type      = _ElementType;
 
         using allocator_type  = _Allocator;
 
-        using reference		  = value_type&;
+        using reference       = value_type&;
         using const_reference = const value_type&;
 
         using difference_type = typename std::allocator_traits<_Allocator>::difference_type;
 
-        using pointer		  = typename std::allocator_traits<_Allocator>::pointer;
-        using const_pointer	  = typename std::allocator_traits<_Allocator>::const_pointer;
+        using pointer         = typename std::allocator_traits<_Allocator>::pointer;
+        using const_pointer   = typename std::allocator_traits<_Allocator>::const_pointer;
 
         struct node {
-            size_type								   index;
-            _ElementType							   value;
+            size_type                                  index;
+            _ElementType                               value;
             _AdjacencyEdgeContainerTemplate<size_type> adjacency_node;
         };
 
@@ -293,7 +293,7 @@ export namespace mylib {
         }
 
     private:
-        size_type		  edgesSize;
+        size_type         edgesSize;
         std::vector<node> adjacency_list;
     };
 
@@ -304,21 +304,21 @@ export namespace mylib {
     >
     class graph {
     public:
-        using base_graph	  = _BaseGraph;
+        using base_graph      = _BaseGraph;
 
         using allocator_type  = typename base_graph::allocator_type;
 
-        using size_type		  = typename base_graph::size_type;
+        using size_type       = typename base_graph::size_type;
 
-        using value_type	  = _ElementType;
+        using value_type      = _ElementType;
 
-        using reference		  = typename base_graph::reference;
+        using reference       = typename base_graph::reference;
 
         using const_reference = typename base_graph::const_reference;
 
         using difference_type = typename base_graph::difference_type;
 
-        using pointer		  = typename base_graph::pointer;
+        using pointer         = typename base_graph::pointer;
         using const_pointer   = typename base_graph::const_pointer;
 
         constexpr graph() : base{} {}
@@ -379,8 +379,8 @@ export namespace mylib {
         }
 
         constexpr std::vector<size_type> dfs(size_type _Source) const noexcept {
-            const size_type		   vertexesSize = vertexes_size();
-            bool*				   marked		= new bool[vertexesSize]{};
+            const size_type        vertexesSize = vertexes_size();
+            bool*                  marked       = new bool[vertexesSize]{};
             std::vector<size_type> result;
 
             [&result, marked, this](this const auto& self, size_type _S) constexpr -> void {
@@ -400,8 +400,8 @@ export namespace mylib {
         }
 
         constexpr void dfs(size_type _Source, std::function<void(value_type&)> _Predicate) noexcept {
-            const size_type		   vertexesSize = vertexes_size();
-            bool*				   marked		= new bool[vertexesSize] {};
+            const size_type        vertexesSize = vertexes_size();
+            bool*                  marked       = new bool[vertexesSize] {};
 
             [marked, this, _Predicate](this const auto& self, size_type _S) constexpr -> void {
                 _Predicate((*this)[_S]);
@@ -418,8 +418,8 @@ export namespace mylib {
         }
 
         constexpr void dfs(size_type _Source, std::function<void(value_type&)> _Predicate) const noexcept {
-            const size_type		   vertexesSize = vertexes_size();
-            bool*				   marked		= new bool[vertexesSize] {};
+            const size_type        vertexesSize = vertexes_size();
+            bool*                  marked       = new bool[vertexesSize] {};
 
             [marked, this, _Predicate](this const auto& self, size_type _S) constexpr -> void {
                 _Predicate((*this)[_S]);
@@ -436,10 +436,10 @@ export namespace mylib {
         }
 
         constexpr std::vector<size_type> bfs(size_type _Source) const noexcept {
-            const size_type		   vertexesSize = vertexes_size();
-            bool*				   marked		= new bool[vertexesSize]{};
+            const size_type        vertexesSize = vertexes_size();
+            bool*                  marked       = new bool[vertexesSize]{};
             std::vector<size_type> result;
-            queue<size_type>	   next;
+            queue<size_type>       next;
             next.push(_Source);
             
             while (!next.empty()) {
@@ -462,9 +462,9 @@ export namespace mylib {
         }
 
         constexpr void bfs(size_type _Source, std::function<void(value_type&)> _Predicate) noexcept {
-            const size_type		   vertexesSize = vertexes_size();
-            bool*				   marked		= new bool[vertexesSize] {};
-            queue<size_type>	   next;
+            const size_type        vertexesSize = vertexes_size();
+            bool*                  marked       = new bool[vertexesSize] {};
+            queue<size_type>       next;
             next.push(_Source);
 
             while (!next.empty()) {
@@ -485,9 +485,9 @@ export namespace mylib {
         }
 
         constexpr void bfs(size_type _Source, std::function<void(value_type&)> _Predicate) const noexcept {
-            const size_type		   vertexesSize = vertexes_size();
-            bool*				   marked		= new bool[vertexesSize] {};
-            queue<size_type>	   next;
+            const size_type        vertexesSize = vertexes_size();
+            bool*                  marked       = new bool[vertexesSize] {};
+            queue<size_type>       next;
             next.push(_Source);
 
             while (!next.empty()) {

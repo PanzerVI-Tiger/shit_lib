@@ -21,7 +21,7 @@ export namespace mylib::inline container_traits {
     {};
 
     template<typename Type>
-    inline constexpr bool is_mylib_class_v			 = 
+    inline constexpr bool is_mylib_class_v     = 
         requires { 
             std::is_base_of_v<
                 typename Type::mylib_tag, 
@@ -29,7 +29,7 @@ export namespace mylib::inline container_traits {
         };
     
     template<typename Type>
-    inline constexpr bool is_mylib_iterator_v		 =
+    inline constexpr bool is_mylib_iterator_v  =
         requires { 
             std::is_base_of_v<
                 typename Type::mylib_tag, 
@@ -37,7 +37,7 @@ export namespace mylib::inline container_traits {
     };
 
     template<typename Type>
-    inline constexpr bool is_mylib_container_v		 =
+    inline constexpr bool is_mylib_container_v =
         requires { 
             std::is_base_of_v<
                 typename Type::mylib_tag, 

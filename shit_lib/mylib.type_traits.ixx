@@ -9,7 +9,7 @@ export namespace mylib::inline type_traits {
     template<typename Type, Type typeValue>
     struct integral_constant {
         using value_type = Type;
-        using type		 = integral_constant;
+        using type       = integral_constant;
         
         constexpr operator value_type() const noexcept {
             return typeValue;

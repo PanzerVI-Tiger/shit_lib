@@ -6,28 +6,28 @@ import std.core;
 namespace mylib {
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto plus_v		= (... + _Numbers);
+    inline constexpr auto plus_v        = (... + _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto minus_v		= (... - _Numbers);
+    inline constexpr auto minus_v       = (... - _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto multiplies_v	= (... * _Numbers);
+    inline constexpr auto multiplies_v  = (... * _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto divides_v		= (... / _Numbers);
+    inline constexpr auto divides_v     = (... / _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto modulus_v		= (... % _Numbers);
+    inline constexpr auto modulus_v     = (... % _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto and_v			= (... & _Numbers);
+    inline constexpr auto and_v         = (... & _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto or_v			= (... | _Numbers);
+    inline constexpr auto or_v          = (... | _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto xor_v			= (... ^ _Numbers);
+    inline constexpr auto xor_v         = (... ^ _Numbers);
 
     template<bool... _Numbers>
     inline constexpr auto logical_and_v = (... && _Numbers);
@@ -36,10 +36,10 @@ namespace mylib {
     inline constexpr auto logical_or_v  = (... || _Numbers);
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto max_v		    = std::max({ _Numbers... });
+    inline constexpr auto max_v         = std::max({ _Numbers... });
 
     template<std::integral auto... _Numbers>
-    inline constexpr auto min_v		    = std::min({ _Numbers... });
+    inline constexpr auto min_v         = std::min({ _Numbers... });
 
     template<std::integral auto... _Numbers1>
     struct merge_greater{
