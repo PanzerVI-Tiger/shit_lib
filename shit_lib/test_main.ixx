@@ -52,11 +52,7 @@ import mylib;
 
 export int main() noexcept
 {
-    std::thread* x = new std::thread;
     
-    x->~thread();
-
-    operator delete(x); // destroy object
     
 	return 0;
 }

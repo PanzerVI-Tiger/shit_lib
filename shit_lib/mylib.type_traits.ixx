@@ -513,7 +513,7 @@ export namespace mylib::inline type_traits {
 #   else  
     
     // C++17
-    // only function types and reference types cann't be const qualified
+    // only function types and reference types can't be const qualified
     template<typename Type>
     inline constexpr bool is_function_v =
         !is_const_v<const Type> && !is_reference_v<Type>;
