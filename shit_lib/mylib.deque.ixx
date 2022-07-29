@@ -8,12 +8,12 @@ export namespace mylib {
     template<typename Deque>
     struct deque_const_iterator {
         using difference_type   = typename Deque::difference_type;
-        using size_type		    = typename Deque::size_type;
-        using block_type	    = typename Deque::block_type;
-        using reference		    = typename Deque::reference;
+        using size_type         = typename Deque::size_type;
+        using block_type        = typename Deque::block_type;
+        using reference         = typename Deque::reference;
         using const_reference   = typename Deque::const_reference;
-        using pointer		    = typename Deque::pointer;
-        using value_type	    = typename Deque::value_type;
+        using pointer           = typename Deque::pointer;
+        using value_type        = typename Deque::value_type;
         using iterator_category = std::random_access_iterator_tag;
         
         constexpr static size_type block_size = block_type::block_size;
@@ -94,7 +94,7 @@ export namespace mylib {
         }
 
         const Deque* container;
-        size_type	 position;
+        size_type    position;
     };
 
     template<typename Deque>
@@ -103,12 +103,12 @@ export namespace mylib {
         using deque_const_iterator<Deque>::position;
 
         using difference_type   = typename Deque::difference_type;
-        using size_type		    = typename Deque::size_type;
-        using block_type	    = typename Deque::block_type;
-        using reference		    = typename Deque::reference;
+        using size_type         = typename Deque::size_type;
+        using block_type        = typename Deque::block_type;
+        using reference         = typename Deque::reference;
         using const_reference   = typename Deque::const_reference;
-        using pointer		    = typename Deque::pointer;
-        using value_type	    = typename Deque::value_type;
+        using pointer           = typename Deque::pointer;
+        using value_type        = typename Deque::value_type;
         using iterator_category = std::random_access_iterator_tag;
         
         constexpr static size_type block_size = block_type::block_size;
@@ -187,11 +187,11 @@ export namespace mylib {
 
     template<typename DequeType>
     struct deque_block {
-        using size_type		  = typename DequeType::size_type;
-        using value_type	  = typename DequeType::value_type;
-        using reference		  = typename DequeType::reference;
+        using size_type       = typename DequeType::size_type;
+        using value_type      = typename DequeType::value_type;
+        using reference       = typename DequeType::reference;
         using const_reference = typename DequeType::const_reference;
-        using pointer		  = typename DequeType::pointer;
+        using pointer         = typename DequeType::pointer;
         using difference_type = typename DequeType::difference_type;
 
         static constexpr size_type element_bytes = sizeof(value_type);
@@ -220,8 +220,8 @@ export namespace mylib {
                 head{ other.head }, map{ other.map } {
             other.numberOfBlocks   = 0;
             other.numberOfElement  = 0;
-            other.head			   = 0;
-            other.map			   = nullptr;
+            other.head             = 0;
+            other.map              = nullptr;
         }
         
         constexpr deque_block() : map{ nullptr }, head{}, numberOfElement{}, numberOfBlocks{} {}
@@ -231,7 +231,7 @@ export namespace mylib {
             head = 0;
             numberOfElement = elementSize;
             numberOfBlocks  = std::bit_ceil(elementSize / block_size + bool(elementSize % block_size));
-            map			    = ::new pointer[numberOfBlocks];
+            map             = ::new pointer[numberOfBlocks];
 
             auto beginIterator = initializerList.begin();
             auto const endIterator = initializerList.end();
@@ -259,10 +259,10 @@ export namespace mylib {
 
                 numberOfBlocks   = other.numberOfBlocks;
                 numberOfElement  = other.numberOfElement;
-                head			 = other.head;
-                map			     = ::new pointer[numberOfBlocks];
+                head             = other.head;
+                map              = ::new pointer[numberOfBlocks];
                 for (size_type i = 0; i < numberOfBlocks; ++i) {
-                    map[i]		 = ::new value_type[block_size];
+                    map[i]       = ::new value_type[block_size];
                     for (size_type j = 0; j < block_size; ++j) {
                         map[i][j] = other.map[i][j];
                     }
@@ -278,15 +278,15 @@ export namespace mylib {
                 }
                 ::delete[] map;
 
-                numberOfBlocks		   = other.numberOfBlocks;
-                numberOfElement		   = other.numberOfElement;
-                head				   = other.head;
-                map					   = other.map;
+                numberOfBlocks         = other.numberOfBlocks;
+                numberOfElement        = other.numberOfElement;
+                head                   = other.head;
+                map                    = other.map;
 
                 other.numberOfBlocks   = 0;
                 other.numberOfElement  = 0;
-                other.head			   = 0;
-                other.map			   = nullptr;
+                other.head             = 0;
+                other.map              = nullptr;
             }
             return *this;
         }

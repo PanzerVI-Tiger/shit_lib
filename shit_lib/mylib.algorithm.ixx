@@ -91,7 +91,7 @@ export namespace mylib::inline algorithm {
     template<typename InputIterator, typename _Type>
     inline constexpr std::iter_difference_t<InputIterator> count(
         InputIterator first, InputIterator last, 
-        _Type		  _Val
+        _Type         _Val
     ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
@@ -260,7 +260,7 @@ export namespace mylib::inline algorithm {
 
     template<typename InputIterator, typename OutputIterator, typename UnaryPredicate>
     inline constexpr OutputIterator copy_if(
-        InputIterator  first,		   InputIterator  last, 
+        InputIterator  first,  InputIterator  last, 
         OutputIterator output, UnaryPredicate unaryPred
     ) noexcept {
         
@@ -279,7 +279,7 @@ export namespace mylib::inline algorithm {
 
     template<typename ForwardIterator, typename Compare>
     inline constexpr bool is_sorted(ForwardIterator first, ForwardIterator last, 
-                                    Compare			comp) noexcept {
+                                    Compare         comp) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
@@ -302,7 +302,7 @@ export namespace mylib::inline algorithm {
     }
 
     template<typename ForwardIterator>
-    inline constexpr bool is_sorted(ForwardIterator first, ForwardIterator last) noexcept {		
+    inline constexpr bool is_sorted(ForwardIterator first, ForwardIterator last) noexcept {
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
         return mylib::is_sorted(first, last, mylib::less{});
@@ -311,7 +311,7 @@ export namespace mylib::inline algorithm {
     template<typename InputIterator1, typename InputIterator2, typename OutputIterator, typename Compare>
     inline constexpr OutputIterator merge(InputIterator1 first1,  InputIterator1 last1, 
                                           InputIterator2 first2,  InputIterator2 last2, 
-                                          OutputIterator output,  Compare		 comp) noexcept {
+                                          OutputIterator output,  Compare        comp) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first1, last1);
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first2, last2);
@@ -344,7 +344,7 @@ export namespace mylib::inline algorithm {
     
     template<typename ForwardIterator, typename Compare>
     inline constexpr void inplace_merge(ForwardIterator first, ForwardIterator middle, 
-                                        ForwardIterator last,  Compare		   comp) noexcept {
+                                        ForwardIterator last,  Compare         comp) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, middle);
         
@@ -357,14 +357,14 @@ export namespace mylib::inline algorithm {
         auto middleIndex = auxiliarySpace.size();
         auxiliarySpace.insert(auxiliarySpace.end(), move_iter1{ middle }, move_iter1{ last });
         auto last        = move_iter2{ auxiliarySpace.end() };
-        auto middle		 = move_iter2{ auxiliarySpace.begin() + middleIndex };
+        auto middle      = move_iter2{ auxiliarySpace.begin() + middleIndex };
         
         mylib::merge(move_iter2{ auxiliarySpace.begin() }, middle, middle, last, first, comp);
     }
 
     template<typename _BidirectionalIterator>
     inline constexpr void inplace_merge(_BidirectionalIterator first, _BidirectionalIterator middle, 
-                                        _BidirectionalIterator last) noexcept {	
+                                        _BidirectionalIterator last) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
