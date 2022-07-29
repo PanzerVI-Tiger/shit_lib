@@ -51,7 +51,7 @@ export namespace mylib {
 
             vertexes    = newVertexes;
             edgesMatrix = newEdgesMatrix;
-            vertexesMax = newVertexesMax;
+            vertexesMax = newVertexesMax;initialValueList
             edgesMax    = newEdgesMax;
         }
 
