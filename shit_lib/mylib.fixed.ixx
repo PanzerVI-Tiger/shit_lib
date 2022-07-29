@@ -5,26 +5,26 @@ import std.core;
 
 export namespace mylib {
 
-    template<typename _ElementType>
-        requires (std::is_integral_v<_ElementType> && (!std::is_same_v<_ElementType, long long>))
+    template<typename ElementType>
+        requires (std::is_integral_v<ElementType> && (!std::is_same_v<ElementType, long long>))
     struct fixed {
         union {
             struct {
-                _ElementType decimals : sizeof(_ElementType) << 2;
-                _ElementType integer  : sizeof(_ElementType) << 2;
+                ElementType decimals : sizeof(ElementType) << 2;
+                ElementType integer  : sizeof(ElementType) << 2;
             };
-            _ElementType entiretyPart;
+            ElementType entiretyPart;
         };
         
         constexpr fixed() : entiretyPart{ 0 } {};
         constexpr fixed(const fixed&) = default;
-        constexpr fixed(_ElementType _Integer) : integer{ _Integer }, decimals{ 0 } {};
-        constexpr fixed(_ElementType _Integer, unsigned _Scaling) : integer{ _Integer }, decimals{ 0 } {
+        constexpr fixed(ElementType integer) : integer{ integer }, decimals{ 0 } {};
+        constexpr fixed(ElementType integer, unsigned _Scaling) : integer{ integer }, decimals{ 0 } {
             *this = *this / _Scaling;
         };
 
-        constexpr bool operator <(const fixed& _R) const noexcept {
-            return entiretyPart < _R.entiretyPart;
+        constexpr bool operator <(const fixed& right) const noexcept {
+            return entiretyPart < right.entiretyPart;
         }
 
         constexpr fixed  operator -() const noexcept {
@@ -33,37 +33,37 @@ export namespace mylib {
             return f;
         }
 
-        constexpr fixed  operator +(const fixed& _R) const noexcept {
-            int i = entiretyPart + _R.entiretyPart;
+        constexpr fixed  operator +(const fixed& right) const noexcept {
+            int i = entiretyPart + right.entiretyPart;
             fixed result;
             result.entiretyPart = i;
             return result;
         }
 
-        constexpr fixed  operator -(const fixed& _R) const  noexcept {
-            int i = entiretyPart - _R.entiretyPart;
+        constexpr fixed  operator -(const fixed& right) const  noexcept {
+            int i = entiretyPart - right.entiretyPart;
             fixed result;
             result.entiretyPart = i;
             return result;
         }
 
-        constexpr fixed operator *(const fixed& _R) const noexcept {
-            int i = ((long long)entiretyPart * _R.entiretyPart) >> (sizeof(_ElementType) << 2);
+        constexpr fixed operator *(const fixed& right) const noexcept {
+            int i = ((long long)entiretyPart * right.entiretyPart) >> (sizeof(ElementType) << 2);
             fixed result;
             result.entiretyPart = i;
             return result;
         }
 
-        constexpr fixed operator /(const fixed& _R) const noexcept {
+        constexpr fixed operator /(const fixed& right) const noexcept {
             fixed result;
-            result.integer = entiretyPart / _R.entiretyPart;
-            result.decimals = ((long long)(entiretyPart % _R.entiretyPart) << (sizeof(_ElementType) << 2)) / _R.entiretyPart;
+            result.integer = entiretyPart / right.entiretyPart;
+            result.decimals = ((long long)(entiretyPart % right.entiretyPart) << (sizeof(ElementType) << 2)) / right.entiretyPart;
 
             return result;
         }
 
         constexpr explicit operator double() noexcept {
-            return (double)entiretyPart / (1 << (sizeof(_ElementType) * 4));
+            return (double)entiretyPart / (1 << (sizeof(ElementType) * 4));
         }
     };
 }

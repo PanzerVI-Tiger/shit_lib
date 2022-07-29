@@ -4,23 +4,23 @@ import std.core;
 
 
 export namespace mylib {
-    template<typename _ElementType>
-        requires std::is_integral_v<_ElementType>
+    template<typename ElementType>
+        requires std::is_integral_v<ElementType>
     struct grade {
-        using TemplateParameter = _ElementType;
-        using SignedType = std::make_signed_t<_ElementType>;
-        using UnsignedType = std::make_unsigned_t<_ElementType>;
+        using TemplateParameter = ElementType;
+        using SignedType        = std::make_signed_t<ElementType>;
+        using UnsignedType      = std::make_unsigned_t<ElementType>;
 
         UnsignedType denominator;
         SignedType   numerator;
 
-        constexpr grade(long long _Numerator, long long _Denominator = 1) noexcept {
-            long long d = std::gcd(_Numerator, _Denominator);
-            numerator = std::abs(_Numerator / d);
-            if ((_Numerator ^ _Denominator) < 0) {
+        constexpr grade(long long numerator, long long denominator = 1) noexcept {
+            long long d = std::gcd(numerator, denominator);
+            numerator = std::abs(numerator / d);
+            if ((numerator ^ denominator) < 0) {
                 numerator = -numerator;
             }
-            denominator = std::abs(_Denominator / d);
+            denominator = std::abs(denominator / d);
         };
 
         constexpr grade(const grade&) noexcept = default;
@@ -30,32 +30,32 @@ export namespace mylib {
             return grade{ -numerator, denominator };
         }
 
-        constexpr grade operator +(const grade& _R) const noexcept {
-            long long d = std::lcm(denominator, _R.denominator);
-            SignedType x1 = d / denominator, x2 = d / _R.denominator;
-            SignedType n = numerator * x1 + _R.numerator * x2;
+        constexpr grade operator +(const grade& right) const noexcept {
+            long long d = std::lcm(denominator, right.denominator);
+            SignedType x1 = d / denominator, x2 = d / right.denominator;
+            SignedType n = numerator * x1 + right.numerator * x2;
             SignedType i = std::gcd(d, n);
             return { n / i, (int)(d / i) };
         }
 
-        constexpr grade operator -(const grade& _R) const noexcept {
-            long long d = std::lcm(denominator, _R.denominator);
-            SignedType x1 = d / denominator, x2 = d / _R.denominator;
-            SignedType n = numerator * x1 - _R.numerator * x2;
+        constexpr grade operator -(const grade& right) const noexcept {
+            long long d = std::lcm(denominator, right.denominator);
+            SignedType x1 = d / denominator, x2 = d / right.denominator;
+            SignedType n = numerator * x1 - right.numerator * x2;
             SignedType i = std::gcd(d, n);
             return { n / i, (int)(d / i) };
         }
 
-        constexpr grade operator /(const grade& _R) const noexcept {
-            long long d = (long long)denominator * _R.numerator;
-            long long n = (long long)numerator * _R.denominator;
+        constexpr grade operator /(const grade& right) const noexcept {
+            long long d = (long long)denominator * right.numerator;
+            long long n = (long long)numerator * right.denominator;
             long long i = std::gcd(d, n);
             return { (int)(n / i), (int)(d / i) };
         }
 
-        constexpr grade operator *(const grade& _R) const noexcept {
-            long long d = (long long)denominator * _R.denominator;
-            long long n = (long long)numerator * _R.numerator;
+        constexpr grade operator *(const grade& right) const noexcept {
+            long long d = (long long)denominator * right.denominator;
+            long long n = (long long)numerator * right.numerator;
             long long i = std::gcd(d, n);
             return { (SignedType)(n / i), (SignedType)(d / i) };
         }
@@ -65,22 +65,22 @@ export namespace mylib {
         }
 
 
-        template<typename _ElementType>
-            requires std::is_integral_v<_ElementType>
-        friend inline std::ostream& operator <<(std::ostream& _Os, grade<_ElementType> const& _Grade) noexcept
+        template<typename ElementType>
+            requires std::is_integral_v<ElementType>
+        friend inline std::ostream& operator <<(std::ostream& os, grade<ElementType> const& grade) noexcept
         {
-            _Os << (long long)_Grade.numerator << " \\ " << (unsigned long long)_Grade.denominator;
+            os << (long long)grade.numerator << " \\ " << (unsigned long long)grade.denominator;
 
-            return _Os;
+            return os;
         }
     };
 
-    template<typename _ElementType>
-        requires std::is_integral_v<_ElementType>
-    constexpr bool operator < (const grade<_ElementType>& _L, const grade<_ElementType>& _R) noexcept {
-        long long d = std::lcm(_L.denominator, _R.denominator);
-        typename grade<_ElementType>::SignedType x1 = d / _L.denominator, x2 = d / _R.denominator;
+    template<typename ElementType>
+        requires std::is_integral_v<ElementType>
+    constexpr bool operator < (const grade<ElementType>& _L, const grade<ElementType>& right) noexcept {
+        long long d = std::lcm(_L.denominator, right.denominator);
+        typename grade<ElementType>::SignedType x1 = d / _L.denominator, x2 = d / right.denominator;
 
-        return _L.numerator * x1 < _R.numerator* x2;
+        return _L.numerator * x1 < right.numerator* x2;
     }
 }

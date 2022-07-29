@@ -1,31 +1,31 @@
 export module mylib.stack;
 
+import std.core;
 import mylib.deque;
-
 
 export namespace mylib {
 
-    template<typename _ElementType, typename _Container = deque<_ElementType>>
+    template<typename ElementType, typename Container = deque<ElementType>>
     class stack {
     public:
-        using value_type      = typename _Container::value_type;
-        using reference       = typename _Container::reference;
-        using const_reference = typename _Container::const_reference;
-        using size_type       = typename _Container::size_type;
-        using container_type  = _Container;
+        using value_type      = typename Container::value_type;
+        using reference       = typename Container::reference;
+        using const_reference = typename Container::const_reference;
+        using size_type       = typename Container::size_type;
+        using container_type  = Container;
 
         stack() = default;
-        explicit stack(const _Container& _Cont) noexcept : c{ _Cont } {}
-        explicit stack(_Container&& _Cont) noexcept : c(std::move(_Cont)) {}
-        template<typename _InputIterator>
-        stack(_InputIterator _First, _InputIterator _Last) noexcept : c{ _First, _Last } {}
+        explicit stack(const Container& container) noexcept : c{ container } {}
+        explicit stack(Container&& container) noexcept : c{ std::move(container) } {}
+        template<typename InputIterator>
+        stack(InputIterator first, InputIterator last) noexcept : c{ first, last } {}
 
-        void push(const value_type& _Val) noexcept {
-            c.push_back(_Val);
+        void push(const value_type& value) noexcept {
+            c.push_back(value);
         }
 
-        void push(value_type&& _Val) noexcept {
-            c.push_back(std::move(_Val));
+        void push(value_type&& value) noexcept {
+            c.push_back(std::move(value));
         }
 
         void pop() noexcept {
@@ -48,11 +48,11 @@ export namespace mylib {
             return c.empty();
         }
 
-        void swap(stack& _Right) noexcept {
-            c.swap(_Right);
+        void swap(stack& right) noexcept {
+            c.swap(right);
         }
 
     private:
-        _Container c;
+        Container c;
     };
 }

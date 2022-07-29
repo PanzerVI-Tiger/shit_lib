@@ -5,27 +5,27 @@ import mylib.deque;
 
 
 export namespace mylib {
-    template<typename _ElementType, typename _Container = deque<_ElementType>>
+    template<typename ElementType, typename Container = deque<ElementType>>
     class queue {
     public:
-        using value_type      = typename _Container::value_type;
-        using reference       = typename _Container::reference;
-        using const_reference = typename _Container::const_reference;
-        using size_type       = typename _Container::size_type;
-        using container_type  = _Container;
+        using value_type      = typename Container::value_type;
+        using reference       = typename Container::reference;
+        using const_reference = typename Container::const_reference;
+        using size_type       = typename Container::size_type;
+        using container_type  = Container;
 
         queue() = default;
-        constexpr explicit queue(const _Container& _Cont) noexcept : c{ _Cont } {}
-        constexpr explicit queue(_Container&& _Cont) noexcept : c(std::move(_Cont)) {}
-        template<typename _InputIterator>
-        constexpr queue(_InputIterator _First, _InputIterator _Last) noexcept : c{ _First, _Last } {}
+        constexpr explicit queue(const Container& container) noexcept : c{ container } {}
+        constexpr explicit queue(Container&& container) noexcept : c{ std::move(container) } {}
+        template<typename InputIterator>
+        constexpr queue(InputIterator first, InputIterator last) noexcept : c{ first, last } {}
 
-        constexpr void push(const value_type& _Val) noexcept {
-            c.push_back(_Val);
+        constexpr void push(const value_type& value) noexcept {
+            c.push_back(value);
         }
 
-        constexpr void push(value_type&& _Val) noexcept {
-            c.push_back(std::move(_Val));
+        constexpr void push(value_type&& value) noexcept {
+            c.push_back(std::move(value));
         }
 
         constexpr void pop() noexcept {
@@ -56,11 +56,11 @@ export namespace mylib {
             return c.empty();
         }
 
-        constexpr void swap(queue& _Right) noexcept {
-            c.swap(_Right);
+        constexpr void swap(queue& right) noexcept {
+            c.swap(right);
         }
 
     private:
-        _Container c;
+        Container c;
     };
 }

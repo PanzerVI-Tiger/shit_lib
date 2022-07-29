@@ -1,26 +1,26 @@
 export module mylib.deque;
 
 import std.core;
-
+import mylib.iterator;
 
 export namespace mylib {
 
-    template<typename Deque>
+    template<typename DequeType>
     struct deque_const_iterator {
-        using difference_type   = typename Deque::difference_type;
-        using size_type         = typename Deque::size_type;
-        using block_type        = typename Deque::block_type;
-        using reference         = typename Deque::reference;
-        using const_reference   = typename Deque::const_reference;
-        using pointer           = typename Deque::pointer;
-        using value_type        = typename Deque::value_type;
-        using iterator_category = std::random_access_iterator_tag;
+        using difference_type   = typename DequeType::difference_type;
+        using size_type         = typename DequeType::size_type;
+        using block_type        = typename DequeType::block_type;
+        using reference         = typename DequeType::reference;
+        using const_reference   = typename DequeType::const_reference;
+        using pointer           = typename DequeType::pointer;
+        using value_type        = typename DequeType::value_type;
+        using iterator_category = mylib::random_access_iterator_tag;
         
         constexpr static size_type block_size = block_type::block_size;
 
         constexpr deque_const_iterator() noexcept : container{}, position{} {}
 
-        constexpr deque_const_iterator(const Deque* pDeque, size_type index) noexcept :
+        constexpr deque_const_iterator(const DequeType* pDeque, size_type index) noexcept :
             container{ const_cast<block_type*>(pDeque) }, position{ index } {}
 
         constexpr const_reference operator *() const noexcept {
@@ -93,30 +93,32 @@ export namespace mylib {
             return position == right.position;
         }
 
-        const Deque* container;
-        size_type    position;
+        const DequeType* container;
+        size_type        position;
     };
 
-    template<typename Deque>
-    struct deque_iterator : public deque_const_iterator<Deque> {
-        using deque_const_iterator<Deque>::container;
-        using deque_const_iterator<Deque>::position;
+    template<typename DequeType>
+    struct deque_iterator :
+        deque_const_iterator<DequeType> {
+        
+        using deque_const_iterator<DequeType>::container;
+        using deque_const_iterator<DequeType>::position;
 
-        using difference_type   = typename Deque::difference_type;
-        using size_type         = typename Deque::size_type;
-        using block_type        = typename Deque::block_type;
-        using reference         = typename Deque::reference;
-        using const_reference   = typename Deque::const_reference;
-        using pointer           = typename Deque::pointer;
-        using value_type        = typename Deque::value_type;
-        using iterator_category = std::random_access_iterator_tag;
+        using difference_type   = typename DequeType::difference_type;
+        using size_type         = typename DequeType::size_type;
+        using block_type        = typename DequeType::block_type;
+        using reference         = typename DequeType::reference;
+        using const_reference   = typename DequeType::const_reference;
+        using pointer           = typename DequeType::pointer;
+        using value_type        = typename DequeType::value_type;
+        using iterator_category = mylib::random_access_iterator_tag;
         
         constexpr static size_type block_size = block_type::block_size;
 
-        constexpr deque_iterator() noexcept : deque_const_iterator<Deque>{} {}
+        constexpr deque_iterator() noexcept : deque_const_iterator<DequeType>{} {}
         
         constexpr deque_iterator(block_type* pDeque, size_type index) noexcept :
-            deque_const_iterator<Deque>{ pDeque, index } {}
+            deque_const_iterator<DequeType>{ pDeque, index } {}
 
         constexpr reference operator *() const noexcept {
             return static_cast<reference>((*container)[position]);
