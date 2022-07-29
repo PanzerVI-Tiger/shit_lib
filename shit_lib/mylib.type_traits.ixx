@@ -69,7 +69,7 @@ export namespace mylib::inline type_traits {
     struct auxiliary_conjunction<true, FirstConstant, NextConstant, BoolConstants...> {
         // handle false case, then try to next
         using type =
-                typename auxiliary_conjunction<
+            typename auxiliary_conjunction<
                 NextConstant::value,
                 NextConstant,
                 BoolConstants...
