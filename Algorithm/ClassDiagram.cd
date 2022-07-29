@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="mylib::deque&lt;_ElementType, _Allocator&gt;">
+    <Position X="8.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AUAAALECAHBBgABEAKEIAAASAAEAYAEACQEwAgAEAAA=</HashCode>
+      <FileName>my_deque.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="mylib::deque_const_iterator&lt;_DequeBlock&gt;">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAACAAAAQAEAIwAAAAEAAAAAAAAgAAACAAA=</HashCode>
+      <FileName>my_deque.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="mylib::deque_iterator&lt;_DequeBlock&gt;">
+    <Position X="3.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAQAEAAwAAAAEAAAAAAAAgAAACAAA=</HashCode>
+      <FileName>my_deque.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="mylib::deque_blocks&lt;_DequeType&gt;">
+    <Position X="5.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEgAEgAACAAAAAMIQAACIgAFQAAUAAQAgAAACAAI=</HashCode>
+      <FileName>my_deque.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

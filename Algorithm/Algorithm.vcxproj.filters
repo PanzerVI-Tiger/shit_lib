@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="mylib">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="mylib\container">
+      <UniqueIdentifier>{fe67b6d7-0023-4d3e-beb0-e6198a43d670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\utility">
+      <UniqueIdentifier>{e63753dd-973c-4458-b01e-f8a7daccf002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\io">
+      <UniqueIdentifier>{20bd5471-cbd4-4489-bfa1-54f6cee728d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\algorithm">
+      <UniqueIdentifier>{e44d2184-225b-406f-bdfb-6b9bccdb0682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\string">
+      <UniqueIdentifier>{8cacd58a-7382-44d1-9625-51d7fee47538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard">
+      <UniqueIdentifier>{bc82452c-e545-468d-8bd4-9f572a6dc6aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard\utility">
+      <UniqueIdentifier>{aac8ed35-7336-4dba-9abd-21d2550d58de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard\io">
+      <UniqueIdentifier>{b3d2dbf7-1248-4905-b071-1fa9c3291cff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard\container">
+      <UniqueIdentifier>{3923c5dc-4cf5-402f-be11-778badacb179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard\algorithm">
+      <UniqueIdentifier>{3dce0bb7-948f-4e27-9363-39a21ef75d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\iterator">
+      <UniqueIdentifier>{0f50c9b0-7d2c-45e0-940d-a3a3465f0aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\memory">
+      <UniqueIdentifier>{651befe6-8599-4ae9-88a3-a97d8e569fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard\templates">
+      <UniqueIdentifier>{05f563d8-b338-4fdc-82de-2964ec4c6ae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard\macro">
+      <UniqueIdentifier>{30f49628-c8b9-4cfd-aab1-6ce892234db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\numeric">
+      <UniqueIdentifier>{dfbb8e60-3ca8-431b-97f7-b281352ada1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head">
+      <UniqueIdentifier>{22fd51f8-014f-465a-9930-a1762f7940ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\not_standard\container\tree">
+      <UniqueIdentifier>{89655db8-abe4-4e86-95f3-005c7a332e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\test">
+      <UniqueIdentifier>{486500fc-2530-4c42-9a6b-7fc8fb39d2e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test_main.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="源.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.ixx">
+      <Filter>mylib</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.deque.ixx">
+      <Filter>mylib\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.list.ixx">
+      <Filter>mylib\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.queue.ixx">
+      <Filter>mylib\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.stack.ixx">
+      <Filter>mylib\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.vector.ixx">
+      <Filter>mylib\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.algorithm.ixx">
+      <Filter>mylib\algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="tt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.cmpare.ixx">
+      <Filter>mylib\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.eval.ixx">
+      <Filter>mylib\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.timer.ixx">
+      <Filter>mylib\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.stream_output.ixx">
+      <Filter>mylib\not_standard\io</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.fixed.ixx">
+      <Filter>mylib\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.grade.ixx">
+      <Filter>mylib\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.graph.ixx">
+      <Filter>mylib\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.huffman_tree.ixx">
+      <Filter>mylib\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.sort.ixx">
+      <Filter>mylib\not_standard\algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.string.ixx">
+      <Filter>mylib\string</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.iterator.ixx">
+      <Filter>mylib\iterator</Filter>
+    </ClCompile>
+    <ClCompile Include="f.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.memory.ixx">
+      <Filter>mylib\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.functional.ixx">
+      <Filter>mylib\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.type_traits.ixx">
+      <Filter>mylib\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.templates_utility.ixx">
+      <Filter>mylib\not_standard\templates</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.link_list.ixx">
+      <Filter>mylib\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.container_traits.ixx">
+      <Filter>mylib\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.numeric.ixx">
+      <Filter>mylib\numeric</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.utility.ixx">
+      <Filter>mylib\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.matrix.ixx">
+      <Filter>mylib\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.red_black_tree.ixx">
+      <Filter>mylib\not_standard\container\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.binary_tree.ixx">
+      <Filter>mylib\not_standard\container\tree</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="my_binary_tree.cd" />
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="asm.asm">
+      <Filter>源文件</Filter>
+    </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mylib_assert.h">
+      <Filter>mylib\not_standard\macro</Filter>
+    </ClInclude>
+    <ClInclude Include="type_traits">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="algorithm">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="deque">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

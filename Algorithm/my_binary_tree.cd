@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="mylib::key_binary_tree&lt;_KeyType, _Compare, _Allocator, _RootNodeType&gt;" Collapsed="true">
+    <Position X="3.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAMAAAoEKAAIAYAAAAAAAAAAAAKAAiIAAAAAA=</HashCode>
+      <FileName>my_binary_tree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mylib::pair_binary_tree&lt;_KeyType, _MappedType, _Compare, _Allocator, _RootNodeType&gt;" Collapsed="true">
+    <Position X="3.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAEAAAAAIAAAAAAAAAAAACAAgAAAAAAA=</HashCode>
+      <FileName>my_binary_tree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="mylib::key_binary_tree_node&lt;_KeyType, _Compare, _Allocator&gt;" Collapsed="true">
+    <Position X="8" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAIAAAAAIAQAAAAAIAKEAAAAkABAAgAA=</HashCode>
+      <FileName>my_binary_tree.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="mylib::pair_binary_tree_node&lt;_KeyType, _MappedType, _Compare, _Allocator&gt;" Collapsed="true">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgIAAAAAAAMAQAAAAAIAAAAAAAgABAAgAA=</HashCode>
+      <FileName>my_binary_tree.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="mylib::key_binary_tree_root_node&lt;_KeyType, _Compare, _Allocator, _NodeType&gt;" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAoEIACIA4AAAAAAAAAACAKAAgIYAAAAA=</HashCode>
+      <FileName>my_binary_tree.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="mylib::pair_binary_tree_root_node&lt;_KeyType, _MappedType, _Compare, _Allocator, _NodeType&gt;" Collapsed="true">
+    <Position X="5.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgEAAAEAIAAAAAAAAAAAACAAgAAAAAAA=</HashCode>
+      <FileName>my_binary_tree.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
