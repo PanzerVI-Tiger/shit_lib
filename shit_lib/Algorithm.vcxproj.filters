@@ -212,5 +212,14 @@
     <ClInclude Include="vector">
       <Filter>mylib\head</Filter>
     </ClInclude>
+    <ClInclude Include="iterator">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="memory">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

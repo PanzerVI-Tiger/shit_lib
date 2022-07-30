@@ -11,8 +11,14 @@ export module mylib.main;
 import std.core;
 import mylib;
 
+template<typename Result>
+Result f()
+{
+    return 1;
+}
+
 export int main() noexcept
 {
-
+        
 	return 0;
 }

@@ -264,8 +264,11 @@
   <ItemGroup>
     <ClInclude Include="algorithm" />
     <ClInclude Include="deque" />
+    <ClInclude Include="iterator" />
     <ClInclude Include="list" />
+    <ClInclude Include="memory" />
     <ClInclude Include="mylib_assert.h" />
+    <ClInclude Include="numeric" />
     <ClInclude Include="queue" />
     <ClInclude Include="stack" />
     <ClInclude Include="type_traits" />

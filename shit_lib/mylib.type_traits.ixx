@@ -57,24 +57,26 @@ export namespace mylib::inline type_traits {
     template<bool cond, typename TrueCase, typename FalseCase>
     using conditional_t = typename conditional<cond, TrueCase, FalseCase>::type;
     
-    // use auxiliary_disjunction to avoid too many inherit
-    // auxiliary template
-    template<bool firstValue, typename FirstConstant, typename... BoolConstants>
-    struct auxiliary_conjunction { // handle false case and end, will end try
-        using type = FirstConstant;
-    };
+    namespace detail {
+        // use auxiliary_disjunction to avoid too many inherit
+        // auxiliary template
+        template<bool firstValue, typename FirstConstant, typename... BoolConstants>
+        struct auxiliary_conjunction { // handle false case and end, will end try
+            using type = FirstConstant;
+        };
 
-    // auxiliary template
-    template<typename FirstConstant, typename NextConstant, typename... BoolConstants>
-    struct auxiliary_conjunction<true, FirstConstant, NextConstant, BoolConstants...> {
-        // handle false case, then try to next
-        using type =
-            typename auxiliary_conjunction<
+        // auxiliary template
+        template<typename FirstConstant, typename NextConstant, typename... BoolConstants>
+        struct auxiliary_conjunction<true, FirstConstant, NextConstant, BoolConstants...> {
+            // handle false case, then try to next
+            using type =
+                typename auxiliary_conjunction<
                 NextConstant::value,
                 NextConstant,
                 BoolConstants...
-            >::type;
-    };
+                >::type;
+        };
+    }
 
     // C++17
     template<typename... BoolConstants>
@@ -84,31 +86,33 @@ export namespace mylib::inline type_traits {
     // C++17
     template<typename BoolConstant1, typename... BoolConstants>
     struct conjunction<BoolConstant1, BoolConstants...> :
-        auxiliary_conjunction<BoolConstant1::value, BoolConstant1, BoolConstants...> {
+        detail::auxiliary_conjunction<BoolConstant1::value, BoolConstant1, BoolConstants...> {
     };
 
     // C++17
     template<typename... BoolConstants>
     using conjunction_t = typename conjunction<BoolConstants...>::type;
     
-    // use auxiliary_disjunction to avoid too many inherit
-    // auxiliary template
-    template<bool firstValue, typename FirstConstant, typename... BoolConstants>
-    struct auxiliary_disjunction { // handle true case and end, will end try
-        using type = FirstConstant;
-    };
-    
-    // auxiliary template
-    template<typename FirstConstant, typename NextConstant, typename... BoolConstants>
-    struct auxiliary_disjunction<false, FirstConstant, NextConstant, BoolConstants...> {
-        // handle false case, then try to next
-        using type = 
-            typename auxiliary_disjunction<
-                NextConstant::value, 
-                NextConstant, 
+    namespace detail {
+        // use auxiliary_disjunction to avoid too many inherit
+        // auxiliary template
+        template<bool firstValue, typename FirstConstant, typename... BoolConstants>
+        struct auxiliary_disjunction { // handle true case and end, will end try
+            using type = FirstConstant;
+        };
+
+        // auxiliary template
+        template<typename FirstConstant, typename NextConstant, typename... BoolConstants>
+        struct auxiliary_disjunction<false, FirstConstant, NextConstant, BoolConstants...> {
+            // handle false case, then try to next
+            using type =
+                typename auxiliary_disjunction<
+                NextConstant::value,
+                NextConstant,
                 BoolConstants...
-            >::type;
-    };
+                >::type;
+        };
+    }
     
     // C++17
     template<typename... BoolConstants>
@@ -118,7 +122,7 @@ export namespace mylib::inline type_traits {
     // C++17
     template<typename BoolConstant1, typename... BoolConstants>
     struct disjunction<BoolConstant1, BoolConstants...> : 
-        auxiliary_disjunction<BoolConstant1::value, BoolConstant1, BoolConstants...>
+        detail::auxiliary_disjunction<BoolConstant1::value, BoolConstant1, BoolConstants...>
     {};
 
     // C++17
@@ -335,24 +339,6 @@ export namespace mylib::inline type_traits {
     template<typename Type, typename... Types>
     struct is_any_of : 
         bool_constant<is_any_of_v<Type, Types...>> 
-    {};
-
-#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
-    
-    // C++17
-    template<typename BaseClass, typename DerivedClass>
-    inline constexpr bool is_base_of_v = __is_base_of(BaseClass, DerivedClass);
-
-#   else
-
-    
-
-    
-#   endif
-
-    template<typename BaseClass, typename DerivedClass>
-    struct is_base_of :
-        bool_constant<is_base_of_v<BaseClass, DerivedClass>>
     {};
     
     // C++17
@@ -599,20 +585,22 @@ export namespace mylib::inline type_traits {
 
 #   else
 
-    // auxiliary template
-    template<typename Type>
-    inline constexpr bool auxiliary_is_member_function_pointer_v
-        = false;
+    namespace detail {
+        // auxiliary template
+        template<typename Type>
+        inline constexpr bool auxiliary_is_member_function_pointer_v
+            = false;
 
-    // auxiliary templatye
-    template<typename MemberType, typename ClassType>
-    inline constexpr bool auxiliary_is_member_function_pointer_v<MemberType ClassType::*>
-        = is_function_v<MemberType>;
-
+        // auxiliary template
+        template<typename MemberType, typename ClassType>
+        inline constexpr bool auxiliary_is_member_function_pointer_v<MemberType ClassType::*>
+            = is_function_v<MemberType>;
+    }
+    
     // C++17
     template<typename Type>
     inline constexpr bool is_member_function_pointer_v
-        = auxiliary_is_member_function_pointer_v<remove_cv_t<Type>>;
+        = detail::auxiliary_is_member_function_pointer_v<remove_cv_t<Type>>;
 
 #   endif
 
@@ -629,5 +617,24 @@ export namespace mylib::inline type_traits {
     template<typename Type>
     struct is_arithmetic :
         bool_constant<is_arithmetic_v<Type>>
+    {};
+
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
+    
+    // C++17
+    template<typename BaseClass, typename DerivedClass>
+    inline constexpr bool is_base_of_v = __is_base_of(BaseClass, DerivedClass);
+
+#   else
+
+    
+    
+
+    
+#   endif
+
+    template<typename BaseClass, typename DerivedClass>
+    struct is_base_of :
+        bool_constant<is_base_of_v<BaseClass, DerivedClass>>
     {};
 }
