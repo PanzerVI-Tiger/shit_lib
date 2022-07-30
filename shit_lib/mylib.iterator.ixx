@@ -6,8 +6,8 @@ import std.core;
 export namespace mylib {
     
     /*/ 
-    /*  mylib's iterator tag can compatible with standard library
-    /*  mylib's iterator tag inheriting all base class standard iterator tag types to prevent ambiguous base classes
+    /*  mylib's iterator tag can compatible with standard library.
+    /*  They inheriting all base class standard iterator tag types to prevent ambiguous base classes,
     /*  Because ambiguous base classes will cause concept 'derive_from' to fail.
     /*/
     struct input_iterator_tag :

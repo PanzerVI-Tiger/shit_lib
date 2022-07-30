@@ -264,8 +264,12 @@
   <ItemGroup>
     <ClInclude Include="algorithm" />
     <ClInclude Include="deque" />
+    <ClInclude Include="list" />
     <ClInclude Include="mylib_assert.h" />
+    <ClInclude Include="queue" />
+    <ClInclude Include="stack" />
     <ClInclude Include="type_traits" />
+    <ClInclude Include="vector" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,7 +2,7 @@
 
 #define MYLIB_IDENTIFIER_TO_C_STRING(id) # id
 
-#if defined DEBUG || defined MYLIB_ASSERT
+#if defined(DEBUG) || defined(MYLIB_ASSERT)
 
 
 #pragma optimize("", off)
