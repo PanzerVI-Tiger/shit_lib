@@ -113,15 +113,6 @@ template<typename Type>
 struct aggregation_traits {
     using type         = Type;
     using members_type = decltype(members_tuple(mylib::declval<Type>()));
-
-    
-    static constexpr auto members_tuple(const Type& type) noexcept {
-        return ::members_tuple(type);
-    }
-
-    static constexpr auto members_ref_tuple(Type& type) noexcept {
-        return ::members_ref_tuple(type);
-    }
     
     static size_t members_size() noexcept {
         return membersSize;
@@ -153,7 +144,7 @@ export int main() noexcept
     aggregation_traits<A> ta;
     aggregation_traits<B> tb;
 
-
+    std::cout << members_ref_tuple(a) << ' ' << members_ref_tuple(b);
     
 	return 0;
 }
