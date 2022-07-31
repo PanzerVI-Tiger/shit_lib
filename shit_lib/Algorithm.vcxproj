@@ -204,7 +204,9 @@
       <FileType>Document</FileType>
     </ClCompile>
     <ClCompile Include="mylib.iterator.ixx" />
-    <ClCompile Include="mylib.ixx" />
+    <ClCompile Include="mylib.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
     <ClCompile Include="mylib.eval.ixx" />
     <ClCompile Include="mylib.matrix.ixx" />
     <ClCompile Include="mylib.memory.ixx" />
@@ -268,6 +270,7 @@
     <ClInclude Include="list" />
     <ClInclude Include="memory" />
     <ClInclude Include="mylib_assert.h" />
+    <ClInclude Include="mylib_sort.h" />
     <ClInclude Include="numeric" />
     <ClInclude Include="queue" />
     <ClInclude Include="stack" />

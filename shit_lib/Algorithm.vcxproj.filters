@@ -81,9 +81,6 @@
     <ClCompile Include="源.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.ixx">
-      <Filter>mylib</Filter>
-    </ClCompile>
     <ClCompile Include="mylib.deque.ixx">
       <Filter>mylib\module\container</Filter>
     </ClCompile>
@@ -177,6 +174,9 @@
     <ClCompile Include="mylib.pointer.ixx">
       <Filter>mylib\module\not_standard\utility</Filter>
     </ClCompile>
+    <ClCompile Include="mylib.ixx">
+      <Filter>mylib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="my_binary_tree.cd" />
@@ -220,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="numeric">
       <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib_sort.h">
+      <Filter>mylib\head\not_standard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
