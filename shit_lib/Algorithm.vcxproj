@@ -193,6 +193,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="mylib.aggregate.ixx" />
     <ClCompile Include="mylib.algorithm.ixx" />
     <ClCompile Include="mylib.container_traits.ixx" />
     <ClCompile Include="mylib.link_list.ixx" />

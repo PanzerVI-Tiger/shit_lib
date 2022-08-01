@@ -177,6 +177,9 @@
     <ClCompile Include="mylib.ixx">
       <Filter>mylib</Filter>
     </ClCompile>
+    <ClCompile Include="mylib.aggregate.ixx">
+      <Filter>mylib\module\not_standard\utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="my_binary_tree.cd" />

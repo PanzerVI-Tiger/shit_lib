@@ -51,6 +51,7 @@ export import mylib.stream_output;    // ouput some container to stream
 //           utility
 export import mylib.eval;             // calculate C's or scheme's style expression
 export import mylib.timer;
+export import mylib.aggregate;
 export import mylib.container_traits; // traits of mylib container and iterator
 
 export {
