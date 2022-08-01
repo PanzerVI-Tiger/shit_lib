@@ -26,7 +26,8 @@ export int main() noexcept
         int bb;
     } b{ 1, { 1, 2, 3, 4 }, 8 };
     
-    std::cout << mylib::get<1>(b);
+    //std::cout << mylib::get<1>(b);
+    std::cout << typeid(mylib::aggregate_traits<int[10]>::members_type).name();
     
 	return 0;
 }

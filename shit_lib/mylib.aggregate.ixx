@@ -131,6 +131,35 @@ export namespace mylib::inline aggregate {
         inline static constexpr size_t membersSize = sizeof...(Types);
     };
 
+    namespace detail {
+        template<typename Type, size_t size>
+        constexpr auto make_n_same_type_tuple() noexcept {
+            return 
+                []<size_t index, size_t... indices, typename... Types> (
+                    this auto self, std::tuple<Types...> tuple, std::index_sequence<index, indices...> sequence
+                ) constexpr noexcept {
+                
+                if constexpr (sizeof...(indices) == 0) {
+                    return std::tuple<Types..., Type>{};
+                } else {
+                    return self(std::tuple<Types..., Type>{}, std::index_sequence<indices...>{});
+                }
+            }(std::make_tuple(), std::make_index_sequence<size>{});
+        }
+    }
+    
+    template<typename Type, size_t size>
+    struct aggregate_traits<Type[size]> {
+        using type         = Type[size];
+        using members_type = decltype(detail::make_n_same_type_tuple<Type, size>());
+
+        static size_t members_size() noexcept {
+            return size;
+        }
+
+        inline static constexpr size_t membersSize = size;
+    };
+
     template<size_t index, typename Type>
     auto&& get(Type& type) noexcept {
         return std::get<index>(members_ref_tuple(type));
