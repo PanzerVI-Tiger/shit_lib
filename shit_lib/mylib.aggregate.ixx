@@ -518,11 +518,6 @@ export namespace mylib::inline aggregate {
         return std::get<index>(member_objects_ref(type));
     }
 
-    template<size_t index, typename... Types>
-    decltype(auto) get(std::tuple<Types...>& tuple) noexcept {
-        return std::get<index>(tuple);
-    }
-
     template<typename Type>
     struct aggregate_traits {
         using type  = Type;
@@ -548,7 +543,7 @@ export namespace mylib::inline aggregate {
                 std::index_sequence<indices...> sequence, std::tuple<Types...> tuple
                 ) constexpr noexcept {
                 bool isStart = true;
-                (..., (name += (isStart ? isStart = false, "" : ", "s) + typeid(Types).name()));
+                (..., (name += (isStart ? isStart = false, ""s : ", "s) + typeid(Types).name()));
             }(std::make_index_sequence<size()>{}, member_objects({}));
 
             return name;
