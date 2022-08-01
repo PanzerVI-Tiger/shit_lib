@@ -507,11 +507,6 @@ export namespace mylib::inline aggregate {
             static_assert(always_false<Type>, "can't handle so many members!");
         }
     }
-    
-    /*template<typename Type>
-    constexpr static std::string member_objects_types_string() noexcept {
-        
-    }*/
 
     template<size_t index, typename Type>
     decltype(auto) get(Type& type) noexcept {
@@ -557,11 +552,6 @@ export namespace mylib::inline aggregate {
         inline static constexpr size_t membersSize = detail::member_objects_size<Type>();
     };
 
-    template<typename Type>
-    constexpr std::string member_objects_types_string() noexcept {
-        return aggregate_traits<Type>::member_objects_types_string();
-    }
-
     namespace detail {
         template<typename Type, size_t size>
         constexpr auto make_n_same_type_tuple() noexcept {
@@ -579,15 +569,45 @@ export namespace mylib::inline aggregate {
         }
     }
     
-    template<typename Type, size_t size>
-    struct aggregate_traits<Type[size]> {
-        using type  = Type[size];
-        using types = decltype(detail::make_n_same_type_tuple<Type, size>());
+    template<typename Type, size_t arraySize>
+    struct aggregate_traits<Type[arraySize]> {
+        using type  = Type[arraySize];
+        using types = decltype(detail::make_n_same_type_tuple<Type, arraySize>());
 
         static size_t size() noexcept {
-            return size;
+            return arraySize;
         }
 
-        inline static constexpr size_t membersSize = size;
+        static constexpr std::string types_string() noexcept {
+            std::string name{ "" };
+            std::string type_name{ typeid(Type).name() };
+            
+            for (size_t i = 0; i != arraySize; ++i) {
+                name += (i == 0 ? "" : ", ") + type_name;
+            }
+
+            return name;
+        }
+
+        static constexpr auto member_objects(const Type (&object)[arraySize]) noexcept {
+            return
+                [&object]<size_t... indices> (std::index_sequence<indices...> sequence) constexpr noexcept {
+                    return types{ object[indices]... };
+                }(std::make_index_sequence<arraySize>{});
+        }
+
+        static constexpr auto member_objects_ref(Type (&object)[arraySize]) noexcept {
+            return
+                [&object]<size_t... indices> (std::index_sequence<indices...> sequence) constexpr noexcept {
+                    return decltype(detail::make_n_same_type_tuple<Type&>()){ object[indices]... };
+                }(std::make_index_sequence<arraySize>{});
+        }
+
+        inline static constexpr size_t membersSize = arraySize;
     };
+
+    template<typename Type>
+    constexpr std::string member_objects_types_string() noexcept {
+        return aggregate_traits<Type>::member_objects_types_string();
+    }
 }

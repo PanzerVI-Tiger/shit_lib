@@ -37,11 +37,14 @@ export int main() noexcept
         int gb[4];
         int bb;
     } b{ 1, { 1, 2, 3, 4 }, 8 };
-    
+    int arr[] = { 1, 2, 3, 4, 5 };
+
     // print all
     print_aggregate_traits(a);
     std::cout << '\n';
     print_aggregate_traits(b);
+    std::cout << '\n';
+    print_aggregate_traits(arr);
     std::cout << '\n' << mylib::get<1>(b);
     
 	return 0;
