@@ -563,14 +563,13 @@ export namespace mylib::inline aggregate {
             return 
                 []<size_t index, size_t... indices, typename... Types> (
                     this auto self, std::tuple<Types...> tuple, std::index_sequence<index, indices...> sequence
-                ) constexpr noexcept {
-                
-                if constexpr (sizeof...(indices) == 0) {
-                    return std::tuple<Types..., Type>{};
-                } else {
-                    return self(std::tuple<Types..., Type>{}, std::index_sequence<indices...>{});
-                }
-            }(std::make_tuple(), std::make_index_sequence<size>{});
+                ) constexpr noexcept {               
+                    if constexpr (sizeof...(indices) == 0) {
+                        return std::tuple<Types..., Type>{};
+                    } else {
+                        return self(std::tuple<Types..., Type>{}, std::index_sequence<indices...>{});
+                    }
+                }(std::make_tuple(), std::make_index_sequence<size>{});
         }
     }
     
