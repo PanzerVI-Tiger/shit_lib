@@ -99,14 +99,15 @@ export namespace mylib::inline aggregate {
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 17> :
-        bool_constant < requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> {
+        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> {
     };
     
     template<typename Type, size_t argumentsSize>
     inline constexpr bool can_n_arguments_construct_v = can_n_arguments_construct<Type, argumentsSize>::value;
 
     template<typename Type, size_t memberSize>
-    concept have_n_member_objects = !can_n_arguments_construct_v<Type, memberSize + 1> && can_n_arguments_construct_v<Type, memberSize>;
+    concept have_n_member_objects = 
+        !can_n_arguments_construct_v<Type, memberSize + 1> && can_n_arguments_construct_v<Type, memberSize>;
 
     namespace detail {
         template<typename Type>
