@@ -25,7 +25,7 @@ export namespace mylib::inline utility {
     void assignment(Type(&destination)[size], const Type(&source)[size]) noexcept
     {
         for (size_t i = 0; i != size; ++i) {
-            destination[i] = source[i];
+            assignment(destination[i], source[i]);
         }
     }
 }

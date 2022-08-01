@@ -261,6 +261,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </MASM>
+    <None Include="..\README.md" />
     <None Include="ClassDiagram.cd" />
     <None Include="my_binary_tree.cd" />
   </ItemGroup>

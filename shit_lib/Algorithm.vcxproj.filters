@@ -184,6 +184,7 @@
   <ItemGroup>
     <None Include="my_binary_tree.cd" />
     <None Include="ClassDiagram.cd" />
+    <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
     <MASM Include="asm.asm">
