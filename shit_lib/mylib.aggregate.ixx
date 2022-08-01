@@ -509,8 +509,13 @@ export namespace mylib::inline aggregate {
     }
 
     template<size_t index, typename Type>
-    decltype(auto) get(Type& type) noexcept {
+    constexpr decltype(auto) get(Type& type) noexcept {
         return std::get<index>(member_objects_ref(type));
+    }
+
+    template<size_t index, typename Type, size_t arraySize>
+    constexpr decltype(auto) get(Type (&type)[arraySize]) noexcept {
+        return arraySize[index];
     }
 
     template<typename Type>
@@ -601,6 +606,11 @@ export namespace mylib::inline aggregate {
                 [&object]<size_t... indices> (std::index_sequence<indices...> sequence) constexpr noexcept {
                     return decltype(detail::make_n_same_type_tuple<Type&>()){ object[indices]... };
                 }(std::make_index_sequence<arraySize>{});
+        }
+
+        template<size_t index>
+        static auto get(Type& type) noexcept {
+            return mylib::get<index>(type);
         }
 
         inline static constexpr size_t membersSize = arraySize;

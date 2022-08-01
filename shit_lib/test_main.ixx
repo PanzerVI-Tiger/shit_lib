@@ -46,6 +46,6 @@ export int main() noexcept
     std::cout << '\n';
     print_aggregate_traits(arr);
     std::cout << '\n' << mylib::get<1>(b);
-    
+
 	return 0;
 }
