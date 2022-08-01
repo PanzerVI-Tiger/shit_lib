@@ -540,12 +540,12 @@ export namespace mylib::inline aggregate {
             using namespace std::string_literals;
 
             std::string name{ "" };
-            [&name] <size_t... indices, typename... Types> (
-                std::index_sequence<indices...> sequence, std::tuple<Types...> tuple
-                ) constexpr noexcept {
+            [&name] <typename... Types> (
+                std::tuple<Types...> tuple
+            ) constexpr noexcept {
                 bool isStart = true;
                 (..., (name += (isStart ? isStart = false, ""s : ", "s) + typeid(Types).name()));
-            }(std::make_index_sequence<size()>{}, member_objects({}));
+            }(member_objects({}));
 
             return name;
         }
