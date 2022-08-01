@@ -266,7 +266,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm" />
+    <ClInclude Include="compare" />
     <ClInclude Include="deque" />
+    <ClInclude Include="functional" />
     <ClInclude Include="iterator" />
     <ClInclude Include="list" />
     <ClInclude Include="memory" />
@@ -275,7 +277,9 @@
     <ClInclude Include="numeric" />
     <ClInclude Include="queue" />
     <ClInclude Include="stack" />
+    <ClInclude Include="string" />
     <ClInclude Include="type_traits" />
+    <ClInclude Include="utility" />
     <ClInclude Include="vector" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

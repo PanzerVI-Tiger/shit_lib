@@ -227,5 +227,17 @@
     <ClInclude Include="mylib_sort.h">
       <Filter>mylib\head\not_standard</Filter>
     </ClInclude>
+    <ClInclude Include="string">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="compare">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="functional">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="utility">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
