@@ -673,7 +673,7 @@ export namespace mylib::inline aggregate {
                 !is_same_v<typename traitA::types, std::tuple<int, double, char>>/* &&
                 !is_same_v<typename traitB::types, std::tuple<int, std::string, double&, int[4]>>*/
             ) {
-                static_assert(always_false<Void>, "member objects' object are not correct!");
+                static_assert(always_false<Void>, "member objects' type are not correct!");
             }
             
             return true;

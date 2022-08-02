@@ -447,7 +447,7 @@ export namespace mylib::inline type_traits {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_rvalue_reference_v = false;
+    inline constexpr bool is_rvalue_reference_v        = false;
 
     // C++17
     template<typename Type>
