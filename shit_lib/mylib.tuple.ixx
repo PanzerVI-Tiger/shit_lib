@@ -9,7 +9,10 @@ export namespace mylib {
     template<typename Type = void, typename... Types>
     struct tuple {
         template<typename Argument, typename... Arguments>
-        tuple(Argument&& argument, Arguments&&... arguments) noexcept {}
+        tuple(Argument&& argument, Arguments&&... arguments) noexcept 
+            : current{ std::forward<Argument> (argument)     }, 
+              next   { std::forward<Arguments>(arguments)... }
+        {}
         
         Type            current;
         tuple<Types...> next;

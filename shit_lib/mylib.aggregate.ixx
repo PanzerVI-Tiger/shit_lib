@@ -7,7 +7,7 @@ import mylib.type_traits;
 import mylib.stream_output;
 
 
-export namespace mylib::inline aggregate {
+export namespace mylib {
 
     namespace detail {
         struct cast_any {
@@ -651,7 +651,7 @@ export namespace mylib::inline aggregate {
     namespace unittest {
         
         template<typename Void = void>
-        constexpr bool aggregate_assert_test() noexcept {
+        constexpr bool assert_test_aggregate() noexcept {
             // TODO: static test
             struct A {
                 int    a;
@@ -680,7 +680,7 @@ export namespace mylib::inline aggregate {
         }
         
         struct test_aggregate {
-            static_assert(aggregate_assert_test(), "aggregate have bug!");
+            static_assert(assert_test_aggregate(), "aggregate have bug!");
 
             static void print_test() {
                 using mylib::operator <<;

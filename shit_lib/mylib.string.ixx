@@ -5,6 +5,11 @@ import std.core;
 
 export namespace mylib {
 
+    template<typename CharType, typename CharTraits, typename Allocator>
+    class base_string {
+        
+    };
+
     // not standard
     // default use std::to_string
     template<typename Type>

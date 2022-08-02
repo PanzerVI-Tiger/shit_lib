@@ -73,6 +73,18 @@
     <Filter Include="mylib\head\not_standard\macro">
       <UniqueIdentifier>{30f49628-c8b9-4cfd-aab1-6ce892234db5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\head\c">
+      <UniqueIdentifier>{e282a714-7840-46a9-a3ec-cd9fa26db77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\c\not_standard">
+      <UniqueIdentifier>{d1f0e629-1b04-4e9d-ab00-a05e0b65fad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\c\not_standard\macro_meta">
+      <UniqueIdentifier>{e99e17ea-2a22-42d4-884f-7f67e0decb90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\not_standard\macro\macro_meta">
+      <UniqueIdentifier>{dfb76a46-5185-4220-a4e1-a8b4deb90d50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test_main.ixx">

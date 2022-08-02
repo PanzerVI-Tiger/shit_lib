@@ -14,7 +14,14 @@ import mylib;
 
 export int main() noexcept
 {
+    struct A{};
+    struct B : A{};
+    struct C : A{};
+    struct D : B, C{};
+    union x{};
     
+    std::cout << mylib::is_base_of_v<A, D>;
+
     return 0;
 }
 

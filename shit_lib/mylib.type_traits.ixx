@@ -29,6 +29,7 @@ export namespace mylib {
 
     using true_type  = bool_constant<true>;
     using false_type = bool_constant<false>;
+    
     // is ^^ better than vv? 
     // using new methon to implement them all!
     
@@ -37,9 +38,11 @@ export namespace mylib {
         using false_type = integral_constant<bool, false>;
     */
 
+    // C++17
     template<typename BoolConstant>
-    struct negation : std::bool_constant<!bool(BoolConstant::value)> {};
+    struct negation : bool_constant<!bool(BoolConstant::value)> {};
     
+    // C++17
     template<typename BoolConstant>
     using negation_t = typename negation<BoolConstant>::type;
     
@@ -71,9 +74,9 @@ export namespace mylib {
             // handle false case, then try to next
             using type =
                 typename auxiliary_conjunction<
-                NextConstant::value,
-                NextConstant,
-                BoolConstants...
+                    NextConstant::value,
+                    NextConstant,
+                    BoolConstants...
                 >::type;
         };
     }
@@ -107,9 +110,9 @@ export namespace mylib {
             // handle false case, then try to next
             using type =
                 typename auxiliary_disjunction<
-                NextConstant::value,
-                NextConstant,
-                BoolConstants...
+                    NextConstant::value,
+                    NextConstant,
+                    BoolConstants...
                 >::type;
         };
     }
@@ -144,7 +147,7 @@ export namespace mylib {
 
     // not standard
     template<typename>
-    inline constexpr bool always_true = true;
+    inline constexpr bool always_true  = true;
     
     // not standard
     template<typename>
@@ -279,6 +282,14 @@ export namespace mylib {
     template<typename Type>
     using add_lvalue_reference_t = typename add_lvalue_reference<Type>::type;
 
+    // redefine declval from utility,
+    // to avoid import whole utility, 
+    // that will result in type_traits can't be freestanding
+    template<typename Type>
+    add_rvalue_reference_t<Type> declval() noexcept {
+        static_assert(always_false<Type>, "declval shouldn't be called!");
+    }
+
     template<typename Type>
     struct remove_pointer {
         using type = Type;
@@ -320,7 +331,7 @@ export namespace mylib {
     
     // C++17
     template<typename Type1, typename Type2>
-    inline constexpr bool is_same_v = false;
+    inline constexpr bool is_same_v             = false;
     
     // C++17
     template<typename Type>
@@ -364,12 +375,12 @@ export namespace mylib {
     inline constexpr bool is_integral_v = 
         is_any_of_v<
             remove_cv_t<Type>,
-            bool,
-            char,      signed char, unsigned char,
-            char8_t,   char16_t,    char32_t,
-            short,     unsigned short,
-            int,       unsigned int,
-            long,      unsigned long,
+            bool     ,
+            char     , signed char   , unsigned char,
+            char8_t  , char16_t      , char32_t     ,
+            short    , unsigned short,
+            int      , unsigned int  ,
+            long     , unsigned long ,
             long long, unsigned long long
         >;
 
@@ -487,7 +498,6 @@ export namespace mylib {
     struct is_const :
         bool_constant<is_const_v<Type>>
     {};
-
 
 #   if defined(__clang__) || defined(_MSVC_LANG)
     
@@ -622,14 +632,49 @@ export namespace mylib {
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
     // C++17
+    // __is_base_of is available in clang, gcc and msvc
     template<typename BaseClass, typename DerivedClass>
     inline constexpr bool is_base_of_v = __is_base_of(BaseClass, DerivedClass);
 
 #   else
 
-    
-    
+    namespace details {
+        
+        // auxiliary function template
+        // if pointer to derived class can be casted to pointer to base class, match this
+        template<typename BaseClass>
+        true_type  test_is_pointer_convertible(const volatile BaseClass*) noexcept
+        {}
+        
+        // auxiliary function template
+        // else match this
+        template<typename BaseClass>
+        false_type test_is_pointer_convertible(const volatile void*)      noexcept
+        {}
 
+        // auxiliary function template
+        // an ambiguous base class will match this function template
+        template<typename BaseClass, typename DerivedClass>
+        auto test_is_base_of(...) noexcept -> true_type
+        {}
+        
+        // auxiliary function template
+        template<typename BaseClass, typename DerivedClass>
+        auto test_is_base_of(int) noexcept ->
+            // check can the derived class cast to base class
+            decltype(test_is_pointer_convertible<BaseClass>(static_cast<DerivedClass*>(nullptr)))
+        {}
+    }
+
+    template <typename BaseClass, typename DerivedClass>
+    inline constexpr bool is_base_of_v =
+        is_class_v<BaseClass>    && // base    class must be a class
+        is_class_v<DerivedClass> && // derived class must be a class too
+        decltype(
+            details::test_is_base_of<
+                BaseClass, DerivedClass
+            >(0)
+        )::value;                   // check 
     
 #   endif
 
@@ -637,4 +682,18 @@ export namespace mylib {
     struct is_base_of :
         bool_constant<is_base_of_v<BaseClass, DerivedClass>>
     {};
+
+    
+
+    namespace unittest {
+        
+        template<typename Void = void>
+        constexpr bool assert_test() noexcept {
+            return true;
+        }
+        
+        struct test_type_traits {
+            static_assert(assert_test(), "type_traits have bug!");
+        };
+    }
 }
