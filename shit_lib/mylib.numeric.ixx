@@ -8,7 +8,7 @@ import std.core;
 import mylib.functional;
 
 
-export namespace mylib::inline numeric {
+export namespace mylib {
     
     // C++11
     template<typename ForardIterator, typename ValueType>

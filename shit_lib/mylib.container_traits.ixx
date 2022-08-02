@@ -3,7 +3,7 @@ export module mylib.container_traits;
 import std.core;
 
 
-export namespace mylib::inline container_traits {
+export namespace mylib {
     
     // the class which is write by mylib has the tag mylib_tag.
     

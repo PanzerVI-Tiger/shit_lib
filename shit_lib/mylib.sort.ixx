@@ -4,7 +4,7 @@ import std.core;
 import mylib.algorithm;
 
 
-export namespace mylib::inline sort {
+export namespace mylib::inline sorts {
 
     template<typename BidirectionalIterator, typename Predicate>
     constexpr void bubble_sort(BidirectionalIterator first, BidirectionalIterator last, Predicate pred) noexcept {

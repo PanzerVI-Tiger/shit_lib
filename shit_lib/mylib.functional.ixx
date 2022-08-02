@@ -1,7 +1,7 @@
 export module mylib.functional;
 
 
-export namespace mylib::inline functional {
+export namespace mylib {
     
     template<typename FunctionType>
     class function {

@@ -1,7 +1,7 @@
 export module mylib.pointer;
 
 
-export namespace mylib::inline pointer {
+export namespace mylib {
     
     template<typename ValueType>
     struct compressive_pointer {

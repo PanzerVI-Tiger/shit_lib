@@ -3,7 +3,7 @@ export module mylib.string;
 import std.core;
 
 
-export namespace mylib::inline string {
+export namespace mylib {
 
     // not standard
     // default use std::to_string

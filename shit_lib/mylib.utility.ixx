@@ -4,7 +4,7 @@ import std.core;
 import mylib.compare;
 import mylib.type_traits;
 
-export namespace mylib::inline utility {
+export namespace mylib {
     
     // C++11
     template<typename Type>

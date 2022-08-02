@@ -4,7 +4,7 @@ import std.core;
 import mylib.container_traits;
 
 
-export namespace mylib::inline type_traits {
+export namespace mylib {
     
     template<typename Type, Type typeValue>
     struct integral_constant {

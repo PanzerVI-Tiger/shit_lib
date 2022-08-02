@@ -551,7 +551,7 @@ export namespace mylib::inline aggregate {
 
             std::string name{ "" };
             [&name] <typename... Types> (
-                std::tuple<Types...> tuple
+                std::tuple<Types...> tupleObject
             ) constexpr noexcept {
                 bool isStart = true;
                 (..., (name += (isStart ? isStart = false, ""s : ", "s) + typeid(Types).name()));
@@ -573,7 +573,7 @@ export namespace mylib::inline aggregate {
         constexpr auto make_n_same_type_tuple() noexcept {
             return 
                 []<size_t index, size_t... indices, typename... Types> (
-                    this auto self, std::tuple<Types...> tuple,
+                    this auto self, std::tuple<Types...>   tupleObject,
                     [[maybe_unused]]
                     std::index_sequence<index, indices...> sequence
                 ) constexpr noexcept {               
