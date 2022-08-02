@@ -531,7 +531,7 @@ export namespace mylib::inline aggregate {
 
     template<typename Type>
     struct aggregate_traits {
-        using object  = Type;
+        using type  = Type;
         using types = decltype(member_objects(mylib::declval<Type>()));
 
         static constexpr size_t size() noexcept {
@@ -588,7 +588,7 @@ export namespace mylib::inline aggregate {
     
     template<typename Type, size_t arraySize>
     struct aggregate_traits<Type[arraySize]> {
-        using object  = Type[arraySize];
+        using type  = Type[arraySize];
         using types = decltype(detail::make_n_same_type_tuple<Type, arraySize>());
 
         static size_t size() noexcept {
@@ -643,7 +643,7 @@ export namespace mylib::inline aggregate {
         return 
             std::string{ typeid(Type).name() }                                          + " {\n"
             "  size: "                    + to_string(traits::size())                   + ",\n"
-            "  member objects' object: (" + traits::types_string()                      + "),\n"
+            "  member objects' types: (" + traits::types_string()                      + "),\n"
             "  member objects: "          + to_string(traits::member_objects(object))   + "\n"
             "}";
     }
