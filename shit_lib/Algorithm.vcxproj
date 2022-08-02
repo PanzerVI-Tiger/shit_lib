@@ -218,6 +218,7 @@
     <ClCompile Include="mylib.string.ixx" />
     <ClCompile Include="mylib.templates_utility.ixx" />
     <ClCompile Include="mylib.timer.ixx" />
+    <ClCompile Include="mylib.tuple.ixx" />
     <ClCompile Include="mylib.utility.ixx" />
     <ClCompile Include="mylib.vector.ixx" />
     <ClCompile Include="test_main.ixx">
@@ -230,7 +231,7 @@
     <ClCompile Include="源.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="mylib.cmpare.ixx">
+    <ClCompile Include="mylib.compare.ixx">
       <FileType>Document</FileType>
     </ClCompile>
     <ClCompile Include="mylib.queue.ixx">

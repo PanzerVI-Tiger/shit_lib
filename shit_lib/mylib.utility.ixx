@@ -14,7 +14,7 @@ export namespace mylib::inline utility {
 
     // not standard
     template<typename Type>
-        requires std::is_assignable_v<Type&, Type&>
+        requires std::is_assignable_v<Type&, Type&> // to prevent ambiguity with array overload
     void assignment(Type& destination, const Type& source) noexcept
     {
         destination = source;

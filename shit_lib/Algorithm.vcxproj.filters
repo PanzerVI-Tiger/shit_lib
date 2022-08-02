@@ -102,7 +102,7 @@
     <ClCompile Include="tt.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.cmpare.ixx">
+    <ClCompile Include="mylib.compare.ixx">
       <Filter>mylib\module\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.eval.ixx">
@@ -179,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="mylib.aggregate.ixx">
       <Filter>mylib\module\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.tuple.ixx">
+      <Filter>mylib\module\utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

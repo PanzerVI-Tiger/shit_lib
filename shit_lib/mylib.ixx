@@ -23,6 +23,7 @@ export import mylib.memory;
 export import mylib.string;
 
 //           utility
+export import mylib.tuple;       // C++11
 export import mylib.compare;     // C++20
 export import mylib.utility;
 export import mylib.functional;

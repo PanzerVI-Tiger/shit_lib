@@ -4,7 +4,7 @@ import std.core;
 import mylib.container_traits;
 
 
-export namespace mylib::matrix {
+export namespace mylib {
     
     template<typename ElementType, size_t vertical, size_t horizontal>
     class matrix {

@@ -1,12 +1,25 @@
 export module mylib.aggregate;
 
 import std.core;
+import mylib.string;
 import mylib.utility;
 import mylib.type_traits;
+import mylib.stream_output;
 
 
 export namespace mylib::inline aggregate {
 
+    namespace detail {
+        struct cast_any {
+            template<typename Type>
+            operator Type&() const {
+                remove_reference_t<Type> result{};
+
+                return result;
+            }
+        };
+    }
+    
     template<typename Type, size_t argumentsSize>
     struct can_n_arguments_construct : false_type {
         static_assert(always_false<Type>, "can't handle so many arguments!");
@@ -19,27 +32,27 @@ export namespace mylib::inline aggregate {
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 1> :
-        bool_constant<requires{ Type{ {} }; }> 
+        bool_constant<requires{ Type{ {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 2> :
-        bool_constant<requires{ Type{ {}, {} }; }> 
+        bool_constant<requires{ Type{ {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 3> :
-        bool_constant<requires{ Type{ {}, {}, {} }; }> 
+        bool_constant<requires{ Type{ {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 4> :
-        bool_constant<requires{ Type{ {}, {}, {}, {} }; }> 
+        bool_constant<requires{ Type{ {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 5> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {} }; }> 
+        bool_constant<requires{ Type{ {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
@@ -109,75 +122,72 @@ export namespace mylib::inline aggregate {
     concept have_n_member_objects = 
         !can_n_arguments_construct_v<Type, memberSize + 1> && can_n_arguments_construct_v<Type, memberSize>;
 
-    namespace detail {
-        template<typename Type>
-        constexpr size_t member_objects_size() noexcept
-        {
-            if constexpr (have_n_member_objects<Type, 0>) {
-                return 0;
-            } else if constexpr (have_n_member_objects<Type, 1>) {
-                return 1;
-            } else if constexpr (have_n_member_objects<Type, 2>) {
-                return 2;
-            } else if constexpr (have_n_member_objects<Type, 3>) {
-                return 3;
-            } else if constexpr (have_n_member_objects<Type, 4>) {
-                return 4;
-            } else if constexpr (have_n_member_objects<Type, 5>) {
-                return 5;
-            } else if constexpr (have_n_member_objects<Type, 6>) {
-                return 6;
-            } else if constexpr (have_n_member_objects<Type, 7>) {
-                return 7;
-            } else if constexpr (have_n_member_objects<Type, 8>) {
-                return 8;
-            } else if constexpr (have_n_member_objects<Type, 9>) {
-                return 9;
-            } else if constexpr (have_n_member_objects<Type, 10>) {
-                return 10;
-            } else if constexpr (have_n_member_objects<Type, 11>) {
-                return 11;
-            } else if constexpr (have_n_member_objects<Type, 12>) {
-                return 12;
-            } else if constexpr (have_n_member_objects<Type, 13>) {
-                return 13;
-            } else if constexpr (have_n_member_objects<Type, 14>) {
-                return 14;
-            } else if constexpr (have_n_member_objects<Type, 15>) {
-                return 15;
-            } else if constexpr (have_n_member_objects<Type, 16>) {
-                return 16;
-            } else {
-                static_assert(always_false<Type>, "can't handle so many members!");
-            }
+    template<typename Type>
+    constexpr size_t member_objects_size() noexcept {
+        if constexpr (have_n_member_objects<Type, 0>) {
+            return 0;
+        } else if constexpr (have_n_member_objects<Type, 1>) {
+            return 1;
+        } else if constexpr (have_n_member_objects<Type, 2>) {
+            return 2;
+        } else if constexpr (have_n_member_objects<Type, 3>) {
+            return 3;
+        } else if constexpr (have_n_member_objects<Type, 4>) {
+            return 4;
+        } else if constexpr (have_n_member_objects<Type, 5>) {
+            return 5;
+        } else if constexpr (have_n_member_objects<Type, 6>) {
+            return 6;
+        } else if constexpr (have_n_member_objects<Type, 7>) {
+            return 7;
+        } else if constexpr (have_n_member_objects<Type, 8>) {
+            return 8;
+        } else if constexpr (have_n_member_objects<Type, 9>) {
+            return 9;
+        } else if constexpr (have_n_member_objects<Type, 10>) {
+            return 10;
+        } else if constexpr (have_n_member_objects<Type, 11>) {
+            return 11;
+        } else if constexpr (have_n_member_objects<Type, 12>) {
+            return 12;
+        } else if constexpr (have_n_member_objects<Type, 13>) {
+            return 13;
+        } else if constexpr (have_n_member_objects<Type, 14>) {
+            return 14;
+        } else if constexpr (have_n_member_objects<Type, 15>) {
+            return 15;
+        } else if constexpr (have_n_member_objects<Type, 16>) {
+            return 16;
+        } else {
+            static_assert(always_false<Type>, "can't handle so many members!");
         }
     }
 
     template<typename Type>
-    constexpr auto member_objects(const Type& type) noexcept
+    constexpr auto member_objects(const Type& object) noexcept
     {
         if constexpr (have_n_member_objects<Type, 0>) {
             return std::make_tuple();
         } else if constexpr (have_n_member_objects<Type, 1>) {
-            auto [a] = type;
+            auto [a] = object;
             std::tuple<decltype(a)> result;
             assignment(std::get<0>(result), a);
             return result;
         } else if constexpr (have_n_member_objects<Type, 2>) {
-            auto [a, b] = type;
+            auto [a, b] = object;
             std::tuple<decltype(a), decltype(b)> result;
             assignment(std::get<0>(result), a);
             assignment(std::get<1>(result), b);
             return result;
         } else if constexpr (have_n_member_objects<Type, 3>) {
-            auto [a, b, c] = type;
+            auto [a, b, c] = object;
             std::tuple<decltype(a), decltype(b), decltype(c)> result;
             assignment(std::get<0>(result), a);
             assignment(std::get<1>(result), b);
             assignment(std::get<2>(result), c);
             return result;
         } else if constexpr (have_n_member_objects<Type, 4>) {
-            auto [a, b, c, d] = type;
+            auto [a, b, c, d] = object;
             std::tuple<decltype(a), decltype(b), decltype(c), decltype(d)> result;
             assignment(std::get<0>(result), a);
             assignment(std::get<1>(result), b);
@@ -185,7 +195,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<3>(result), d);
             return result;
         } else if constexpr (have_n_member_objects<Type, 5>) {
-            auto [a, b, c, d, e] = type;
+            auto [a, b, c, d, e] = object;
             std::tuple<decltype(a), decltype(b), decltype(c), decltype(d), decltype(e)> result;
             assignment(std::get<0>(result), a);
             assignment(std::get<1>(result), b);
@@ -194,7 +204,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<4>(result), e);
             return result;
         } else if constexpr (have_n_member_objects<Type, 6>) {
-            auto [a, b, c, d, e, f] = type;
+            auto [a, b, c, d, e, f] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f)
             > result;
@@ -206,7 +216,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<5>(result), f);
             return result;
         } else if constexpr (have_n_member_objects<Type, 7>) {
-            auto [a, b, c, d, e, f, g] = type;
+            auto [a, b, c, d, e, f, g] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), 
                 decltype(e), decltype(f), decltype(g)
@@ -220,7 +230,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<6>(result), g);
             return result;
         } else if constexpr (have_n_member_objects<Type, 8>) {
-            auto [a, b, c, d, e, f, g, h] = type;
+            auto [a, b, c, d, e, f, g, h] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), 
                 decltype(e), decltype(f), decltype(g), decltype(h)
@@ -235,7 +245,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<7>(result), h);
             return result;
         } else if constexpr (have_n_member_objects<Type, 9>) {
-            auto [a, b, c, d, e, f, g, h, i] = type;
+            auto [a, b, c, d, e, f, g, h, i] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
                 decltype(f), decltype(g), decltype(h), decltype(i)
@@ -251,7 +261,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<8>(result), i);
             return result;
         } else if constexpr (have_n_member_objects<Type, 10>) {
-            auto [a, b, c, d, e, f, g, h, i, j] = type;
+            auto [a, b, c, d, e, f, g, h, i, j] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
                 decltype(f), decltype(g), decltype(h), decltype(i), decltype(j)
@@ -268,7 +278,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<9>(result), j);
             return result;
         } else if constexpr (have_n_member_objects<Type, 11>) {
-            auto [a, b, c, d, e, f, g, h, i, j, k] = type;
+            auto [a, b, c, d, e, f, g, h, i, j, k] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f), 
                 decltype(g), decltype(h), decltype(i), decltype(j), decltype(k)
@@ -286,7 +296,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<10>(result), k);
             return result;
         } else if constexpr (have_n_member_objects<Type, 12>) {
-            auto [a, b, c, d, e, f, g, h, i, j, k, l] = type;
+            auto [a, b, c, d, e, f, g, h, i, j, k, l] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f), 
                 decltype(g), decltype(h), decltype(i), decltype(j), decltype(k), decltype(l)
@@ -305,7 +315,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<11>(result), l);
             return result;
         } else if constexpr (have_n_member_objects<Type, 13>) {
-            auto [a, b, c, d, e, f, g, h, i, j, k, l, m] = type;
+            auto [a, b, c, d, e, f, g, h, i, j, k, l, m] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
                 decltype(f), decltype(g), decltype(h), decltype(i), decltype(j), 
@@ -326,7 +336,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<12>(result), m);
             return result;
         } else if constexpr (have_n_member_objects<Type, 14>) {
-            auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n] = type;
+            auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
                 decltype(f), decltype(g), decltype(h), decltype(i), decltype(j), 
@@ -348,7 +358,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<13>(result), n);
             return result;
         } else if constexpr (have_n_member_objects<Type, 15>) {
-            auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o] = type;
+            auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
                 decltype(f), decltype(g), decltype(h), decltype(i), decltype(j), 
@@ -371,7 +381,7 @@ export namespace mylib::inline aggregate {
             assignment(std::get<14>(result), o);
             return result;
         } else if constexpr (have_n_member_objects<Type, 16>) {
-            auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = type;
+            auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = object;
             std::tuple<
                 decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f), 
                 decltype(g), decltype(h), decltype(i), decltype(j), decltype(k), decltype(l), 
@@ -400,82 +410,82 @@ export namespace mylib::inline aggregate {
     }
 
     template<typename Type>
-    constexpr auto member_objects_ref(Type& type) noexcept
+    constexpr auto member_objects_ref(Type& object) noexcept
     {
         if constexpr (have_n_member_objects<Type, 0>) {
             return std::make_tuple();
         } else if constexpr (have_n_member_objects<Type, 1>) {
-            auto& [a] = type;
+            auto& [a] = object;
             std::tuple<decltype(a)&> result{ a };
             return result;
         } else if constexpr (have_n_member_objects<Type, 2>) {
-            auto& [a, b] = type;
+            auto& [a, b] = object;
             std::tuple<decltype(a)&, decltype(b)&> result{ a, b };
             return result;
         } else if constexpr (have_n_member_objects<Type, 3>) {
-            auto& [a, b, c] = type;
-            std::tuple<decltype(a)&, decltype(b)&, decltype(c)&> result{a, b, c};
+            auto& [a, b, c] = object;
+            std::tuple<decltype(a)&, decltype(b)&, decltype(c)&> result{ a, b, c };
             return result;
         } else if constexpr (have_n_member_objects<Type, 4>) {
-            auto& [a, b, c, d] = type;
-            std::tuple<decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&> result{a, b, c, d};
+            auto& [a, b, c, d] = object;
+            std::tuple<decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&> result{ a, b, c, d };
             return result;
         } else if constexpr (have_n_member_objects<Type, 5>) {
-            auto& [a, b, c, d, e] = type;
+            auto& [a, b, c, d, e] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&
-            > result{a, b, c, d, e};
+            > result{ a, b, c, d, e };
             return result;
         } else if constexpr (have_n_member_objects<Type, 6>) {
-            auto& [a, b, c, d, e, f] = type;
+            auto& [a, b, c, d, e, f] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&
-            > result{a, b, c, d, e, f};
+            > result{ a, b, c, d, e, f };
             return result;
         } else if constexpr (have_n_member_objects<Type, 7>) {
-            auto& [a, b, c, d, e, f, g] = type;
+            auto& [a, b, c, d, e, f, g] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, 
                 decltype(e)&, decltype(f)&, decltype(g)&
-            > result{a, b, c, d, e, f, g};
+            > result{ a, b, c, d, e, f, g };
             return result;
         } else if constexpr (have_n_member_objects<Type, 8>) {
-            auto& [a, b, c, d, e, f, g, h] = type;
+            auto& [a, b, c, d, e, f, g, h] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, 
                 decltype(e)&, decltype(f)&, decltype(g)&, decltype(h)&
-            > result{a, b, c, d, e, f, g, h};
+            > result{ a, b, c, d, e, f, g, h };
             return result;
         } else if constexpr (have_n_member_objects<Type, 9>) {
-            auto& [a, b, c, d, e, f, g, h, i] = type;
+            auto& [a, b, c, d, e, f, g, h, i] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
                 decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&
             > result{ a, b, c, d, e, f, g, h, i };
             return result;
         } else if constexpr (have_n_member_objects<Type, 10>) {
-            auto& [a, b, c, d, e, f, g, h, i, j] = type;
+            auto& [a, b, c, d, e, f, g, h, i, j] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
                 decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&
             > result{ a, b, c, d, e, f, g, h, i, j };
             return result;
         } else if constexpr (have_n_member_objects<Type, 11>) {
-            auto& [a, b, c, d, e, f, g, h, i, j, k] = type;
+            auto& [a, b, c, d, e, f, g, h, i, j, k] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&, 
                 decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, decltype(k)&
             > result{ a, b, c, d, e, f, g, h, i, j, k };
             return result;
         } else if constexpr (have_n_member_objects<Type, 12>) {
-            auto& [a, b, c, d, e, f, g, h, i, j, k, l] = type;
+            auto& [a, b, c, d, e, f, g, h, i, j, k, l] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&, 
                 decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, decltype(k)&, decltype(l)&
             > result{ a, b, c, d, e, f, g, h, i, j, k, l };
             return result;
         } else if constexpr (have_n_member_objects<Type, 13>) {
-            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m] = type;
+            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
                 decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, 
@@ -483,7 +493,7 @@ export namespace mylib::inline aggregate {
             > result{ a, b, c, d, e, f, g, h, i, j, k, l, m };
             return result;
         } else if constexpr (have_n_member_objects<Type, 14>) {
-            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n] = type;
+            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
                 decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, 
@@ -491,14 +501,14 @@ export namespace mylib::inline aggregate {
             > result{ a, b, c, d, e, f, g, h, i, j, k, l, m, n };
             return result;
         } else if constexpr (have_n_member_objects<Type, 15>) {
-            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o] = type;
+            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
                 decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, 
                 decltype(k)&, decltype(l)&, decltype(m)&, decltype(n)&, decltype(o)&
             > result{ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o };
         } else if constexpr (have_n_member_objects<Type, 16>) {
-            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = type;
+            auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = object;
             std::tuple<
                 decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&, 
                 decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, decltype(k)&, decltype(l)&, 
@@ -510,30 +520,30 @@ export namespace mylib::inline aggregate {
     }
 
     template<size_t index, typename Type>
-    constexpr decltype(auto) get(Type& type) noexcept {
-        return std::get<index>(member_objects_ref(type));
+    constexpr decltype(auto) get(Type& object) noexcept {
+        return std::get<index>(member_objects_ref(object));
     }
 
     template<size_t index, typename Type, size_t arraySize>
-    constexpr decltype(auto) get(Type (&type)[arraySize]) noexcept {
+    constexpr decltype(auto) get(Type (&object)[arraySize]) noexcept {
         return arraySize[index];
     }
 
     template<typename Type>
     struct aggregate_traits {
-        using type  = Type;
+        using object  = Type;
         using types = decltype(member_objects(mylib::declval<Type>()));
 
         static constexpr size_t size() noexcept {
             return membersSize;
         }
 
-        static constexpr auto member_objects(const Type& type) noexcept {
-            return mylib::member_objects(type);
+        static constexpr auto member_objects(const Type& object) noexcept {
+            return mylib::member_objects(object);
         }
 
-        static constexpr auto member_objects_ref(Type& type) noexcept {
-            return mylib::member_objects_ref(type);
+        static constexpr auto member_objects_ref(Type& object) noexcept {
+            return mylib::member_objects_ref(object);
         }
 
         static constexpr std::string types_string() noexcept {
@@ -551,11 +561,11 @@ export namespace mylib::inline aggregate {
         }
 
         template<size_t index>
-        static auto get(Type& type) noexcept {
-            return mylib::get<index>(type);
+        static auto get(Type& object) noexcept {
+            return mylib::get<index>(object);
         }
 
-        inline static constexpr size_t membersSize = detail::member_objects_size<Type>();
+        static constexpr size_t membersSize = member_objects_size<Type>();
     };
 
     namespace detail {
@@ -563,7 +573,9 @@ export namespace mylib::inline aggregate {
         constexpr auto make_n_same_type_tuple() noexcept {
             return 
                 []<size_t index, size_t... indices, typename... Types> (
-                    this auto self, std::tuple<Types...> tuple, std::index_sequence<index, indices...> sequence
+                    this auto self, std::tuple<Types...> tuple,
+                    [[maybe_unused]]
+                    std::index_sequence<index, indices...> sequence
                 ) constexpr noexcept {               
                     if constexpr (sizeof...(indices) == 0) {
                         return std::tuple<Types..., Type>{};
@@ -576,7 +588,7 @@ export namespace mylib::inline aggregate {
     
     template<typename Type, size_t arraySize>
     struct aggregate_traits<Type[arraySize]> {
-        using type  = Type[arraySize];
+        using object  = Type[arraySize];
         using types = decltype(detail::make_n_same_type_tuple<Type, arraySize>());
 
         static size_t size() noexcept {
@@ -584,7 +596,7 @@ export namespace mylib::inline aggregate {
         }
 
         static constexpr std::string types_string() noexcept {
-            std::string name{ "" };
+            std::string name;
             std::string type_name{ typeid(Type).name() };
             
             for (size_t i = 0; i != arraySize; ++i) {
@@ -596,7 +608,10 @@ export namespace mylib::inline aggregate {
 
         static constexpr auto member_objects(const Type (&object)[arraySize]) noexcept {
             return
-                [&object]<size_t... indices> (std::index_sequence<indices...> sequence) constexpr noexcept {
+                [&object]<size_t... indices> (
+                    [[maybe_unused]]
+                    std::index_sequence<indices...> sequence
+                ) constexpr noexcept {
                     return types{ object[indices]... };
                 }(std::make_index_sequence<arraySize>{});
         }
@@ -609,15 +624,92 @@ export namespace mylib::inline aggregate {
         }
 
         template<size_t index>
-        static auto get(Type& type) noexcept {
-            return mylib::get<index>(type);
+        static auto get(Type& object) noexcept {
+            return mylib::get<index>(object);
         }
 
-        inline static constexpr size_t membersSize = arraySize;
+        static constexpr size_t membersSize = arraySize;
     };
 
     template<typename Type>
     constexpr std::string member_objects_types_string() noexcept {
         return aggregate_traits<Type>::member_objects_types_string();
+    }
+
+    template<typename Type>
+    constexpr std::string aggregate_to_string(const Type& object) noexcept {
+        using traits = mylib::aggregate_traits<Type>;
+
+        return 
+            std::string{ typeid(Type).name() }                                          + " {\n"
+            "  size: "                    + to_string(traits::size())                   + ",\n"
+            "  member objects' object: (" + traits::types_string()                      + "),\n"
+            "  member objects: "          + to_string(traits::member_objects(object))   + "\n"
+            "}";
+    }
+
+    namespace unittest {
+        
+        template<typename Void = void>
+        constexpr bool aggregate_assert_test() noexcept {
+            // TODO: static test
+            struct A {
+                int    a;
+                double b;
+                char   c;
+            } a{ 1, 2.0, 'F'};
+
+            struct B {
+                int         a;
+                std::string b;
+                double&     c;
+                int         d[4];
+            } b{ 1, "hello", a.b, { 1, 2, 3, 4 } };
+
+            using traitA = aggregate_traits<A>;
+            using traitB = aggregate_traits<B>;
+            
+            if constexpr (
+                !is_same_v<typename traitA::types, std::tuple<int, double, char>>/* &&
+                !is_same_v<typename traitB::types, std::tuple<int, std::string, double&, int[4]>>*/
+            ) {
+                static_assert(always_false<Void>, "member objects' object are not correct!");
+            }
+            
+            return true;
+        }
+        
+        struct test_aggregate {
+            static_assert(aggregate_assert_test(), "aggregate have bug!");
+
+            static void print_test() {
+                using mylib::operator <<;
+                
+                // test class A
+                struct A {
+                    int         nmb;
+                    std::string cnm;
+                } a{ 1, "fuck" };
+
+                // test class B
+                struct B {
+                    int sb;
+                    int gb[4];
+                    int bb;
+                } b{ 1, { 1, 2, 3, 4 }, 8 };
+
+                // test array
+                int arr[]{ 1, 2, 3, 4, 5 };
+
+                // print all
+                std::cout << aggregate_to_string(a)
+                          << "\n\n"
+                          << aggregate_to_string(b)
+                          << "\n\n"
+                          << aggregate_to_string(arr)
+                          << "\n\n" 
+                          << mylib::get<1>(b);
+            }
+        };
     }
 }
