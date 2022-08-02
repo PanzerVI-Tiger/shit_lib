@@ -135,9 +135,6 @@
     <ClCompile Include="mylib.graph.ixx">
       <Filter>mylib\module\not_standard\container</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.huffman_tree.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
     <ClCompile Include="mylib.sort.ixx">
       <Filter>mylib\module\not_standard\algorithm</Filter>
     </ClCompile>
@@ -194,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="mylib.tuple.ixx">
       <Filter>mylib\module\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.huffman_tree.ixx">
+      <Filter>mylib\module\not_standard\container\tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
