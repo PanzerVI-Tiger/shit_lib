@@ -19,23 +19,8 @@
     <Filter Include="mylib\module">
       <UniqueIdentifier>{166d6a6d-edfc-473c-8153-e9dbd3e9f47c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\module\algorithm">
-      <UniqueIdentifier>{e44d2184-225b-406f-bdfb-6b9bccdb0682}</UniqueIdentifier>
-    </Filter>
     <Filter Include="mylib\head">
       <UniqueIdentifier>{22fd51f8-014f-465a-9930-a1762f7940ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\container">
-      <UniqueIdentifier>{fe67b6d7-0023-4d3e-beb0-e6198a43d670}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\io">
-      <UniqueIdentifier>{20bd5471-cbd4-4489-bfa1-54f6cee728d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\iterator">
-      <UniqueIdentifier>{0f50c9b0-7d2c-45e0-940d-a3a3465f0aae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\memory">
-      <UniqueIdentifier>{651befe6-8599-4ae9-88a3-a97d8e569fde}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\not_standard">
       <UniqueIdentifier>{bc82452c-e545-468d-8bd4-9f572a6dc6aa}</UniqueIdentifier>
@@ -58,15 +43,6 @@
     <Filter Include="mylib\module\not_standard\templates">
       <UniqueIdentifier>{05f563d8-b338-4fdc-82de-2964ec4c6ae1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\module\numeric">
-      <UniqueIdentifier>{dfbb8e60-3ca8-431b-97f7-b281352ada1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\string">
-      <UniqueIdentifier>{8cacd58a-7382-44d1-9625-51d7fee47538}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\utility">
-      <UniqueIdentifier>{e63753dd-973c-4458-b01e-f8a7daccf002}</UniqueIdentifier>
-    </Filter>
     <Filter Include="mylib\head\not_standard">
       <UniqueIdentifier>{0dc16f3f-1166-4709-9ba0-14ae6ac87c1f}</UniqueIdentifier>
     </Filter>
@@ -85,6 +61,42 @@
     <Filter Include="mylib\head\not_standard\macro\macro_meta">
       <UniqueIdentifier>{dfb76a46-5185-4220-a4e1-a8b4deb90d50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\head\cpp">
+      <UniqueIdentifier>{9ee6e854-43b8-4dce-b68b-d84698003342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\cpp\standard">
+      <UniqueIdentifier>{ddcb79a0-95fc-4d94-b786-aa4fa71cbfc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard">
+      <UniqueIdentifier>{da119f62-a441-47e3-8a52-c99fd34210e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\c\standard">
+      <UniqueIdentifier>{9cac2a2c-ee5c-4e0b-9b87-f35ebe767c70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\algorithm">
+      <UniqueIdentifier>{e44d2184-225b-406f-bdfb-6b9bccdb0682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\container">
+      <UniqueIdentifier>{fe67b6d7-0023-4d3e-beb0-e6198a43d670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\io">
+      <UniqueIdentifier>{20bd5471-cbd4-4489-bfa1-54f6cee728d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\iterator">
+      <UniqueIdentifier>{0f50c9b0-7d2c-45e0-940d-a3a3465f0aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\memory">
+      <UniqueIdentifier>{651befe6-8599-4ae9-88a3-a97d8e569fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\numeric">
+      <UniqueIdentifier>{dfbb8e60-3ca8-431b-97f7-b281352ada1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\string">
+      <UniqueIdentifier>{8cacd58a-7382-44d1-9625-51d7fee47538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\utility">
+      <UniqueIdentifier>{e63753dd-973c-4458-b01e-f8a7daccf002}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test_main.ixx">
@@ -94,28 +106,28 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mylib.deque.ixx">
-      <Filter>mylib\module\container</Filter>
+      <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
     <ClCompile Include="mylib.list.ixx">
-      <Filter>mylib\module\container</Filter>
+      <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
     <ClCompile Include="mylib.queue.ixx">
-      <Filter>mylib\module\container</Filter>
+      <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
     <ClCompile Include="mylib.stack.ixx">
-      <Filter>mylib\module\container</Filter>
+      <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
     <ClCompile Include="mylib.vector.ixx">
-      <Filter>mylib\module\container</Filter>
+      <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
     <ClCompile Include="mylib.algorithm.ixx">
-      <Filter>mylib\module\algorithm</Filter>
+      <Filter>mylib\module\standard\algorithm</Filter>
     </ClCompile>
     <ClCompile Include="tt.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mylib.compare.ixx">
-      <Filter>mylib\module\utility</Filter>
+      <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.eval.ixx">
       <Filter>mylib\module\not_standard\utility</Filter>
@@ -139,22 +151,22 @@
       <Filter>mylib\module\not_standard\algorithm</Filter>
     </ClCompile>
     <ClCompile Include="mylib.string.ixx">
-      <Filter>mylib\module\string</Filter>
+      <Filter>mylib\module\standard\string</Filter>
     </ClCompile>
     <ClCompile Include="mylib.iterator.ixx">
-      <Filter>mylib\module\iterator</Filter>
+      <Filter>mylib\module\standard\iterator</Filter>
     </ClCompile>
     <ClCompile Include="f.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mylib.memory.ixx">
-      <Filter>mylib\module\memory</Filter>
+      <Filter>mylib\module\standard\memory</Filter>
     </ClCompile>
     <ClCompile Include="mylib.functional.ixx">
-      <Filter>mylib\module\utility</Filter>
+      <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.type_traits.ixx">
-      <Filter>mylib\module\utility</Filter>
+      <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.templates_utility.ixx">
       <Filter>mylib\module\not_standard\templates</Filter>
@@ -166,10 +178,10 @@
       <Filter>mylib\module\not_standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.numeric.ixx">
-      <Filter>mylib\module\numeric</Filter>
+      <Filter>mylib\module\standard\numeric</Filter>
     </ClCompile>
     <ClCompile Include="mylib.utility.ixx">
-      <Filter>mylib\module\utility</Filter>
+      <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.matrix.ixx">
       <Filter>mylib\module\not_standard\container</Filter>
@@ -190,7 +202,7 @@
       <Filter>mylib\module\not_standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.tuple.ixx">
-      <Filter>mylib\module\utility</Filter>
+      <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib.huffman_tree.ixx">
       <Filter>mylib\module\not_standard\container\tree</Filter>
@@ -210,50 +222,50 @@
     <ClInclude Include="mylib_assert.h">
       <Filter>mylib\head\not_standard\macro</Filter>
     </ClInclude>
-    <ClInclude Include="type_traits">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="algorithm">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="deque">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="list">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="queue">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="stack">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="vector">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="iterator">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="memory">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
-    <ClInclude Include="numeric">
-      <Filter>mylib\head</Filter>
-    </ClInclude>
     <ClInclude Include="mylib_sort.h">
       <Filter>mylib\head\not_standard</Filter>
     </ClInclude>
-    <ClInclude Include="string">
-      <Filter>mylib\head</Filter>
+    <ClInclude Include="algorithm">
+      <Filter>mylib\head\cpp\standard</Filter>
     </ClInclude>
     <ClInclude Include="compare">
-      <Filter>mylib\head</Filter>
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="deque">
+      <Filter>mylib\head\cpp\standard</Filter>
     </ClInclude>
     <ClInclude Include="functional">
-      <Filter>mylib\head</Filter>
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="iterator">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="list">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="memory">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="numeric">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="queue">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="stack">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="string">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="type_traits">
+      <Filter>mylib\head\cpp\standard</Filter>
     </ClInclude>
     <ClInclude Include="utility">
-      <Filter>mylib\head</Filter>
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="vector">
+      <Filter>mylib\head\cpp\standard</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
