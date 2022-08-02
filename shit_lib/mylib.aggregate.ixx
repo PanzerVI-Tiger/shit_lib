@@ -573,7 +573,8 @@ export namespace mylib {
         constexpr auto make_n_same_type_tuple() noexcept {
             return 
                 []<size_t index, size_t... indices, typename... Types> (
-                    this auto self, std::tuple<Types...>   tupleObject,
+                    this auto self, 
+                    std::tuple<Types...>                   tupleObject,
                     [[maybe_unused]]
                     std::index_sequence<index, indices...> sequence
                 ) constexpr noexcept {               
