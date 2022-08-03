@@ -41,8 +41,8 @@ mylib
 |        |- macro
 |        |  |- macro_meta
 |        |     |- # TODO: some macro_meta head
-|	   	 |
-|      	 |- mylib_sort.h
+|        |
+|        |- mylib_sort.h
 |
 |- module
 |  |- standard
