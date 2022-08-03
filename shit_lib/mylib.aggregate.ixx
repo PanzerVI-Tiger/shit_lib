@@ -644,7 +644,7 @@ export namespace mylib {
         return 
             std::string{ typeid(Type).name() }                                          + " {\n"
             "  size: "                    + to_string(traits::size())                   + ",\n"
-            "  member objects' types: (" + traits::types_string()                      + "),\n"
+            "  member objects' types: ("  + traits::types_string()                      + "),\n"
             "  member objects: "          + to_string(traits::member_objects(object))   + "\n"
             "}";
     }

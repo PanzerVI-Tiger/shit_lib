@@ -282,9 +282,9 @@ export namespace mylib {
     template<typename Type>
     using add_lvalue_reference_t = typename add_lvalue_reference<Type>::type;
 
-    // redefine declval from utility,
-    // to avoid import whole utility, 
-    // that will result in type_traits can't be freestanding
+    // define declval from utility,
+    // to avoid circular dependency and import whole utility,
+    // latter one will result in type_traits can't be freestanding
     template<typename Type>
     add_rvalue_reference_t<Type> declval() noexcept {
         static_assert(always_false<Type>, "declval shouldn't be called!");

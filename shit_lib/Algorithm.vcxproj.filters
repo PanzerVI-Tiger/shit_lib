@@ -43,12 +43,6 @@
     <Filter Include="mylib\module\not_standard\templates">
       <UniqueIdentifier>{05f563d8-b338-4fdc-82de-2964ec4c6ae1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\head\not_standard">
-      <UniqueIdentifier>{0dc16f3f-1166-4709-9ba0-14ae6ac87c1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\head\not_standard\macro">
-      <UniqueIdentifier>{30f49628-c8b9-4cfd-aab1-6ce892234db5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="mylib\head\c">
       <UniqueIdentifier>{e282a714-7840-46a9-a3ec-cd9fa26db77d}</UniqueIdentifier>
     </Filter>
@@ -57,9 +51,6 @@
     </Filter>
     <Filter Include="mylib\head\c\not_standard\macro_meta">
       <UniqueIdentifier>{e99e17ea-2a22-42d4-884f-7f67e0decb90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\head\not_standard\macro\macro_meta">
-      <UniqueIdentifier>{dfb76a46-5185-4220-a4e1-a8b4deb90d50}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\head\cpp">
       <UniqueIdentifier>{9ee6e854-43b8-4dce-b68b-d84698003342}</UniqueIdentifier>
@@ -96,6 +87,15 @@
     </Filter>
     <Filter Include="mylib\module\standard\utility">
       <UniqueIdentifier>{e63753dd-973c-4458-b01e-f8a7daccf002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\cpp\not_standard">
+      <UniqueIdentifier>{0dc16f3f-1166-4709-9ba0-14ae6ac87c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\cpp\not_standard\macro">
+      <UniqueIdentifier>{30f49628-c8b9-4cfd-aab1-6ce892234db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\cpp\not_standard\macro\macro_meta">
+      <UniqueIdentifier>{dfb76a46-5185-4220-a4e1-a8b4deb90d50}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,10 +220,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mylib_assert.h">
-      <Filter>mylib\head\not_standard\macro</Filter>
+      <Filter>mylib\head\cpp\not_standard\macro</Filter>
     </ClInclude>
     <ClInclude Include="mylib_sort.h">
-      <Filter>mylib\head\not_standard</Filter>
+      <Filter>mylib\head\cpp\not_standard</Filter>
     </ClInclude>
     <ClInclude Include="algorithm">
       <Filter>mylib\head\cpp\standard</Filter>
