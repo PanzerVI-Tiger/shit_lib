@@ -9,7 +9,7 @@ import mylib.templates_utility;
 export namespace mylib {
     
     template<
-        size_t   stringSize,
+        size_t   maxStringSize,
         typename CharType   = char,
         typename CharTraits = std::char_traits<CharType>
     > struct stack_string {
@@ -25,8 +25,17 @@ export namespace mylib {
         constexpr size_t size() const noexcept {
             return stringSize;
         }
+
+        constexpr size_t length() const noexcept {
+            return stringSize;
+        }
         
-        CharType chars[stringSize + 1];
+        size_t capacity() const noexcept {
+            return maxStringSize + 1;
+        }
+        
+        size_t   stringSize;
+        CharType chars[maxStringSize + 1];
     };
     
     template<typename CharType>
@@ -39,6 +48,14 @@ export namespace mylib {
         }
         
         constexpr size_t size() const noexcept {
+            return stringSize;
+        }
+        
+        constexpr size_t length() const noexcept {
+            return stringSize;
+        }
+
+        constexpr size_t capacity() const noexcept {
             return stringSize;
         }
 
@@ -116,6 +133,7 @@ export namespace mylib {
 
     inline namespace literals {
         inline namespace string_literals {
+            
             template<stack_string<size_t(-1)> str>
             constexpr auto operator ""_ss() noexcept {
                 stack_string<str.size()> result{};
