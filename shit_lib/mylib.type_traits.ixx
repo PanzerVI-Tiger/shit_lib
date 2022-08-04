@@ -629,7 +629,7 @@ export namespace mylib {
         bool_constant<is_arithmetic_v<Type>>
     {};
 
-#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
+#   if defined(__clang) || defined(__GNUC__)/* || defined(_MSVC_LANG)*/
     
     // C++17
     // __is_base_of is available in clang, gcc and msvc
@@ -641,19 +641,20 @@ export namespace mylib {
     namespace details {
         
         // auxiliary function template
-        // if pointer to derived class can be casted to pointer to base class, match this
-        template<typename BaseClass>
-        constexpr true_type  test_is_pointer_convertible(const volatile BaseClass*) noexcept
+        // if To is argument's type or it's base class, match this,
+        // and when To is argument's private, protected or ambigous base class, will result in failure
+        template<typename To>
+        constexpr true_type  test_is_pointer_convertible(const volatile To*)   noexcept
         {}
         
         // auxiliary function template
         // else match this
-        template<typename BaseClass>
-        constexpr false_type test_is_pointer_convertible(const volatile void*)      noexcept
+        template<typename To>
+        constexpr false_type test_is_pointer_convertible(const volatile void*) noexcept
         {}
 
         // auxiliary function template
-        // an ambiguous base class will match this function template
+        // a private, protected or ambigous base class will match this function template
         template<typename BaseClass, typename DerivedClass>
         constexpr auto test_is_base_of(...) noexcept -> true_type
         {}
@@ -662,6 +663,7 @@ export namespace mylib {
         template<typename BaseClass, typename DerivedClass>
         constexpr auto test_is_base_of(int) noexcept ->
             // check can the derived class cast to base class
+            // failure when the base class is derived class's private, protected or ambigous base class
             decltype(
                 test_is_pointer_convertible<BaseClass>(
                     static_cast<DerivedClass*>(

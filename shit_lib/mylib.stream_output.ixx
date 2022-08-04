@@ -83,7 +83,7 @@ export namespace mylib {
         return os;
     }
 
-    template<typename... Types>
+    /*template<typename... Types>
     std::ostream& operator <<(std::ostream& os, const std::variant<Types...>& variantObject) noexcept {
         os << "{ ";
         std::visit(
@@ -95,7 +95,7 @@ export namespace mylib {
         os << " }";
         
         return os;
-    }
+    }*/
 
     template<typename Type>
     std::ostream& operator <<(std::ostream& os, const std::optional<Type>& optionalObject) noexcept {

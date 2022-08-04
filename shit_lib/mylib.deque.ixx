@@ -21,7 +21,7 @@ export namespace mylib {
         constexpr deque_const_iterator() noexcept : container{}, position{} {}
 
         constexpr deque_const_iterator(const DequeType* pDeque, size_type index) noexcept :
-            container{ const_cast<block_type*>(pDeque) }, position{ index } {}
+            container{ const_cast<DequeType*>(pDeque) }, position{ index } {}
 
         constexpr const_reference operator *() const noexcept {
             return (*container)[position];
@@ -117,7 +117,7 @@ export namespace mylib {
 
         constexpr deque_iterator() noexcept : deque_const_iterator<DequeType>{} {}
         
-        constexpr deque_iterator(block_type* pDeque, size_type index) noexcept :
+        constexpr deque_iterator(DequeType* pDeque, size_type index) noexcept :
             deque_const_iterator<DequeType>{ pDeque, index } {}
 
         constexpr reference operator *() const noexcept {
@@ -399,17 +399,18 @@ export namespace mylib {
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     private:
-        template<typename _ValueType>
-        constexpr void extend(size_type magnification, _ValueType&& value) noexcept {
+        template<typename ValueType>
+        constexpr void extend(size_type magnification, ValueType&& value) noexcept {
             if (magnification <= 1) {
                 return;
             }
         
             if (size() == 0) {
-                data.map = ::new pointer[2];
-                ::new value_type[block_type::block_size],
-                ::new value_type[block_type::block_size];
-
+                data.map = ::new pointer[2]{
+                    ::new value_type[block_type::block_size],
+                    ::new value_type[block_type::block_size]
+                };
+                    
                 data.numberOfBlocks  = 2;
                 data.numberOfElement = 0;
 
@@ -435,7 +436,7 @@ export namespace mylib {
 
             ::delete[] previousMap; // free privious Blocks' memory
 
-            if constexpr (std::is_lvalue_reference_v<_ValueType&&>) {
+            if constexpr (std::is_lvalue_reference_v<ValueType&&>) {
                 for (size_type i = previousMapSize; i < data.numberOfBlocks; ++i) {
                     data.map[i] = ::new value_type[data.block_size];
                     for (size_type j = 0; j < data.block_size; ++j) {
@@ -466,18 +467,18 @@ export namespace mylib {
             }
         }
 
-        template<typename _ValueType>
-        constexpr iterator insert_internal(const_iterator where, _ValueType&& value) noexcept {
+        template<typename ValueType>
+        constexpr iterator insert_internal(const_iterator where, ValueType&& value) noexcept {
             size_type previousSize = data.size();
             if (previousSize == data.capacity()) {
-                extend(2, std::forward<_ValueType>(value));
+                extend(2, std::forward<ValueType>(value));
             }
             ++data.numberOfElement;
 
             // no to move any element if _Were is first iterator, then insert new element in front of the where
             if (where == cbegin()) {
                 data.head = (data.head - 1) & (data.capacity() - 1);
-                data[0]   = std::forward<_ValueType>(value);
+                data[0]   = std::forward<ValueType>(value);
 
                 return begin();
             }
@@ -490,7 +491,7 @@ export namespace mylib {
                 for (; destination !=  beforeWhere; ++destination, ++source) {
                     *destination = std::move(*source);
                 }
-                if constexpr (std::is_lvalue_reference_v<_ValueType&&>) {
+                if constexpr (std::is_lvalue_reference_v<ValueType&&>) {
                     *destination = value;
                 }
             } else {
@@ -501,12 +502,12 @@ export namespace mylib {
                 for (; destination != afterWhere; ++destination, ++source) {
                     *destination    = std::move(*source);
                 }
-                if constexpr (std::is_lvalue_reference_v<_ValueType&&>) {
+                if constexpr (std::is_lvalue_reference_v<ValueType&&>) {
                     *destination = value;
                 }
             }
 
-            return iterator{ &data, where.position };
+            return iterator{ this, where.position };
         }
 
     public:
@@ -517,9 +518,14 @@ export namespace mylib {
         constexpr explicit deque(deque&& other) noexcept : data{ std::move(other.data) } {}
         
         template<std::input_iterator _InputIterator>
-        constexpr deque(_InputIterator first, _InputIterator last) noexcept : data{} {
+        constexpr deque(_InputIterator first, _InputIterator last) noexcept {
             insert(cbegin(), first, last);
         }
+
+        template<std::ranges::range Range>
+        constexpr deque(const Range& range) noexcept : 
+            deque(std::ranges::begin(range), std::ranges::end(range))
+        {}
         
         constexpr deque(std::initializer_list<value_type> initialValueList) noexcept : 
             deque(initialValueList.begin(), initialValueList.end()) 
@@ -663,7 +669,7 @@ export namespace mylib {
 
         template<std::input_iterator _InputIterator>
         constexpr iterator insert(const_iterator where, _InputIterator first, _InputIterator last) noexcept {
-            iterator result = iterator{ &data, where.position };
+            iterator result = iterator{ this, where.position };
             while (first != last) {
                 result = insert(where++, std::move(*first++));
             }
@@ -843,7 +849,7 @@ export namespace mylib {
         }
 
         constexpr iterator begin() noexcept {
-            return iterator{ &data, 0 };
+            return iterator{ this, 0 };
         }
 
         constexpr const_iterator begin() const noexcept {
@@ -851,7 +857,7 @@ export namespace mylib {
         }
 
         constexpr const_iterator cbegin() const noexcept {
-            return const_iterator{ &data, 0 };
+            return const_iterator{ this, 0 };
         }
 
         constexpr reverse_iterator rbegin() noexcept {
@@ -867,7 +873,7 @@ export namespace mylib {
         }
 
         constexpr iterator end() noexcept {
-            return iterator{ &data, size() };
+            return iterator{ this, size() };
         }
 
         constexpr const_iterator end() const noexcept {
@@ -875,7 +881,7 @@ export namespace mylib {
         }
 
         constexpr const_iterator cend() const noexcept {
-            return const_iterator{ &data, size() };
+            return const_iterator{ this, size() };
         }
 
         constexpr reverse_iterator rend() noexcept {
@@ -893,6 +899,9 @@ export namespace mylib {
     private:
         block_type data;
     };
+
+    template<std::ranges::range Range>
+    deque(const Range& range) -> deque<std::ranges::range_value_t<Range>>;
 
     // test fuction, check deque's map
     template<typename DequeType>
