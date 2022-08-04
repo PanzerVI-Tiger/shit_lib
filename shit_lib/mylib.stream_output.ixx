@@ -28,6 +28,10 @@ export namespace mylib {
         return os;
     }
 
+    std::ostream& operator <<(std::ostream& os, std::monostate) noexcept {
+        return os << "std::monostate";
+    }
+
     template<typename First, typename Second>
     std::ostream& operator <<(std::ostream& os, const std::pair<First, Second>& pairObject) noexcept {
         os << '(' << pairObject.first << ', ' << pairObject.second << ')';
@@ -75,6 +79,31 @@ export namespace mylib {
             isStart = false;
         }
         os << '}';
+        
+        return os;
+    }
+
+    template<typename... Types>
+    std::ostream& operator <<(std::ostream& os, const std::variant<Types...>& variantObject) noexcept {
+        os << "{ ";
+        std::visit(
+            [&os]<typename Type>(const Type& arg) noexcept {
+                os << "Type: " << typeid(Type).name() << ", value: " << arg;
+            }, 
+            variantObject
+        );
+        os << " }";
+        
+        return os;
+    }
+
+    template<typename Type>
+    std::ostream& operator <<(std::ostream& os, const std::optional<Type>& optionalObject) noexcept {
+        if (optionalObject) {
+            os << "{ Type: " << typeid(Type).name() << ", value: " << *optionalObject << " }";
+        } else {
+            os << "{ Type: std::nullopt_t, value: std::nullopt }";
+        }
         
         return os;
     }

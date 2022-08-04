@@ -97,6 +97,9 @@
     <Filter Include="mylib\head\cpp\not_standard\macro\macro_meta">
       <UniqueIdentifier>{dfb76a46-5185-4220-a4e1-a8b4deb90d50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\module\not_standard\string">
+      <UniqueIdentifier>{0642f1fc-9196-4c0e-8c80-7f5ced421bcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test_main.ixx">
@@ -206,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="mylib.huffman_tree.ixx">
       <Filter>mylib\module\not_standard\container\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.stack_string.ixx">
+      <Filter>mylib\module\not_standard\string</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -49,11 +49,15 @@ export import mylib.red_black_tree;
 //             io
 export import mylib.stream_output;    // ouput some container to stream
 
+//           string
+export import mylib.stack_string;
+
 //           utility
 export import mylib.eval;             // calculate C's or scheme's style expression
 export import mylib.timer;
 export import mylib.aggregate;
 export import mylib.container_traits; // traits of mylib container and iterator
+export import mylib.templates_utility;
 
 export {
     // test assmebly code

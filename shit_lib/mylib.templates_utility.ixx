@@ -1,9 +1,9 @@
-export module mylib.templates;
+export module mylib.templates_utility;
 
 import std.core;
 
 
-namespace mylib {
+export namespace mylib {
 
     template<std::integral auto... numbers>
     inline constexpr auto plus_v        = (... + numbers);

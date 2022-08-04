@@ -214,6 +214,7 @@
     <ClCompile Include="mylib.numeric.ixx" />
     <ClCompile Include="mylib.pointer.ixx" />
     <ClCompile Include="mylib.sort.ixx" />
+    <ClCompile Include="mylib.stack_string.ixx" />
     <ClCompile Include="mylib.stream_output.ixx" />
     <ClCompile Include="mylib.string.ixx" />
     <ClCompile Include="mylib.templates_utility.ixx" />

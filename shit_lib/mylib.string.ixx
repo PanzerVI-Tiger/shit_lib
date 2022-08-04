@@ -52,15 +52,6 @@ export namespace mylib {
         return result;
     }
 
-    // not standard
-    template<typename Type>
-    constexpr std::string to_string(const std::optional<Type>& value) {
-        if (value) {
-            return to_string(*value);
-        } else {
-            return "null";
-        }
-    }
 
     // not standard
     template<typename... Type>
@@ -116,5 +107,36 @@ export namespace mylib {
         result += "}";
         
         return result;
+    }
+
+    // not standard
+    template<typename... Types>
+    constexpr std::string to_string(const std::variant<Types...>& value) {
+        using namespace std::string_literals;
+        
+        std::string result{ "{ " };
+        
+        std::visit(
+            [&result]<typename Type>(const Type& arg) {
+                result += "Type: "s + typeid(Type).name() + ", value: " + to_string(arg);
+            },
+            value
+        );
+        
+        result += " }";
+        
+        return result;
+    }
+
+    // not standard
+    template<typename Type>
+    constexpr std::string to_string(const std::optional<Type>& value) {
+        using namespace std::string_literals;
+        
+        if (value) {
+            return "{ Type: "s + typeid(Type).name() + ", value: " + to_string(*value) + " }";
+        } else {
+            return "{ Type: nullopt_t, value: nullopt }";
+        }
     }
 }

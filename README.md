@@ -4,7 +4,7 @@ This worst STL implementation is just for handing in homework.
 It's base on C++2b, use module organize, and disable exception.
 ## environment
 visual studio 2022  
-std = c++2b(23)
+std = C++2b(23)
 ## structure
 ```
 mylib
@@ -109,6 +109,10 @@ mylib
 |     |- io
 |     |  |- mylib.stream_output.ixx
 |     |  |- # TODO: more not_standard io module
+|     |
+|     |- string
+|     |  |- mylib.stack_string.ixx
+|     |  |- # TODO: more not_standard string module
 |     |
 |     |- templates
 |     |  |- mylib.templates_utility.ixx

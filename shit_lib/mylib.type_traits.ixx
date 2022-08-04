@@ -16,7 +16,7 @@ export namespace mylib {
         }
 
         // C++14
-        constexpr value_type operator()() const noexcept {
+        constexpr value_type operator ()() const noexcept {
             return typeValue;
         }
         
@@ -643,26 +643,32 @@ export namespace mylib {
         // auxiliary function template
         // if pointer to derived class can be casted to pointer to base class, match this
         template<typename BaseClass>
-        true_type  test_is_pointer_convertible(const volatile BaseClass*) noexcept
+        constexpr true_type  test_is_pointer_convertible(const volatile BaseClass*) noexcept
         {}
         
         // auxiliary function template
         // else match this
         template<typename BaseClass>
-        false_type test_is_pointer_convertible(const volatile void*)      noexcept
+        constexpr false_type test_is_pointer_convertible(const volatile void*)      noexcept
         {}
 
         // auxiliary function template
         // an ambiguous base class will match this function template
         template<typename BaseClass, typename DerivedClass>
-        auto test_is_base_of(...) noexcept -> true_type
+        constexpr auto test_is_base_of(...) noexcept -> true_type
         {}
         
         // auxiliary function template
         template<typename BaseClass, typename DerivedClass>
-        auto test_is_base_of(int) noexcept ->
+        constexpr auto test_is_base_of(int) noexcept ->
             // check can the derived class cast to base class
-            decltype(test_is_pointer_convertible<BaseClass>(static_cast<DerivedClass*>(nullptr)))
+            decltype(
+                test_is_pointer_convertible<BaseClass>(
+                    static_cast<DerivedClass*>(
+                        nullptr
+                    )
+                )
+            )
         {}
     }
 
