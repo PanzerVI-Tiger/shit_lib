@@ -74,7 +74,7 @@ export namespace mylib {
     ) noexcept {
         
         stack_string<
-            plus_v<(stringSizes == size_t(-1) ? 64 : stringSizes)...> -
+            plus_v<stringSizes...> -
             sizeof...(stringSizes) + 1,
             CharType,
             CharTraits
