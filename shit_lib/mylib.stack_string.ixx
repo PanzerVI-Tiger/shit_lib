@@ -100,7 +100,7 @@ export namespace mylib {
         }
 
         constexpr size_t capacity() const noexcept {
-            return stringSize;
+            return stringSize + 1;
         }
 
         const CharType* chars;
@@ -117,6 +117,7 @@ export namespace mylib {
         const stack_string<stringSize,  CharType, CharTraits>&    first,
         const stack_string<stringSizes, CharType, CharTraits>&... strings
     ) noexcept {
+        
         CharTraits::copy(buff, first.data(), first.size());
         buff += first.size();
         
@@ -181,11 +182,7 @@ export namespace mylib {
             
             template<stack_string<size_t(-1)> literal>
             constexpr auto operator ""_ss() noexcept {
-                constexpr size_t literalSize = literal.size();
-                
-                stack_string<literalSize> result{ literal.data() };
-                
-                return result;
+                return stack_string<literal.size()>{ literal.data() };
             }
         }
     }
