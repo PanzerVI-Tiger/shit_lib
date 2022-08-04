@@ -85,6 +85,6 @@ import mylib.container_traits;
 #define MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(a, b)
 #define MYLIB_CHECK_ITERATOR_IS_BEGIN(a)
 #define MYLIB_CHECK_ITERATOR_IS_END(a)
-#define MYLIB_CHECK_CONTAINER_IS_EMPTY()
+#define MYLIB_CHECK_CONTAINER_IS_EMPTY(a)
 
 #endif

@@ -1,6 +1,6 @@
 module;
 
-#pragma optimize("", off)
+//#pragma optimize("", off)
 #include <Windows.h>
 #include <stdio.h>
 //#include "mylib_assert.h"
@@ -21,9 +21,9 @@ export int main() noexcept
     using namespace mylib::string_literals;
     using mylib::operator <<;
     
-    constexpr auto x = "ss"_ss;
+    mylib::stack_string s{ "ssss" };
     
-    //std::cout << x << ", " << x.size() << std::endl;
+    std::cout << mylib::concat("sb"_ss, "nmsl"_ss, s) << std::endl;
     
     return 0;
 }
