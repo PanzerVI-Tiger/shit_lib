@@ -17,7 +17,7 @@ export namespace mylib {
         using traits_type     = std::char_traits<CharType>;
         using value_type      = CharType;
         using size_type       = size_t;
-        using difference_type = std::ptrdiff_t;
+        using difference_type = ptrdiff_t;
         using reference       = CharType&;
         using const_reference = const CharType&;
         using pointer         = CharType*;
@@ -76,7 +76,7 @@ export namespace mylib {
         using traits_type     = std::char_traits<CharType>;
         using value_type      = CharType;
         using size_type       = size_t;
-        using difference_type = std::ptrdiff_t;
+        using difference_type = ptrdiff_t;
         using reference       = CharType&;
         using const_reference = const CharType&;
         using pointer         = CharType*;
