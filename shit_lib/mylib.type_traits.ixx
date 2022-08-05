@@ -354,7 +354,7 @@ export namespace mylib {
     
     // C++17
     template<typename Type>
-    inline constexpr bool is_void_v = is_same_v<void, Type>;
+    inline constexpr bool is_void_v = is_same_v<remove_cv_t<Type>, void>;
     
     template<typename Type>
     struct is_void :
@@ -363,7 +363,7 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_null_pointer_v = is_same_v<Type, std::nullptr_t>;
+    inline constexpr bool is_null_pointer_v = is_same_v<remove_cv_t<Type>, std::nullptr_t>;
 
     template<typename Type>
     struct is_null_pointer :
@@ -499,6 +499,39 @@ export namespace mylib {
         bool_constant<is_const_v<Type>>
     {};
 
+    // always true
+#   ifdef __cpp_concepts
+    
+    // not standard
+    template<typename Type>
+    inline constexpr bool is_sizable_v = requires{ sizeof(Type); };
+
+#   else
+
+    namespace detail
+    {
+        template<class T>
+        constexpr auto test_sizable(int) -> 
+            decltype(sizeof(T), std::true_type{})
+        {}
+        
+        template<class>
+        constexpr auto test_sizable(...) -> 
+            std::false_type
+        {}
+    }
+    
+    template<typename Type>
+    inline constexpr bool is_sizable_v = decltype(detail::test_sizable<Type>(0))::value;
+    
+#   endif
+
+    // not standard
+    template<typename Type>
+    struct is_sizable :
+        bool_constant<is_sizable_v<Type>>
+    {};
+    
 #   if defined(__clang__) || defined(_MSVC_LANG)
     
     // C++17
@@ -629,7 +662,7 @@ export namespace mylib {
         bool_constant<is_arithmetic_v<Type>>
     {};
 
-#   if defined(__clang) || defined(__GNUC__)/* || defined(_MSVC_LANG)*/
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
     // C++17
     // __is_base_of is available in clang, gcc and msvc
@@ -691,17 +724,25 @@ export namespace mylib {
         bool_constant<is_base_of_v<BaseClass, DerivedClass>>
     {};
 
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
+
+    template<typename From, typename To>
+    inline constexpr bool is_convertible_v = __is_convertible_to(From, To);
+    
+#   else
+
+
+#   endif
+
     
 
     namespace unittest {
         
         template<typename Void = void>
-        constexpr bool assert_test() noexcept {
+        constexpr bool assert_test_type_traits() noexcept {
             return true;
         }
         
-        struct test_type_traits {
-            static_assert(assert_test(), "type_traits have bug!");
-        };
+        static_assert(assert_test_type_traits(), "type_traits have bug!");
     }
 }

@@ -69,43 +69,6 @@ export namespace mylib {
         size_t maxStringSize, typename CharType
     > stack_string(const CharType(&str)[maxStringSize]) -> 
         stack_string<maxStringSize, CharType>;
-    
-    template<typename CharType>
-    struct stack_string<size_t(-1), CharType> {
-        
-        using traits_type     = std::char_traits<CharType>;
-        using value_type      = CharType;
-        using size_type       = size_t;
-        using difference_type = ptrdiff_t;
-        using reference       = CharType&;
-        using const_reference = const CharType&;
-        using pointer         = CharType*;
-        using const_pointer   = const CharType*;
-
-        template<size_t size>
-        constexpr stack_string(const CharType(&str)[size]) noexcept :
-            chars{ str }, stringSize{ size } 
-        {}
-        
-        constexpr const CharType* data() const noexcept {
-            return chars;
-        }
-        
-        constexpr size_t size() const noexcept {
-            return stringSize;
-        }
-        
-        constexpr size_t length() const noexcept {
-            return stringSize;
-        }
-
-        constexpr size_t capacity() const noexcept {
-            return stringSize + 1;
-        }
-
-        const CharType* chars;
-        size_t          stringSize;
-    };
 
     template<
         typename  CharType,
@@ -180,9 +143,9 @@ export namespace mylib {
     inline namespace literals {
         inline namespace string_literals {
             
-            template<stack_string<size_t(-1)> literal>
+            template<stack_string literal>
             constexpr auto operator ""_ss() noexcept {
-                return stack_string<literal.size()>{ literal.data() };
+                return literal;
             }
         }
     }
