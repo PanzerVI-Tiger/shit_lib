@@ -34,6 +34,7 @@ export import mylib.numeric;
 
 /*     not standard module     */
 //          algorthm
+export import mylib.concat;
 export import mylib.sort;
 
 //          container
@@ -51,6 +52,7 @@ export import mylib.stream_output;    // ouput some container to stream
 
 //           string
 export import mylib.stack_string;
+export import mylib.string_literal;
 
 //           utility
 export import mylib.eval;             // calculate C's or scheme's style expression

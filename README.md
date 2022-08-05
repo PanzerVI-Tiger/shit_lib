@@ -90,6 +90,7 @@ mylib
 |  |- not_standard
 |     |- algorithm
 |     |  |- mylib.algorithm.ixx
+|     |  |- mylib.concat.ixx
 |     |  |- # TODO: more not_standard algorithm module
 |     |
 |     |- container
@@ -112,6 +113,7 @@ mylib
 |     |
 |     |- string
 |     |  |- mylib.stack_string.ixx
+|     |  |- mylib.string_literal.ixx
 |     |  |- # TODO: more not_standard string module
 |     |
 |     |- templates

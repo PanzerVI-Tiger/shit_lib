@@ -3,6 +3,7 @@ export module mylib.stack_string;
 import std.core;
 import mylib.algorithm;
 import mylib.type_traits;
+import mylib.string_literal;
 import mylib.templates_utility;
 
 
@@ -26,26 +27,47 @@ export namespace mylib {
         constexpr stack_string() : 
             stringSize{}, chars{}
         {}
+
+        template<size_t rightSize>
+        constexpr stack_string(
+            const stack_string<rightSize, CharType, CharTraits>& other
+        ) : stringSize{ std::min(maxStringSize, other.stringSize) }, chars{} {    
+            traits_type::copy(chars, other.chars, stringSize);
+        }
         
         constexpr stack_string(const CharType* str) noexcept :
-            stringSize{ traits_type::length(str) }, chars{} {
-            
+            stringSize{ std::min(traits_type::length(str), maxStringSize) }, chars{} 
+        {           
             traits_type::copy(chars, str, stringSize);
         };
 
         template<size_t size>
-            requires (size - 1 <= maxStringSize)
         constexpr stack_string(const CharType(&str)[size]) noexcept :
-            stringSize{ size - 1 }, chars{} {
-            
+            stringSize{ maxStringSize }, chars{} {
+
             traits_type::copy(chars, str, stringSize);
         };
+
+        template<size_t rightSize>
+        constexpr stack_string operator =(
+            const stack_string<rightSize, CharType, CharTraits>& right
+        ) noexcept {
+            
+            stringSize = std::min(maxStringSize, right.stringSize);
+            traits_type::copy(chars, right.chars, stringSize);
+            
+            return *this;
+        }
         
         constexpr CharType* data() noexcept {
             return chars;
         }
 
         constexpr const CharType* data() const noexcept {
+            return chars;
+        }
+
+        constexpr const CharType* c_str() const noexcept {
             return chars;
         }
 
@@ -57,7 +79,7 @@ export namespace mylib {
             return stringSize;
         }
         
-        size_t capacity() const noexcept {
+        constexpr size_t capacity() const noexcept {
             return maxStringSize + 1;
         }
         
@@ -66,66 +88,17 @@ export namespace mylib {
     };
 
     template<
-        size_t maxStringSize, typename CharType
-    > stack_string(const CharType(&str)[maxStringSize]) -> 
-        stack_string<maxStringSize, CharType>;
+        size_t size, typename CharType
+    > stack_string(const CharType(&str)[size]) ->
+        stack_string<size - 1, CharType>;
 
     template<
-        typename  CharType,
-        typename  CharTraits,
-        size_t    stringSize,
-        size_t... stringSizes
-    > constexpr void concat_implement(
-        CharType*                                                 buff,
-        const stack_string<stringSize,  CharType, CharTraits>&    first,
-        const stack_string<stringSizes, CharType, CharTraits>&... strings
-    ) noexcept {
-        
-        CharTraits::copy(buff, first.data(), first.size());
-        buff += first.size();
-        
-        if constexpr (sizeof...(stringSizes) != 0) {
-            concat_implement(buff, strings...);
-        } else {
-            *buff = CharType{};
-        }
-    }
-    
-    template<
-        typename  CharType,
-        typename  CharTraits,
-        size_t... stringSizes
-    > constexpr auto concat(
-        const stack_string<stringSizes, CharType, CharTraits>&... strings
-    ) noexcept {
-        
-        stack_string<
-            plus_v<stringSizes...> -
-            sizeof...(stringSizes) + 1,
-            CharType,
-            CharTraits
-        > result{};
-
-        if constexpr (sizeof...(stringSizes) == 1) {
-            return [](const auto& x) constexpr noexcept {
-                return x;
-            }(strings...);
-        } else {
-            concat_implement(result.data(), strings...);
-            return result;
-        }
-    }
-
-    template<
-        size_t   leftSize, size_t   rightSize,
-        typename CharType, typename CharTraits
-    > constexpr auto operator +(
-        const stack_string<leftSize,  CharType, CharTraits>& left,
-        const stack_string<rightSize, CharType, CharTraits>& right
-        ) noexcept {
-
-        return concat(left, right);
-    }
+        size_t   rightSize,
+        typename CharType,
+        typename CharTraits
+    > stack_string(
+        const stack_string<rightSize, CharType, CharTraits>&other
+    ) -> stack_string<rightSize, CharType, CharTraits>;
 
     template<
         size_t   stringSize,

@@ -4,7 +4,8 @@ module;
 #include <Windows.h>
 #include <stdio.h>
 //#include "mylib_assert.h"
-//#include <type_traits>
+//#include <string>
+//#include <fast_io.h>
 
 export module mylib.main;
 
@@ -16,8 +17,8 @@ export int main() noexcept
 {
     using namespace mylib::string_literals;
     using mylib::operator <<;
-
-    "sss"_ss;
     
+    int i = 0;
+
     return 0;
 }

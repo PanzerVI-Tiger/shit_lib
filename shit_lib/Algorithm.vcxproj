@@ -92,7 +92,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\EdgeDownload\boost_1_78_0\;E:\EdgeDownload\boost_1_78_0\boost;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\EdgeDownload\boost_1_78_0\;E:\EdgeDownload\boost_1_78_0\boost;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);E:\EdgeDownload\fast_io-master\include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);E:\EdgeDownload\boost_1_78_0\bin.v2</LibraryPath>
   </PropertyGroup>
@@ -194,6 +194,7 @@
     </ClCompile>
     <ClCompile Include="mylib.aggregate.ixx" />
     <ClCompile Include="mylib.algorithm.ixx" />
+    <ClCompile Include="mylib.concat.ixx" />
     <ClCompile Include="mylib.container_traits.ixx" />
     <ClCompile Include="mylib.link_list.ixx" />
     <ClCompile Include="mylib.functional.ixx" />
@@ -216,6 +217,7 @@
     <ClCompile Include="mylib.stack_string.ixx" />
     <ClCompile Include="mylib.stream_output.ixx" />
     <ClCompile Include="mylib.string.ixx" />
+    <ClCompile Include="mylib.string_literal.ixx" />
     <ClCompile Include="mylib.templates_utility.ixx" />
     <ClCompile Include="mylib.timer.ixx" />
     <ClCompile Include="mylib.tuple.ixx" />
@@ -263,8 +265,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </MASM>
     <None Include="..\README.md" />
-    <None Include="ClassDiagram.cd" />
-    <None Include="my_binary_tree.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="algorithm" />

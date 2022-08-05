@@ -399,6 +399,17 @@ export namespace mylib {
         bool_constant<is_floating_point_v<Type>>
     {};
 
+    // not standard
+    template<typename Type>
+    inline constexpr bool is_character_v =
+        is_any_of_v<Type, char, wchar_t, char8_t, char16_t, char32_t>;
+
+    // not standard
+    template<typename Type>
+    struct is_character :
+        bool_constant<is_character_v<Type>>
+    {};
+
     // C++17
     template<typename Type>
     inline constexpr bool is_array_v             = false;
@@ -733,8 +744,6 @@ export namespace mylib {
 
 
 #   endif
-
-    
 
     namespace unittest {
         
