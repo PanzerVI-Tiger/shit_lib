@@ -13,17 +13,22 @@ export namespace mylib {
     /*
      *  concat can connect tuple, array, and string
      *
+     *  concat's argument must concatable
      *  if arguments have tuple, return type is tuple
      *  if arguments have base_string or pointer to character, concat return type is base_string,
      *  else return stack_string
      */
 
     template<typename Type>
-    inline constexpr bool is_concatable = false;
+    inline constexpr bool is_concatable_v = false;
 
     template<typename Type>
-    concept concatable = is_concatable<Type>;
+    struct is_concatable :
+        bool_constant<is_concatable_v<Type>>
+    {};
 
+    template<typename Type>
+    concept concatable = is_concatable_v<Type>;
     
     template<typename Type>
     struct concatable_traits {

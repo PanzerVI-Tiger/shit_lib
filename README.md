@@ -125,6 +125,7 @@ mylib
 |        |- mylib.conatiner_traits.ixx
 |        |- mylib.eval.ixx
 |        |- mylib.pointer.ixx
+|        |- mylib.string_traits.ixx
 |        |- mylib.timer.ixx
 |        |- # TODO: more not_standard utility module
 |

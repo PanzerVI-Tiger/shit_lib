@@ -58,6 +58,14 @@ export namespace mylib {
             
             return *this;
         }
+
+        constexpr CharType& operator [](size_type index) noexcept {
+            return chars[index];
+        }
+        
+        constexpr const CharType& operator [](size_type index) const noexcept {
+            return chars[index];
+        }
         
         constexpr CharType* data() noexcept {
             return chars;

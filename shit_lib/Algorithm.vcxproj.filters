@@ -219,6 +219,9 @@
     <ClCompile Include="mylib.concat.ixx">
       <Filter>mylib\module\not_standard\algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="mylib.string_traits.ixx">
+      <Filter>mylib\module\not_standard\utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

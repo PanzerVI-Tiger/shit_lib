@@ -551,6 +551,7 @@ export namespace mylib {
 
             std::string name{ "" };
             [&name] <typename... Types> (
+                [[maybe_unused]]
                 std::tuple<Types...> tupleObject
             ) constexpr noexcept {
                 bool isStart = true;
@@ -573,7 +574,8 @@ export namespace mylib {
         constexpr auto make_n_same_type_tuple() noexcept {
             return 
                 []<size_t index, size_t... indices, typename... Types> (
-                    this auto self, 
+                    this auto self,
+                    [[maybe_unused]]
                     std::tuple<Types...>                   tupleObject,
                     [[maybe_unused]]
                     std::index_sequence<index, indices...> sequence
@@ -642,10 +644,10 @@ export namespace mylib {
         using traits = mylib::aggregate_traits<Type>;
 
         return 
-            std::string{ typeid(Type).name() }                                          + " {\n"
-            "  size: "                    + to_string(traits::size())                   + ",\n"
-            "  member objects' types: ("  + traits::types_string()                      + "),\n"
-            "  member objects: "          + to_string(traits::member_objects(object))   + "\n"
+            std::string{ typeid(Type).name() }                                            + " {\n"
+            "    size: "                    + to_string(traits::size())                   + ",\n"
+            "    member objects' types: ("  + traits::types_string()                      + "),\n"
+            "    member objects: "          + to_string(traits::member_objects(object))   + "\n"
             "}";
     }
 

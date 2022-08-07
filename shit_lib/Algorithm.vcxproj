@@ -223,6 +223,7 @@
     <ClCompile Include="mylib.tuple.ixx" />
     <ClCompile Include="mylib.utility.ixx" />
     <ClCompile Include="mylib.vector.ixx" />
+    <ClCompile Include="mylib.string_traits.ixx" />
     <ClCompile Include="test_main.ixx">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>

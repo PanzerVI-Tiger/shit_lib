@@ -6,6 +6,8 @@ module;
 //#include "mylib_assert.h"
 //#include <string>
 //#include <fast_io.h>
+//#include <format>
+//#include <xutility>
 
 export module mylib.main;
 
@@ -18,7 +20,12 @@ export int main() noexcept
     using namespace mylib::string_literals;
     using mylib::operator <<;
     
-    int i = 0;
-
+    struct X {
+        int i, j, k, l, m, n, o, p, q, r, s, t, u;
+        int h[10];
+    } static x;
+    
+    std::cout << mylib::aggregate_to_string(x);
+    
     return 0;
 }

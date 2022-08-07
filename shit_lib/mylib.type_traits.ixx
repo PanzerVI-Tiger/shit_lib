@@ -522,18 +522,19 @@ export namespace mylib {
     namespace detail
     {
         template<class T>
-        constexpr auto test_sizable(int) -> 
+        constexpr auto test_is_sizable(int) -> 
             decltype(sizeof(T), std::true_type{})
         {}
         
         template<class>
-        constexpr auto test_sizable(...) -> 
+        constexpr auto test_is_sizable(...) -> 
             std::false_type
         {}
     }
     
     template<typename Type>
-    inline constexpr bool is_sizable_v = decltype(detail::test_sizable<Type>(0))::value;
+    inline constexpr bool is_sizable_v =
+        decltype(detail::test_is_sizable<Type>(0))::value;
     
 #   endif
 
@@ -673,6 +674,44 @@ export namespace mylib {
         bool_constant<is_arithmetic_v<Type>>
     {};
 
+    // always true
+#   ifdef __cpp_concepts
+
+    // not standard
+    template<typename Type>
+    inline constexpr bool is_returnable_v =
+        requires{
+            static_cast<Type(*)()>(nullptr);
+        };
+
+#   else
+
+    namespace detail {
+        
+        template<typename Type>
+        constexpr auto test_is_returnable(int) ->
+            decltype(static_cast<Type(*)()>(nullptr), true_type{})
+        {}
+
+        template<typename Type>
+        constexpr auto test_is_returnable(...) ->
+            false_type
+        {}
+    }
+
+    // not standard
+    template<typename Type>
+    inline constexpr bool is_returnable_v =
+        decltype(detail::test_is_returnable<Type>(0))::value;
+
+#   endif
+
+    // not standard
+    template<typename Type>
+    struct is_returnable :
+        bool_constant<is_returnable_v<Type>>
+    {};
+
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
     // C++17
@@ -737,13 +776,54 @@ export namespace mylib {
 
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
 
+    // C++17
+    // __is_convertible_v is available in clang, gcc and msvc
     template<typename From, typename To>
     inline constexpr bool is_convertible_v = __is_convertible_to(From, To);
     
+#   elif defined(__cpp_concepts)
+
+    // C++17
+    template<typename From, typename To>
+    inline constexpr bool is_convertible_v =
+        requires{
+            static_cast<To(*)(To)>(nullptr)(declval<From>());
+        }               ||
+       (is_void_v<From> &&
+        is_void_v<To>);
+    
+    // always false
 #   else
+    
+    namespace detail {
 
+        template<typename From, typename To>
+        constexpr auto test_is_convertible_v(int) noexcept ->
+            decltype(static_cast<true_type(*)(To)>(nullptr)(declval<From>()))
+        {}
 
+        template<typename From, typename To>
+        constexpr auto test_is_convertible_v(...) noexcept ->
+            false_type
+        {}
+    }
+    
+    // C++17
+    template<typename From, typename To>
+    inline constexpr bool is_convertible_v =
+       (is_returnable_v<To>                            &&
+        decltype(
+            detail::test_is_convertible_v<From, To>(0)
+        )::value)                                      ||
+       (is_void_v<From>                                &&
+        is_void_v<To>);
+    
 #   endif
+
+    template<typename From, typename To>
+    struct is_convertible :
+        bool_constant<is_convertible_v<From, To>>
+    {};
 
     namespace unittest {
         
