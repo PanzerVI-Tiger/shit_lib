@@ -112,8 +112,8 @@ export namespace mylib {
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 17> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> {
-    };
+        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+    {};
     
     template<typename Type, size_t argumentsSize>
     inline constexpr bool can_n_arguments_construct_v = can_n_arguments_construct<Type, argumentsSize>::value;
@@ -682,37 +682,35 @@ export namespace mylib {
             return true;
         }
         
-        struct test_aggregate {
-            static_assert(assert_test_aggregate(), "aggregate have bug!");
+        static_assert(assert_test_aggregate(), "aggregate have bug!");
 
-            static void print_test() {
-                using mylib::operator <<;
-                
-                // test class A
-                struct A {
-                    int         nmb;
-                    std::string cnm;
-                } a{ 1, "fuck" };
+        void print_test_aggregate() {
+            using mylib::operator <<;
+        
+            // test class A
+            struct A {
+                int         nmb;
+                std::string cnm;
+            } a{ 1, "fuck" };
 
-                // test class B
-                struct B {
-                    int sb;
-                    int gb[4];
-                    int bb;
-                } b{ 1, { 1, 2, 3, 4 }, 8 };
+            // test class B
+            struct B {
+                int sb;
+                int gb[4];
+                int bb;
+            } b{ 1, { 1, 2, 3, 4 }, 8 };
 
-                // test array
-                int arr[]{ 1, 2, 3, 4, 5 };
+            // test array
+            int arr[]{ 1, 2, 3, 4, 5 };
 
-                // print all
-                std::cout << aggregate_to_string(a)
-                          << "\n\n"
-                          << aggregate_to_string(b)
-                          << "\n\n"
-                          << aggregate_to_string(arr)
-                          << "\n\n" 
-                          << mylib::get<1>(b);
-            }
-        };
+            // print all
+            std::cout << aggregate_to_string(a)
+                      << "\n\n"
+                      << aggregate_to_string(b)
+                      << "\n\n"
+                      << aggregate_to_string(arr)
+                      << "\n\n" 
+                      << mylib::get<1>(b);
+        }
     }
 }

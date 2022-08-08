@@ -59,6 +59,10 @@ export namespace mylib {
             return *this;
         }
 
+        operator std::string() noexcept {
+            return std::string{ chars, stringSize };
+        }
+
         constexpr CharType& operator [](size_type index) noexcept {
             return chars[index];
         }

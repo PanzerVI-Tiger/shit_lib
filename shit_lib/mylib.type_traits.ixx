@@ -284,9 +284,8 @@ export namespace mylib {
 
     // define declval from utility,
     // to avoid circular dependency and import whole utility,
-    // latter one will result in type_traits can't be freestanding
     template<typename Type>
-    add_rvalue_reference_t<Type> declval() noexcept {
+    constexpr add_rvalue_reference_t<Type> declval() noexcept {
         static_assert(always_false<Type>, "declval shouldn't be called!");
     }
 
@@ -329,6 +328,16 @@ export namespace mylib {
         using type = remove_reference_t<Type>*;
     };
     
+#   ifdef __clang__
+
+    // C++17
+    // __is_same is clang only
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_same_v = __is_same(Type1, Type2);
+    
+
+#   else
+    
     // C++17
     template<typename Type1, typename Type2>
     inline constexpr bool is_same_v             = false;
@@ -337,6 +346,8 @@ export namespace mylib {
     template<typename Type>
     inline constexpr bool is_same_v<Type, Type> = true;
 
+#   endif
+    
     template<typename Type1, typename Type2>
     struct is_same : 
         bool_constant<is_same_v<Type1, Type2>> 

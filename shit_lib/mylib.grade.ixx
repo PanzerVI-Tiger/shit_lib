@@ -4,6 +4,7 @@ import std.core;
 
 
 export namespace mylib {
+    
     template<typename ElementType>
         requires std::is_integral_v<ElementType>
     struct grade {
