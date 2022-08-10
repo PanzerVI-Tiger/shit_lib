@@ -2,14 +2,25 @@ module;
 
 #include "mylib_assert.h"
 
+#ifdef __INTELLISENSE__
+
+#include <vector>
+#include <iterator>
+
+#endif
+
 export module mylib.algorithm;
 
+#ifndef __INTELLISENSE__
 
 import std.core;
+
+#endif
+
 import mylib.functional;
 
 
-export namespace mylib::inline algorithm {
+export namespace mylib {
 
 
     template<typename InputIterator, typename UnaryPredicate>
@@ -91,14 +102,14 @@ export namespace mylib::inline algorithm {
     template<typename InputIterator, typename _Type>
     inline constexpr std::iter_difference_t<InputIterator> count(
         InputIterator first, InputIterator last, 
-        _Type         _Val
+        _Type         value
     ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
         std::iter_difference_t<InputIterator> count = 0;
         while (first != last) {
-            if (*first == _Val) {
+            if (*first == value) {
                 ++count;
             }
             ++first;
@@ -193,12 +204,12 @@ export namespace mylib::inline algorithm {
     
     template<typename InputIterator, typename _Type>
     inline constexpr InputIterator find(InputIterator first, InputIterator last, 
-                                         const _Type& _Value) noexcept {
+                                         const _Type& value) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
         while (first != last) {
-            if (*first == _Value) {
+            if (*first == value) {
                 break;
             }
             ++first;

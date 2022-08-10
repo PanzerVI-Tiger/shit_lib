@@ -1,8 +1,22 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <type_traits>
+
+#endif
+
 export module mylib.utility;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.compare;
-import mylib.type_traits;
+
+export import mylib.type_traits;
 
 export namespace mylib {
     

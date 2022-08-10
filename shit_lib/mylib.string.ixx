@@ -1,6 +1,24 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <set>
+#include <map>
+#include <ranges>
+#include <string>
+#include <variant>
+#include <optional>
+#include <type_traits>
+
+#endif
+
 export module mylib.string;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
 
 
 export namespace mylib {
@@ -51,7 +69,6 @@ export namespace mylib {
 
         return result;
     }
-
 
     // not standard
     template<typename... Type>

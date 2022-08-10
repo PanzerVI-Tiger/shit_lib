@@ -1,6 +1,20 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <memory>
+#include <iterator>
+
+#endif
+
 export module mylib.list;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.iterator;
 
 export namespace mylib {

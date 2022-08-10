@@ -1,6 +1,21 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <tuple>
+#include <string>
+#include <iostream>
+
+#endif
+
 export module mylib.aggregate;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.string;
 import mylib.utility;
 import mylib.type_traits;
@@ -643,12 +658,15 @@ export namespace mylib {
     constexpr std::string aggregate_to_string(const Type& object) noexcept {
         using traits = mylib::aggregate_traits<Type>;
 
+#       ifndef __INTELLISENSE__
+        
         return 
             std::string{ typeid(Type).name() }                                            + " {\n"
             "    size: "                    + to_string(traits::size())                   + ",\n"
             "    member objects' types: ("  + traits::types_string()                      + "),\n"
             "    member objects: "          + to_string(traits::member_objects(object))   + "\n"
             "}";
+#       endif
     }
 
     namespace unittest {

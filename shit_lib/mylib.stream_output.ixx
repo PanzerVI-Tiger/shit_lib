@@ -1,7 +1,25 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <set>;
+#include <map>;
+#include <tuple>;
+#include <ranges>;
+#include <variant>;
+#include <utility>;
+#include <optional>;
+#include <iostream>;
+
+#endif
+
 export module mylib.stream_output;
+
+#ifndef __INTELLISENSE__
 
 import std.core;
 
+#endif
 
 export namespace mylib {
     
@@ -83,7 +101,7 @@ export namespace mylib {
         return os;
     }
 
-    /*template<typename... Types>
+    template<typename... Types>
     std::ostream& operator <<(std::ostream& os, const std::variant<Types...>& variantObject) noexcept {
         os << "{ ";
         std::visit(
@@ -95,7 +113,7 @@ export namespace mylib {
         os << " }";
         
         return os;
-    }*/
+    }
 
     template<typename Type>
     std::ostream& operator <<(std::ostream& os, const std::optional<Type>& optionalObject) noexcept {

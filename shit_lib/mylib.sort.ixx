@@ -1,7 +1,23 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+import <vector>;
+import <utility>;
+import <algorithm>;
+
+#endif
+
 export module mylib.sort;
 
-import std.core;
 import mylib.algorithm;
+
+#ifndef __INTELLISENSE__
+
+import std.core;
+
+#endif
+
 
 
 export namespace mylib::inline sorts {

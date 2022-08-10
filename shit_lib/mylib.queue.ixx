@@ -1,6 +1,15 @@
 export module mylib.queue;
 
+#ifdef __INTELLISENSE__
+
+import <utility>;
+
+#else
+
 import std.core;
+
+#endif
+
 import mylib.deque;
 
 

@@ -1,6 +1,19 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <string>
+
+#endif
+
 export module mylib.string_traits;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.type_traits;
 
 

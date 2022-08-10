@@ -1,7 +1,19 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <concepts>
+#include <algorithm>
+
+#endif
+
 export module mylib.templates_utility;
+
+#ifndef __INTELLISENSE__
 
 import std.core;
 
+#endif
 
 export namespace mylib {
 

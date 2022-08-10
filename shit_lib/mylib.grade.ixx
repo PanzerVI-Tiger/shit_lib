@@ -1,12 +1,28 @@
+module;
+
+#ifdef  __INTELLISENSE__
+
+#include <numeric>;
+#include <iostream>;
+#include <type_traits>;
+
+#endif
+
 export module mylib.grade;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
+import mylib.type_traits;
 
 
 export namespace mylib {
     
     template<typename ElementType>
-        requires std::is_integral_v<ElementType>
+        requires is_integral_v<ElementType>
     struct grade {
         using TemplateParameter = ElementType;
         using SignedType        = std::make_signed_t<ElementType>;

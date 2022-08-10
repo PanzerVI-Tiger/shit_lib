@@ -1,6 +1,19 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <utility>
+
+#endif
+
 export module mylib.stack;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.deque;
 
 export namespace mylib {

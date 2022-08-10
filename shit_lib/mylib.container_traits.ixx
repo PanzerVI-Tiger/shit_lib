@@ -1,6 +1,18 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <iterator>
+
+#endif
+
 export module mylib.container_traits;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
 
 
 export namespace mylib {

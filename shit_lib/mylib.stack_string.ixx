@@ -1,6 +1,19 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <string>
+
+#endif
+
 export module mylib.stack_string;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.algorithm;
 import mylib.type_traits;
 import mylib.string_literal;

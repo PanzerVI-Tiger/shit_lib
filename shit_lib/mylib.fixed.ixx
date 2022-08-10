@@ -1,12 +1,12 @@
 export module mylib.fixed;
 
-import std.core;
+import mylib.type_traits;
 
 
 export namespace mylib {
 
     template<typename ElementType>
-        requires (std::is_integral_v<ElementType> && (!std::is_same_v<ElementType, long long>))
+        requires (is_integral_v<ElementType> && (!is_same_v<ElementType, long long>))
     struct fixed {
         union {
             struct {

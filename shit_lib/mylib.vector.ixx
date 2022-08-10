@@ -1,7 +1,16 @@
+#ifdef __INTELLISENSE__
+
+#include <memory>
+
+#endif
+
 export module mylib.vector;
+
+#ifndef __INTELLISENSE__
 
 import std.core;
 
+#endif
 
 export namespace mylib {
 

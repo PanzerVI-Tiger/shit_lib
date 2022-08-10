@@ -1,6 +1,5 @@
 export module mylib.type_traits;
 
-import std.core;
 import mylib.container_traits;
 
 
@@ -555,20 +554,223 @@ export namespace mylib {
         bool_constant<is_sizable_v<Type>>
     {};
     
-#   if defined(__clang__) || defined(_MSVC_LANG)
+#   if defined(__clang__)
     
     // C++17
-    // __is_function is available in clang and MSVC
+    // __is_function is only for clang
     template<typename Type>
     inline constexpr bool is_function_v = __is_function(Type);
     
-#   else  
+#   elif 1 
     
     // C++17
     // only function types and reference types can't be const qualified
     template<typename Type>
     inline constexpr bool is_function_v =
         !is_const_v<const Type> && !is_reference_v<Type>;
+
+    // never use
+#   elif 0
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_function_v =
+        false;
+    
+    // Result(Params...[, ...]) [const] [volatile] [& | &&] [noexcept] => 2 * 2 * 2 * 3 * 2 = 48
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...)> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) volatile> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const volatile> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) &> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const &> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) volatile &> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const volatile &> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) &&> =
+        true;
+    
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const &&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) volatile &&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const volatile &&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...)> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) volatile> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const volatile> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) &> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) volatile&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const volatile&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) &&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const&&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) volatile&&> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const volatile&&> =
+        true;
+    
+    // noexcept, after C++17
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) volatile noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const volatile noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) & noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) volatile& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const volatile& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) && noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const&& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) volatile&& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params...) const volatile&& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) volatile noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const volatile noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...)& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) volatile& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const volatile& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...)&& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const&& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) volatile&& noexcept> =
+        true;
+
+    template<typename Result, typename... Params>
+    inline constexpr bool is_function_v<Result(Params..., ...) const volatile&& noexcept> =
+        true;  
 
 #   endif
     

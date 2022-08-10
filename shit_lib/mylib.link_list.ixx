@@ -2,13 +2,26 @@ module;
 
 #include "mylib_assert.h"
 
+#ifdef __INTELLISENSE__
+
+#include <utility>
+#include <iterator>
+
+#endif
+
 export module mylib.link_list;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.iterator;
 import mylib.algorithm;
 import mylib.functional;
 import mylib.container_traits;
+
 
 export namespace mylib::inline link_list {
     

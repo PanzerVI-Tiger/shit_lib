@@ -2,9 +2,21 @@ module;
 
 #include "mylib_assert.h"
 
+#ifdef __INTELLISENSE__
+
+#include <utility>
+#include <iterator>
+
+#endif
+
 export module mylib.numeric;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.functional;
 
 

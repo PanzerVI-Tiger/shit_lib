@@ -1,6 +1,24 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <string>
+#include <memory>
+#include <vector>
+#include <utility>
+#include <iostream>
+#include <functional>
+
+#endif
+
 export module mylib.binary_tree;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.queue;
 
 export namespace mylib {
@@ -18,7 +36,7 @@ export namespace mylib {
 
     template<typename KeyType, typename Allocator>
     struct key_binary_tree_node {
-        using value_type      = std::remove_reference_t<KeyType>;
+        using value_type      = KeyType;
         using key_type        = value_type;
 
         using size_type       = typename std::allocator_traits<Allocator>::size_type;

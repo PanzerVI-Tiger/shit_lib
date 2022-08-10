@@ -1,6 +1,22 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <cmath>;
+#include <vector>;
+#include <memory>;
+#include <functional>;
+
+#endif
+
 export module mylib.graph;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.queue;
 import mylib.binary_tree;
 

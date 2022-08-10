@@ -2,10 +2,21 @@ module;
 
 #include <Windows.h>
 
+#ifdef __INTELLISENSE__
+
+#include <thread>
+#include <iostream>
+#include <functional>
+
+#endif
+
 export module mylib.timer;
+
+#ifndef __INTELLISENSE__
 
 import std.core;
 
+#endif
 
 export namespace mylib {
     

@@ -1,6 +1,18 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <utility>
+
+#endif
+
 export module mylib.tuple;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
 import mylib.type_traits;
 
 

@@ -280,5 +280,8 @@
     <ClInclude Include="vector">
       <Filter>mylib\head\cpp\standard</Filter>
     </ClInclude>
+    <ClInclude Include="cxxstd.h">
+      <Filter>mylib\head</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

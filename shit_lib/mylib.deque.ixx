@@ -1,6 +1,20 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <memory>;
+#include <iterator>;
+
+#endif
+
 export module mylib.deque;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.iterator;
 
 export namespace mylib {
@@ -909,7 +923,7 @@ export namespace mylib {
         for (size_t i = 0, j = value.capacity(); i < j; i++) {
             _Os << value.get_element_by_offset(i) << ' ';
         }
-
+        
         return _Os;
     }
 };

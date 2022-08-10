@@ -1,6 +1,22 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <set>
+#include <memory>
+#include <utility>
+
+#endif
+
+
 export module mylib.huffman_tree;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.binary_tree;
 
 

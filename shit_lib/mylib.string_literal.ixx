@@ -1,6 +1,17 @@
+#ifdef __INTELLISENSE__
+
+#include <string>
+
+#endif
+
 export module mylib.string_literal;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.algorithm;
 
 export namespace mylib {

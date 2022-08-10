@@ -1,6 +1,10 @@
 export module mylib;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
 
 /*       standard module       */
 //         algorthim
@@ -62,6 +66,22 @@ export import mylib.string_traits;
 export import mylib.container_traits; // traits of mylib container and iterator
 export import mylib.templates_utility;
 
+#ifdef __INTELLISENSE__
+
+namespace std::ranges
+{}
+
+namespace std::chrono
+{}
+
+namespace std::ranges::views
+{}
+
+namespace std::literals
+{}
+
+#endif
+
 export {
     // test assmebly code
     extern "C" void test_asm();
@@ -69,6 +89,6 @@ export {
     // standard namespace alias
     namespace stdr = std::ranges;
     namespace stdc = std::chrono;
-    namespace stdv = std::views;
+    namespace stdv = std::ranges::views;
     namespace stdl = std::literals;
 }

@@ -1,6 +1,17 @@
+#ifdef __INTELLISENSE__
+
+#include <iterator>
+
+#endif
+
 export module mylib.matrix;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.container_traits;
 
 

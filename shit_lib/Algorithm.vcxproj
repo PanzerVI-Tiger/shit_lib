@@ -270,6 +270,7 @@
   <ItemGroup>
     <ClInclude Include="algorithm" />
     <ClInclude Include="compare" />
+    <ClInclude Include="cxxstd.h" />
     <ClInclude Include="deque" />
     <ClInclude Include="functional" />
     <ClInclude Include="iterator" />

@@ -1,6 +1,20 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <string>
+#include <optional>
+
+#endif
+
 export module mylib.eval;
 
+#ifndef __INTELLISENSE__
+
 import std.core;
+
+#endif
+
 import mylib.stack;
 import mylib.binary_tree;
 import mylib.type_traits;
