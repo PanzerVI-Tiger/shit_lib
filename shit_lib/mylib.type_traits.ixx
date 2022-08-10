@@ -332,8 +332,7 @@ export namespace mylib {
     // C++17
     // __is_same is clang only
     template<typename Type1, typename Type2>
-    inline constexpr bool is_same_v = __is_same(Type1, Type2);
-    
+    inline constexpr bool is_same_v = __is_same(Type1, Type2);   
 
 #   else
     
@@ -466,93 +465,16 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_lvalue_reference_v        = false;
-    
-    // C++17
-    template<typename Type>
-    inline constexpr bool is_lvalue_reference_v<Type&> = true;
+    inline constexpr bool is_const_v = false;
 
-    template<typename Type>
-    struct is_lvalue_reference :
-        bool_constant<is_lvalue_reference_v<Type>>
-    {};
-
-    // C++17
-    template<typename Type>
-    inline constexpr bool is_rvalue_reference_v        = false;
-
-    // C++17
-    template<typename Type>
-    inline constexpr bool is_rvalue_reference_v<Type&> = true;
-
-    template<typename Type>
-    struct is_rvalue_reference :
-        bool_constant<is_rvalue_reference_v<Type>>
-    {};
-
-    // C++17
-    template<typename Type>
-    inline constexpr bool is_reference_v = false;
-
-    // C++17
-    template<typename Type>
-    inline constexpr bool is_reference_v<Type&>  = true;
-    
-    // C++17
-    template<typename Type>
-    inline constexpr bool is_reference_v<Type&&> = true;
-
-    template<typename Type>
-    struct is_reference :
-        bool_constant<is_reference_v<Type>>
-    {};
-
-    // C++17
-    template<typename Type>
-    inline constexpr bool is_const_v             = false;
-    
     // C++17
     template<typename Type>
     inline constexpr bool is_const_v<const Type> = true;
 
     template<typename Type>
     struct is_const :
-        bool_constant<is_const_v<Type>>
-    {};
-
-    // always true
-#   ifdef __cpp_concepts
-    
-    // not standard
-    template<typename Type>
-    inline constexpr bool is_sizable_v = requires{ sizeof(Type); };
-
-#   else
-
-    namespace detail
-    {
-        template<class T>
-        constexpr auto test_is_sizable(int) -> 
-            decltype(sizeof(T), std::true_type{})
-        {}
-        
-        template<class>
-        constexpr auto test_is_sizable(...) -> 
-            std::false_type
-        {}
-    }
-    
-    template<typename Type>
-    inline constexpr bool is_sizable_v =
-        decltype(detail::test_is_sizable<Type>(0))::value;
-    
-#   endif
-
-    // not standard
-    template<typename Type>
-    struct is_sizable :
-        bool_constant<is_sizable_v<Type>>
-    {};
+        bool_constant<is_const_v<Type>>             {
+};
     
 #   if defined(__clang__)
     
@@ -779,6 +701,68 @@ export namespace mylib {
         bool_constant<is_function_v<Type>>
     {};
 
+    namespace detail {
+        // auxiliary template
+        template<typename Type>
+        inline constexpr bool auxiliary_is_pointer_v = false;
+
+        // auxiliary template
+        template<typename Type>
+        inline constexpr bool auxiliary_is_pointer_v<Type*> = true;
+    }
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_pointer_v = detail::auxiliary_is_pointer_v<remove_cv_t<Type>>;
+    
+    template<typename Type>
+    struct is_pointer :
+        bool_constant<is_pointer_v<Type>>
+    {};
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_lvalue_reference_v        = false;
+    
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_lvalue_reference_v<Type&> = true;
+
+    template<typename Type>
+    struct is_lvalue_reference :
+        bool_constant<is_lvalue_reference_v<Type>>
+    {};
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_rvalue_reference_v        = false;
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_rvalue_reference_v<Type&> = true;
+
+    template<typename Type>
+    struct is_rvalue_reference :
+        bool_constant<is_rvalue_reference_v<Type>>
+    {};
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_reference_v = false;
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_reference_v<Type&>  = true;
+    
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_reference_v<Type&&> = true;
+
+    template<typename Type>
+    struct is_reference :
+        bool_constant<is_reference_v<Type>>
+    {};
+    
 #   ifdef __clang__
     
     // C++17
@@ -789,20 +773,22 @@ export namespace mylib {
     
 #   else
     
-    // auxiliary template
-    template<typename Type>
-    inline constexpr bool auxiliary_is_member_pointer_v
-        = false;
-    
-    // auxiliary template
-    template<typename MemberType, typename ClassType>
-    inline constexpr bool auxiliary_is_member_pointer_v<MemberType ClassType::*> 
-        = true;
+    namespace detail {
+        // auxiliary template
+        template<typename Type>
+        inline constexpr bool auxiliary_is_member_pointer_v
+            = false;
+
+        // auxiliary template
+        template<typename MemberType, typename ClassType>
+        inline constexpr bool auxiliary_is_member_pointer_v<MemberType ClassType::*>
+            = true;
+    }
     
     // C++17
     template<typename Type>
     inline constexpr bool is_member_pointer_v = 
-        auxiliary_is_member_pointer_v<remove_cv_t<Type>>;
+        detail::auxiliary_is_member_pointer_v<remove_cv_t<Type>>;
     
 #   endif
 
@@ -821,20 +807,22 @@ export namespace mylib {
 
 #   else
     
-    // auxiliary template
-    template<typename Type>
-    inline constexpr bool auxiliary_is_member_object_pointer_v
-        = false;
+    namespace detail {
+        // auxiliary template
+        template<typename Type>
+        inline constexpr bool auxiliary_is_member_object_pointer_v
+            = false;
 
-    // auxiliary templatye
-    template<typename MemberType, typename ClassType>
-    inline constexpr bool auxiliary_is_member_object_pointer_v<MemberType ClassType::*>
-        = !is_function_v<MemberType>;
-
+        // auxiliary templatye
+        template<typename MemberType, typename ClassType>
+        inline constexpr bool auxiliary_is_member_object_pointer_v<MemberType ClassType::*>
+            = !is_function_v<MemberType>;
+    }
+    
     // C++17
     template<typename Type>
     inline constexpr bool is_member_object_pointer_v 
-        = auxiliary_is_member_object_pointer_v<remove_cv_t<Type>>;
+        = detail::auxiliary_is_member_object_pointer_v<remove_cv_t<Type>>;
     
 #endif
 
@@ -877,6 +865,40 @@ export namespace mylib {
         bool_constant<is_member_function_pointer_v<Type>>
     {};
 
+    // always true
+#   ifdef __cpp_concepts
+    
+    // not standard
+    template<typename Type>
+    inline constexpr bool is_sizable_v = requires { sizeof(Type); };
+
+#   else
+
+    namespace detail
+    {
+        template<class T>
+        constexpr auto test_is_sizable(int) -> 
+            decltype(sizeof(T), std::true_type{})
+        {}
+        
+        template<class>
+        constexpr auto test_is_sizable(...) -> 
+            std::false_type
+        {}
+    }
+    
+    template<typename Type>
+    inline constexpr bool is_sizable_v =
+        decltype(detail::test_is_sizable<Type>(0))::value;
+    
+#   endif
+
+    // not standard
+    template<typename Type>
+    struct is_sizable :
+        bool_constant<is_sizable_v<Type>>
+    {};
+
     // C++17
     template<typename Type>
     inline constexpr bool is_arithmetic_v =
@@ -887,13 +909,57 @@ export namespace mylib {
         bool_constant<is_arithmetic_v<Type>>
     {};
 
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_fundamental_v =
+        is_arithmetic_v<Type> || is_void_v<Type> || is_null_pointer_v<Type>;
+
+    template<typename Type>
+    struct is_fundamental :
+        bool_constant<is_fundamental_v<Type>>
+    {};
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_scalar_type_v =
+        is_arithmetic_v<Type>            || is_enum_v<Type>           || 
+        is_pointer_v<Type>               || is_member_pointer_v<Type> ||
+        is_null_pointer_v<Type>;
+
+    // always true
+#   if 1
+       
+    // C++17
+    // a non-void types that can be const qualified
+    template<typename Type>
+    inline constexpr bool is_object_v =
+        is_const_v<const Type> && !is_void_v<Type>;
+    // ^^ only function types and reference types can't be const qualified
+
+#   else
+    
+    // C++17
+    // standard implementation
+    // a type that is one of the scalar types, array types and class type
+    template<typename Type>
+    inline constexpr bool is_object_v =
+        is_scalar_type_v<Type> || is_array_v<Type> || 
+        is_union_v<Type>       || is_class_v<Type>;
+
+#   endif
+
+    template<typename Type>
+    struct is_object :
+        bool_constant<is_object_v<Type>>
+    {};
+
     // always true
 #   ifdef __cpp_concepts
 
     // not standard
     template<typename Type>
     inline constexpr bool is_returnable_v =
-        requires{
+        requires {
             static_cast<Type(*)()>(nullptr);
         };
 
@@ -924,7 +990,20 @@ export namespace mylib {
     struct is_returnable :
         bool_constant<is_returnable_v<Type>>
     {};
+    
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_volatile_v                = false;
 
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_volatile_v<volatile Type> = true;
+
+    template<typename Type>
+    struct is_volatile :
+        bool_constant<is_volatile_v<Type>>
+    {};
+    
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
     // C++17
@@ -999,7 +1078,7 @@ export namespace mylib {
     // C++17
     template<typename From, typename To>
     inline constexpr bool is_convertible_v =
-        requires{
+        requires {
             static_cast<To(*)(To)>(nullptr)(declval<From>());
         }               ||
        (is_void_v<From> &&
@@ -1027,7 +1106,7 @@ export namespace mylib {
        (is_returnable_v<To>                            &&
         decltype(
             detail::test_is_convertible_v<From, To>(0)
-        )::value)                                      ||
+       )::value)                                       ||
        (is_void_v<From>                                &&
         is_void_v<To>);
     
@@ -1037,6 +1116,57 @@ export namespace mylib {
     struct is_convertible :
         bool_constant<is_convertible_v<From, To>>
     {};
+
+    // always true
+#   ifdef __cpp_concepts
+    
+    // C++20
+    template<typename From, typename To>
+    inline constexpr bool is_nothrow_convertible_v =
+        requires {
+            { static_cast<To(*)(To) noexcept>(nullptr)(declval<From>()) } noexcept;
+        }               ||
+       (is_void_v<From> &&
+        is_void_v<To>);
+        
+#   else
+    
+    namespace detail {
+
+        template<typename From, typename To>
+        constexpr auto test_is_nothrow_convertible_v(int) noexcept ->
+            bool_constant<
+                noexcept(
+                    static_cast<void(*)(To) noexcept>(nullptr)(declval<From>())
+                )
+            >
+        {}
+
+        template<typename From, typename To>
+        constexpr auto test_is_nothrow_convertible_v(...) noexcept ->
+            false_type
+        {}
+    }
+    
+    // C++20
+    template<typename From, typename To>
+    inline constexpr bool is_nothrow_convertible_v =
+       (is_returnable_v<To>                            &&
+        decltype(
+            detail::test_is_nothrow_convertible_v<From, To>(0)
+       )::value)                                       ||
+       (is_void_v<From>                                &&
+        is_void_v<To>);
+
+#   endif
+
+    // C++20
+    template<typename From, typename To>
+    struct is_nothrow_convertible :
+        bool_constant<is_nothrow_convertible_v<From, To>>
+    {};
+
+    
 
     namespace unittest {
         

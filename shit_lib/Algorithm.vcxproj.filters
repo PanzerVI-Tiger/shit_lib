@@ -281,7 +281,7 @@
       <Filter>mylib\head\cpp\standard</Filter>
     </ClInclude>
     <ClInclude Include="cxxstd.h">
-      <Filter>mylib\head</Filter>
+      <Filter>mylib\head\cpp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

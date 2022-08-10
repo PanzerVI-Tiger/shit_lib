@@ -25,6 +25,7 @@ import mylib.stream_output;
 export namespace mylib {
 
     namespace detail {
+        // maybe will be used??
         struct cast_any {
             template<typename Type>
             operator Type&() const {
