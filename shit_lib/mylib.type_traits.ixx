@@ -1,7 +1,18 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <cstddef>
+
+#endif
+
 export module mylib.type_traits;
 
-import mylib.container_traits;
+#ifndef __INTELLISENSE__
 
+import std.core;
+
+#endif
 
 export namespace mylib {
     
@@ -465,7 +476,7 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_const_v = false;
+    inline constexpr bool is_const_v             = false;
 
     // C++17
     template<typename Type>
@@ -473,8 +484,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_const :
-        bool_constant<is_const_v<Type>>             {
-};
+        bool_constant<is_const_v<Type>>
+    {};
     
 #   if defined(__clang__)
     
@@ -663,7 +674,7 @@ export namespace mylib {
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...)& noexcept> =
+    inline constexpr bool is_function_v<Result(Params..., ...) & noexcept> =
         true;
 
     template<typename Result, typename... Params>
@@ -679,7 +690,7 @@ export namespace mylib {
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...)&& noexcept> =
+    inline constexpr bool is_function_v<Result(Params..., ...) && noexcept> =
         true;
 
     template<typename Result, typename... Params>

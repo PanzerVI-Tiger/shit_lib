@@ -1,3 +1,5 @@
+module;
+
 #ifdef __INTELLISENSE__
 
 #include <iterator>

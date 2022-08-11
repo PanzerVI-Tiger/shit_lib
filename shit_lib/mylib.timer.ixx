@@ -44,8 +44,8 @@ export namespace mylib {
             FILETIME ftDummy;
             GetThreadTimes(GetCurrentThread(), &ftDummy, &ftDummy, &ftDummy, &ftUserTimeNow);
             long long eplasedTimer{
-                 (long long(ftUserTimeNow.dwLowDateTime ) - starTime.dwLowDateTime ) +
-                ((long long(ftUserTimeNow.dwHighDateTime) - starTime.dwHighDateTime) << 32)
+                 (static_cast<long long>(ftUserTimeNow.dwLowDateTime ) - starTime.dwLowDateTime ) +
+                ((static_cast<long long>(ftUserTimeNow.dwHighDateTime) - starTime.dwHighDateTime) << 32)
             };
             callback(eplasedTimer);
         }
@@ -58,11 +58,13 @@ export namespace mylib {
     class timer {
     public:
         timer(size_t _duration, std::function<void()> _callback) noexcept : 
-            duration{ _duration }, callback{ _callback }, timerThread{
+            timerThread{
                 [&] {
                     while (true) {
-                        std::this_thread::sleep_for(duration);
-                        callback();
+                        std::this_thread::sleep_for(
+                            static_cast<std::chrono::steady_clock::duration>(_duration)
+                        );
+                        _callback();
                     }
                 }
             } {}
@@ -72,8 +74,6 @@ export namespace mylib {
         }
     
     private:
-        std::function<void()>                 callback;
-        std::thread                           timerThread;
-        std::chrono::steady_clock::duration   duration;
+        std::thread timerThread;
     };
 }

@@ -2,6 +2,7 @@ module;
 
 //#pragma optimize("", off)
 
+#include <Windows.h>
 //#include <fast_io.h>
 
 export module mylib.main;
@@ -13,13 +14,9 @@ import mylib;
 
 export int main() noexcept
 {
-    struct X {
-        operator int() noexcept {}
-    };
-    mylib::is_nothrow_convertible_v<X, int>;
-
-    mylib::is_object_v<
-
-    //std::cout << se.source_line();
+    int a[100];
+    stdr::iota(a, 0);
+    std::cout << a;
+    
     return 0;
 }
