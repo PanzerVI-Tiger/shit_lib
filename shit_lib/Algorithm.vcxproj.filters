@@ -102,186 +102,186 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test_main.ixx">
+    <ClCompile Include="源文件\f.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="源.c">
+    <ClCompile Include="源文件\test_main.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.deque.ixx">
-      <Filter>mylib\module\standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.list.ixx">
-      <Filter>mylib\module\standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.queue.ixx">
-      <Filter>mylib\module\standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.stack.ixx">
-      <Filter>mylib\module\standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.vector.ixx">
-      <Filter>mylib\module\standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.algorithm.ixx">
-      <Filter>mylib\module\standard\algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="tt.cpp">
+    <ClCompile Include="源文件\tt.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.compare.ixx">
-      <Filter>mylib\module\standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.eval.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.timer.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.stream_output.ixx">
-      <Filter>mylib\module\not_standard\io</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.fixed.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.grade.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.graph.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.sort.ixx">
-      <Filter>mylib\module\not_standard\algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.string.ixx">
-      <Filter>mylib\module\standard\string</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.iterator.ixx">
-      <Filter>mylib\module\standard\iterator</Filter>
-    </ClCompile>
-    <ClCompile Include="f.ixx">
+    <ClCompile Include="源文件\源.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.memory.ixx">
-      <Filter>mylib\module\standard\memory</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.functional.ixx">
-      <Filter>mylib\module\standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.type_traits.ixx">
-      <Filter>mylib\module\standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.templates_utility.ixx">
-      <Filter>mylib\module\not_standard\templates</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.link_list.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.container_traits.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.numeric.ixx">
-      <Filter>mylib\module\standard\numeric</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.utility.ixx">
-      <Filter>mylib\module\standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.matrix.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.red_black_tree.ixx">
-      <Filter>mylib\module\not_standard\container\tree</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.binary_tree.ixx">
-      <Filter>mylib\module\not_standard\container\tree</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.pointer.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib.ixx">
+    <ClCompile Include="mylib\mylib.ixx">
       <Filter>mylib</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.aggregate.ixx">
+    <ClCompile Include="mylib\module\not_standard\utility\mylib.aggregate.ixx">
       <Filter>mylib\module\not_standard\utility</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.tuple.ixx">
-      <Filter>mylib\module\standard\utility</Filter>
+    <ClCompile Include="mylib\module\not_standard\utility\mylib.container_traits.ixx">
+      <Filter>mylib\module\not_standard\utility</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.huffman_tree.ixx">
+    <ClCompile Include="mylib\module\not_standard\utility\mylib.eval.ixx">
+      <Filter>mylib\module\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\utility\mylib.pointer.ixx">
+      <Filter>mylib\module\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\utility\mylib.timer.ixx">
+      <Filter>mylib\module\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\utility\mylib.string_traits.ixx">
+      <Filter>mylib\module\not_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\io\mylib.stream_output.ixx">
+      <Filter>mylib\module\not_standard\io</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\container\mylib.link_list.ixx">
+      <Filter>mylib\module\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\container\mylib.matrix.ixx">
+      <Filter>mylib\module\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\container\mylib.fixed.ixx">
+      <Filter>mylib\module\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\container\mylib.grade.ixx">
+      <Filter>mylib\module\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\container\mylib.graph.ixx">
+      <Filter>mylib\module\not_standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\container\tree\mylib.huffman_tree.ixx">
       <Filter>mylib\module\not_standard\container\tree</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.stack_string.ixx">
-      <Filter>mylib\module\not_standard\string</Filter>
+    <ClCompile Include="mylib\module\not_standard\container\tree\mylib.binary_tree.ixx">
+      <Filter>mylib\module\not_standard\container\tree</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.string_literal.ixx">
-      <Filter>mylib\module\not_standard\string</Filter>
+    <ClCompile Include="mylib\module\not_standard\container\tree\mylib.red_black_tree.ixx">
+      <Filter>mylib\module\not_standard\container\tree</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.concat.ixx">
+    <ClCompile Include="mylib\module\not_standard\algorithm\mylib.concat.ixx">
       <Filter>mylib\module\not_standard\algorithm</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.string_traits.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
+    <ClCompile Include="mylib\module\not_standard\algorithm\mylib.sort.ixx">
+      <Filter>mylib\module\not_standard\algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\templates\mylib.templates_utility.ixx">
+      <Filter>mylib\module\not_standard\templates</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\string\mylib.stack_string.ixx">
+      <Filter>mylib\module\not_standard\string</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\not_standard\string\mylib.string_literal.ixx">
+      <Filter>mylib\module\not_standard\string</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\algorithm\mylib.algorithm.ixx">
+      <Filter>mylib\module\standard\algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\container\mylib.vector.ixx">
+      <Filter>mylib\module\standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\container\mylib.queue.ixx">
+      <Filter>mylib\module\standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\container\mylib.deque.ixx">
+      <Filter>mylib\module\standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\container\mylib.stack.ixx">
+      <Filter>mylib\module\standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\container\mylib.list.ixx">
+      <Filter>mylib\module\standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\iterator\mylib.iterator.ixx">
+      <Filter>mylib\module\standard\iterator</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\memory\mylib.memory.ixx">
+      <Filter>mylib\module\standard\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\numeric\mylib.numeric.ixx">
+      <Filter>mylib\module\standard\numeric</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\string\mylib.string.ixx">
+      <Filter>mylib\module\standard\string</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\utility\mylib.functional.ixx">
+      <Filter>mylib\module\standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\utility\mylib.tuple.ixx">
+      <Filter>mylib\module\standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\utility\mylib.utility.ixx">
+      <Filter>mylib\module\standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\utility\mylib.type_traits.ixx">
+      <Filter>mylib\module\standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\utility\mylib.compare.ixx">
+      <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="asm.asm">
-      <Filter>源文件</Filter>
-    </MASM>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="mylib_assert.h">
-      <Filter>mylib\head\cpp\not_standard\macro</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib_sort.h">
-      <Filter>mylib\head\cpp\not_standard</Filter>
-    </ClInclude>
-    <ClInclude Include="algorithm">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="compare">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="deque">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="functional">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="iterator">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="list">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="memory">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="numeric">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="queue">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="stack">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="string">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="type_traits">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="utility">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="vector">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="cxxstd.h">
+    <ClInclude Include="mylib\head\cpp\cxxstd.h">
       <Filter>mylib\head\cpp</Filter>
     </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\algorithm">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\compare">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\deque">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\functional">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\iterator">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\list">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\memory">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\numeric">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\queue">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\stack">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\string">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\type_traits">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\utility">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\standard\vector">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\not_standard\mylib_sort.h">
+      <Filter>mylib\head\cpp\not_standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\not_standard\macro\mylib_assert.h">
+      <Filter>mylib\head\cpp\not_standard\macro</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="源文件\asm.asm">
+      <Filter>源文件</Filter>
+    </MASM>
   </ItemGroup>
 </Project>
