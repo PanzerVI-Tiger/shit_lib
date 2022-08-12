@@ -1,198 +1,170 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="mylib">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+      <UniqueIdentifier>{c174ed62-d8b6-4ee1-a898-5937ee6e16ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\test">
-      <UniqueIdentifier>{486500fc-2530-4c42-9a6b-7fc8fb39d2e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module">
-      <UniqueIdentifier>{166d6a6d-edfc-473c-8153-e9dbd3e9f47c}</UniqueIdentifier>
+    <Filter Include="source">
+      <UniqueIdentifier>{5eb1d869-890b-40ce-8d19-546b4a87860e}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\head">
-      <UniqueIdentifier>{22fd51f8-014f-465a-9930-a1762f7940ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\not_standard">
-      <UniqueIdentifier>{bc82452c-e545-468d-8bd4-9f572a6dc6aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\not_standard\utility">
-      <UniqueIdentifier>{aac8ed35-7336-4dba-9abd-21d2550d58de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\not_standard\io">
-      <UniqueIdentifier>{b3d2dbf7-1248-4905-b071-1fa9c3291cff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\not_standard\container">
-      <UniqueIdentifier>{3923c5dc-4cf5-402f-be11-778badacb179}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\not_standard\container\tree">
-      <UniqueIdentifier>{89655db8-abe4-4e86-95f3-005c7a332e0c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\not_standard\algorithm">
-      <UniqueIdentifier>{3dce0bb7-948f-4e27-9363-39a21ef75d64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\module\not_standard\templates">
-      <UniqueIdentifier>{05f563d8-b338-4fdc-82de-2964ec4c6ae1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\head\c">
-      <UniqueIdentifier>{e282a714-7840-46a9-a3ec-cd9fa26db77d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\head\c\not_standard">
-      <UniqueIdentifier>{d1f0e629-1b04-4e9d-ab00-a05e0b65fad7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\head\c\not_standard\macro_meta">
-      <UniqueIdentifier>{e99e17ea-2a22-42d4-884f-7f67e0decb90}</UniqueIdentifier>
+      <UniqueIdentifier>{cd8ebfca-3c57-4308-ac67-26aaa45be195}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\head\cpp">
-      <UniqueIdentifier>{9ee6e854-43b8-4dce-b68b-d84698003342}</UniqueIdentifier>
+      <UniqueIdentifier>{116e4ea6-5194-48a3-8fb4-96bdd0cd5a48}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\head\cpp\standard">
-      <UniqueIdentifier>{ddcb79a0-95fc-4d94-b786-aa4fa71cbfc7}</UniqueIdentifier>
+      <UniqueIdentifier>{4e252e98-5c50-4f7c-ab41-ea3ab6239280}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\module\standard">
-      <UniqueIdentifier>{da119f62-a441-47e3-8a52-c99fd34210e7}</UniqueIdentifier>
+    <Filter Include="mylib\head\cpp\non_standard">
+      <UniqueIdentifier>{ce903bea-cfa6-4ab3-9691-ceb3ba0a7eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\cpp\non_standard\macro">
+      <UniqueIdentifier>{32d227ce-8724-4080-a359-88b735bfa172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\cpp\non_standard\macro\macro_meta">
+      <UniqueIdentifier>{5aef825a-d59c-4487-88e9-55bc3c631bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\c">
+      <UniqueIdentifier>{5ea567aa-8430-4386-8b13-aea53b08b627}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\head\c\standard">
-      <UniqueIdentifier>{9cac2a2c-ee5c-4e0b-9b87-f35ebe767c70}</UniqueIdentifier>
+      <UniqueIdentifier>{7439c8a1-6303-4dc1-9181-4654d3a86476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\c\non_standard">
+      <UniqueIdentifier>{d8df740a-7608-42c2-bd4c-2676562040c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\c\non_standard\macro_meta">
+      <UniqueIdentifier>{6cc18df7-a6ad-4ce2-9593-779d232c9623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module">
+      <UniqueIdentifier>{11f97d21-2f5a-47c7-aba1-bcf6fe53e532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard">
+      <UniqueIdentifier>{23abd730-3f81-401b-a437-b51fb768f9c4}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\algorithm">
-      <UniqueIdentifier>{e44d2184-225b-406f-bdfb-6b9bccdb0682}</UniqueIdentifier>
+      <UniqueIdentifier>{3c2374d8-c596-46e9-9c75-ca1f73041ebf}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\container">
-      <UniqueIdentifier>{fe67b6d7-0023-4d3e-beb0-e6198a43d670}</UniqueIdentifier>
+      <UniqueIdentifier>{bc7c8ddc-b11e-4c97-81ca-2fbcb534642f}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\io">
-      <UniqueIdentifier>{20bd5471-cbd4-4489-bfa1-54f6cee728d6}</UniqueIdentifier>
+      <UniqueIdentifier>{b6b98e3e-402e-49a9-8b8b-af92c89cce27}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\iterator">
-      <UniqueIdentifier>{0f50c9b0-7d2c-45e0-940d-a3a3465f0aae}</UniqueIdentifier>
+      <UniqueIdentifier>{09e352de-ca03-4fe5-813a-592821767bf2}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\memory">
-      <UniqueIdentifier>{651befe6-8599-4ae9-88a3-a97d8e569fde}</UniqueIdentifier>
+      <UniqueIdentifier>{b3533977-d244-4f1d-97b3-bf4940fe2b4e}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\numeric">
-      <UniqueIdentifier>{dfbb8e60-3ca8-431b-97f7-b281352ada1f}</UniqueIdentifier>
+      <UniqueIdentifier>{2ea7722e-c935-4545-924c-ac3d653cc563}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\string">
-      <UniqueIdentifier>{8cacd58a-7382-44d1-9625-51d7fee47538}</UniqueIdentifier>
+      <UniqueIdentifier>{32c7f2e8-8977-4ad4-85c5-fe9198502cce}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module\standard\utility">
-      <UniqueIdentifier>{e63753dd-973c-4458-b01e-f8a7daccf002}</UniqueIdentifier>
+      <UniqueIdentifier>{5deb2ac9-2b18-44e7-8434-eb4ee04c039b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\head\cpp\not_standard">
-      <UniqueIdentifier>{0dc16f3f-1166-4709-9ba0-14ae6ac87c1f}</UniqueIdentifier>
+    <Filter Include="mylib\module\non_standard">
+      <UniqueIdentifier>{30787d3c-5ca0-4bb2-bdad-91b5b34444ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\head\cpp\not_standard\macro">
-      <UniqueIdentifier>{30f49628-c8b9-4cfd-aab1-6ce892234db5}</UniqueIdentifier>
+    <Filter Include="mylib\module\non_standard\algorithm">
+      <UniqueIdentifier>{9153e062-9097-4a62-8931-200b05bcf4f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\head\cpp\not_standard\macro\macro_meta">
-      <UniqueIdentifier>{dfb76a46-5185-4220-a4e1-a8b4deb90d50}</UniqueIdentifier>
+    <Filter Include="mylib\module\non_standard\conatiner">
+      <UniqueIdentifier>{50f85b99-c6ab-4322-b973-8a26b572397d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\module\not_standard\string">
-      <UniqueIdentifier>{0642f1fc-9196-4c0e-8c80-7f5ced421bcf}</UniqueIdentifier>
+    <Filter Include="mylib\module\non_standard\conatiner\tree">
+      <UniqueIdentifier>{b68f1152-1f99-4ba5-9be7-d7527a5a5755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\non_standard\io">
+      <UniqueIdentifier>{819b3cef-3f81-421d-8dbb-a877507b2109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\non_standard\string">
+      <UniqueIdentifier>{ce9b47ce-465a-4c9f-b691-5f9db038214d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\non_standard\templates">
+      <UniqueIdentifier>{0f2082c9-6d04-4ad3-81c7-25e8a46ee8b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\non_standard\utility">
+      <UniqueIdentifier>{23ad2a4d-d37e-4ecc-acbf-5df0625d2f64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="源文件\f.ixx">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="源文件\test_main.ixx">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="源文件\tt.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="源文件\源.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\mylib.ixx">
-      <Filter>mylib</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\utility\mylib.aggregate.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\utility\mylib.container_traits.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\utility\mylib.eval.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\utility\mylib.pointer.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\utility\mylib.timer.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\utility\mylib.string_traits.ixx">
-      <Filter>mylib\module\not_standard\utility</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\io\mylib.stream_output.ixx">
-      <Filter>mylib\module\not_standard\io</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\mylib.link_list.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\mylib.matrix.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\mylib.fixed.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\mylib.grade.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\mylib.graph.ixx">
-      <Filter>mylib\module\not_standard\container</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\tree\mylib.huffman_tree.ixx">
-      <Filter>mylib\module\not_standard\container\tree</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\tree\mylib.binary_tree.ixx">
-      <Filter>mylib\module\not_standard\container\tree</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\container\tree\mylib.red_black_tree.ixx">
-      <Filter>mylib\module\not_standard\container\tree</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\algorithm\mylib.concat.ixx">
-      <Filter>mylib\module\not_standard\algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\algorithm\mylib.sort.ixx">
-      <Filter>mylib\module\not_standard\algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\templates\mylib.templates_utility.ixx">
-      <Filter>mylib\module\not_standard\templates</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\string\mylib.stack_string.ixx">
-      <Filter>mylib\module\not_standard\string</Filter>
-    </ClCompile>
-    <ClCompile Include="mylib\module\not_standard\string\mylib.string_literal.ixx">
-      <Filter>mylib\module\not_standard\string</Filter>
-    </ClCompile>
+    <ClInclude Include="mylib\head\cpp\cxxstd.h">
+      <Filter>mylib\head\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\non_standard\mylib_sort.h">
+      <Filter>mylib\head\cpp\non_standard</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\cpp\non_standard\macro\mylib_assert.h">
+      <Filter>mylib\head\cpp\non_standard\macro</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mylib\head\cpp\standard\algorithm">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\compare">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\deque">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\functional">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\iterator">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\list">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\memory">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\numeric">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\queue">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\stack">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\string">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\type_traits">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\utility">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="mylib\head\cpp\standard\vector">
+      <Filter>mylib\head\cpp\standard</Filter>
+    </None>
+    <None Include="..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="mylib\module\standard\algorithm\mylib.algorithm.ixx">
       <Filter>mylib\module\standard\algorithm</Filter>
     </ClCompile>
-    <ClCompile Include="mylib\module\standard\container\mylib.vector.ixx">
+    <ClCompile Include="mylib\module\standard\container\mylib.deque.ixx">
+      <Filter>mylib\module\standard\container</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\container\mylib.list.ixx">
       <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
     <ClCompile Include="mylib\module\standard\container\mylib.queue.ixx">
       <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
-    <ClCompile Include="mylib\module\standard\container\mylib.deque.ixx">
-      <Filter>mylib\module\standard\container</Filter>
-    </ClCompile>
     <ClCompile Include="mylib\module\standard\container\mylib.stack.ixx">
       <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
-    <ClCompile Include="mylib\module\standard\container\mylib.list.ixx">
+    <ClCompile Include="mylib\module\standard\container\mylib.vector.ixx">
       <Filter>mylib\module\standard\container</Filter>
     </ClCompile>
     <ClCompile Include="mylib\module\standard\iterator\mylib.iterator.ixx">
@@ -207,81 +179,100 @@
     <ClCompile Include="mylib\module\standard\string\mylib.string.ixx">
       <Filter>mylib\module\standard\string</Filter>
     </ClCompile>
+    <ClCompile Include="mylib\module\standard\utility\mylib.compare.ixx">
+      <Filter>mylib\module\standard\utility</Filter>
+    </ClCompile>
     <ClCompile Include="mylib\module\standard\utility\mylib.functional.ixx">
       <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
     <ClCompile Include="mylib\module\standard\utility\mylib.tuple.ixx">
       <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
-    <ClCompile Include="mylib\module\standard\utility\mylib.utility.ixx">
-      <Filter>mylib\module\standard\utility</Filter>
-    </ClCompile>
     <ClCompile Include="mylib\module\standard\utility\mylib.type_traits.ixx">
       <Filter>mylib\module\standard\utility</Filter>
     </ClCompile>
-    <ClCompile Include="mylib\module\standard\utility\mylib.compare.ixx">
+    <ClCompile Include="mylib\module\standard\utility\mylib.utility.ixx">
       <Filter>mylib\module\standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\algorithm\mylib.concat.ixx">
+      <Filter>mylib\module\non_standard\algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\algorithm\mylib.sort.ixx">
+      <Filter>mylib\module\non_standard\algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\mylib.fixed.ixx">
+      <Filter>mylib\module\non_standard\conatiner</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\mylib.grade.ixx">
+      <Filter>mylib\module\non_standard\conatiner</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\mylib.graph.ixx">
+      <Filter>mylib\module\non_standard\conatiner</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\mylib.link_list.ixx">
+      <Filter>mylib\module\non_standard\conatiner</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\mylib.matrix.ixx">
+      <Filter>mylib\module\non_standard\conatiner</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\tree\mylib.binary_tree.ixx">
+      <Filter>mylib\module\non_standard\conatiner\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\tree\mylib.huffman_tree.ixx">
+      <Filter>mylib\module\non_standard\conatiner\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\container\tree\mylib.red_black_tree.ixx">
+      <Filter>mylib\module\non_standard\conatiner\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\io\mylib.stream_output.ixx">
+      <Filter>mylib\module\non_standard\io</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\string\mylib.stack_string.ixx">
+      <Filter>mylib\module\non_standard\string</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\string\mylib.string_literal.ixx">
+      <Filter>mylib\module\non_standard\string</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.templates_utility.ixx">
+      <Filter>mylib\module\non_standard\templates</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\utility\mylib.aggregate.ixx">
+      <Filter>mylib\module\non_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\utility\mylib.container_traits.ixx">
+      <Filter>mylib\module\non_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\utility\mylib.eval.ixx">
+      <Filter>mylib\module\non_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\utility\mylib.pointer.ixx">
+      <Filter>mylib\module\non_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\utility\mylib.string_traits.ixx">
+      <Filter>mylib\module\non_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\utility\mylib.timer.ixx">
+      <Filter>mylib\module\non_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\mylib.ixx">
+      <Filter>mylib\module</Filter>
+    </ClCompile>
+    <ClCompile Include="source\f.ixx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\test_main.ixx">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\tt.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\源.c">
+      <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mylib\head\cpp\cxxstd.h">
-      <Filter>mylib\head\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\algorithm">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\compare">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\deque">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\functional">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\iterator">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\list">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\memory">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\numeric">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\queue">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\stack">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\string">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\type_traits">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\utility">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\standard\vector">
-      <Filter>mylib\head\cpp\standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\not_standard\mylib_sort.h">
-      <Filter>mylib\head\cpp\not_standard</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\cpp\not_standard\macro\mylib_assert.h">
-      <Filter>mylib\head\cpp\not_standard\macro</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="源文件\asm.asm">
-      <Filter>源文件</Filter>
+    <MASM Include="source\asm.asm">
+      <Filter>source</Filter>
     </MASM>
   </ItemGroup>
 </Project>

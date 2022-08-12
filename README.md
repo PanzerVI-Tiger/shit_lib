@@ -14,11 +14,11 @@ mylib
 |  |  |- standard
 |  |  |  |- # TODO: more c standard head
 |  |  |
-|  |  |- not_standard
+|  |  |- non_standard
 |  |     |- macro_meta
 |  |     |  |- # TODO: some macro_meta head
 |  |     |
-|  |     |- # TODO: more not_standard head
+|  |     |- # TODO: more non_standard head
 |  |
 |  |- cpp
 |     |- standard
@@ -38,7 +38,7 @@ mylib
 |     |  |- vector
 |     |  |- # TODO: more cpp standard head
 |     |
-|     |- not_standard
+|     |- non_standard
 |     |  |- macro
 |     |  |  |- macro_meta
 |     |  |     |- # TODO: some macro_meta head
@@ -89,38 +89,38 @@ mylib
 |  |  |
 |  |  |- # TODO: more standard module
 |  |
-|  |- not_standard
+|  |- non_standard
 |     |- algorithm
 |     |  |- mylib.algorithm.ixx
 |     |  |- mylib.concat.ixx
-|     |  |- # TODO: more not_standard algorithm module
+|     |  |- # TODO: more non_standard algorithm module
 |     |
 |     |- container
 |     |  |- tree
 |     |  |  |- mylib.binary_tree.ixx
 |     |  |  |- mylib.huffman_tree.ixx
 |     |  |  |- mylib.red_black_tree.ixx
-|     |  |  |- # TODO: more not_standard tree module
+|     |  |  |- # TODO: more non_standard tree module
 |     |  |
 |     |  |- mylib.fixed.ixx
 |     |  |- mylib.grade.ixx
 |     |  |- mylib.graph.ixx
 |     |  |- mylib.link_list.ixx
 |     |  |- mylib.matrix.ixx
-|     |  |- # TODO: more not_standard container module
+|     |  |- # TODO: more non_standard container module
 |     |
 |     |- io
 |     |  |- mylib.stream_output.ixx
-|     |  |- # TODO: more not_standard io module
+|     |  |- # TODO: more non_standard io module
 |     |
 |     |- string
 |     |  |- mylib.stack_string.ixx
 |     |  |- mylib.string_literal.ixx
-|     |  |- # TODO: more not_standard string module
+|     |  |- # TODO: more non_standard string module
 |     |
 |     |- templates
 |     |  |- mylib.templates_utility.ixx
-|     |  |- # TODO: more not_standard templates module
+|     |  |- # TODO: more non_standard templates module
 |     |
 |     |- utility
 |        |- mylib.aggregate.ixx
@@ -129,7 +129,7 @@ mylib
 |        |- mylib.pointer.ixx
 |        |- mylib.string_traits.ixx
 |        |- mylib.timer.ixx
-|        |- # TODO: more not_standard utility module
+|        |- # TODO: more non_standard utility module
 |
 |- mylib.ixx # import all mylib module
 ```

@@ -24,8 +24,8 @@ export namespace mylib {
 
     template<typename ElementType>
     struct head_node {
-        using node_type     = list_node<ElementType>;
-        using node_pointer  = node_type*;
+        using node_type    = list_node<ElementType>;
+        using node_pointer = node_type*;
 
         constexpr head_node(node_pointer prior, node_pointer next) noexcept :
             prior{ prior }, next{ next } {}
@@ -160,6 +160,7 @@ export namespace mylib {
 
         constexpr list_const_iterator operator -(difference_type index) noexcept {
             list_const_iterator result{ *this };
+            
             return result += index;
         }
 
@@ -297,27 +298,27 @@ export namespace mylib {
         }
     };
 
-    template<typename ElementType, typename _Allocator = std::allocator<ElementType>>
+    template<typename ElementType, typename Allocator = std::allocator<ElementType>>
     class list {
     public:
-        using size_type              = typename std::allocator_traits<_Allocator>::size_type;
+        using size_type              = typename std::allocator_traits<Allocator>::size_type;
 
         using value_type             = ElementType;
 
-        using allocator_type         = _Allocator;
+        using allocator_type         = Allocator;
 
         using reference              = value_type&;
 
         using const_reference        = const value_type&;
 
-        using difference_type        = typename std::allocator_traits<_Allocator>::difference_type;
+        using difference_type        = typename std::allocator_traits<Allocator>::difference_type;
 
-        using pointer                = typename std::allocator_traits<_Allocator>::pointer;
-        using const_pointer          = typename std::allocator_traits<_Allocator>::const_pointer;
+        using pointer                = typename std::allocator_traits<Allocator>::pointer;
+        using const_pointer          = typename std::allocator_traits<Allocator>::const_pointer;
 
-        using iterator               = list_iterator<list<value_type, _Allocator>>;
+        using iterator               = list_iterator<list<value_type, Allocator>>;
         using reverse_iterator       = typename std::reverse_iterator<iterator>;
-        using const_iterator         = list_const_iterator<list<value_type, _Allocator>>;
+        using const_iterator         = list_const_iterator<list<value_type, Allocator>>;
         using const_reverse_iterator = typename std::reverse_iterator<const_iterator>;
 
         using node_type              = list_node<value_type>;

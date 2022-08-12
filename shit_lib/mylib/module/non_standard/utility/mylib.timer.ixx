@@ -57,14 +57,14 @@ export namespace mylib {
 
     class timer {
     public:
-        timer(size_t _duration, std::function<void()> _callback) noexcept : 
+        timer(size_t duration, std::function<void()> callback) noexcept : 
             timerThread{
                 [&] {
                     while (true) {
                         std::this_thread::sleep_for(
-                            static_cast<std::chrono::steady_clock::duration>(_duration)
+                            static_cast<std::chrono::steady_clock::duration>(duration)
                         );
-                        _callback();
+                        callback();
                     }
                 }
             } {}

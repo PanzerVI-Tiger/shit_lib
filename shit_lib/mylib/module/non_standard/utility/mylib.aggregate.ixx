@@ -591,15 +591,13 @@ export namespace mylib {
             return 
                 []<size_t index, size_t... indices, typename... Types> (
                     this auto self,
-                    [[maybe_unused]]
-                    std::tuple<Types...>                   tupleObject,
-                    [[maybe_unused]]
-                    std::index_sequence<index, indices...> sequence
+                    std::tuple<Types...>,
+                    std::index_sequence<index, indices...>
                 ) constexpr noexcept {               
                     if constexpr (sizeof...(indices) == 0) {
                         return std::tuple<Types..., Type>{};
                     } else {
-                        return self(std::tuple<Types..., Type>{}, std::index_sequence<indices...>{});
+                        return self(std::tuple<Type, Types...>{}, std::index_sequence<indices...>{});
                     }
                 }(std::make_tuple(), std::make_index_sequence<size>{});
         }
@@ -628,8 +626,7 @@ export namespace mylib {
         static constexpr auto member_objects(const Type (&object)[arraySize]) noexcept {
             return
                 [&object]<size_t... indices> (
-                    [[maybe_unused]]
-                    std::index_sequence<indices...> sequence
+                    std::index_sequence<indices...>
                 ) constexpr noexcept {
                     return types{ object[indices]... };
                 }(std::make_index_sequence<arraySize>{});
@@ -637,7 +634,7 @@ export namespace mylib {
 
         static constexpr auto member_objects_ref(Type (&object)[arraySize]) noexcept {
             return
-                [&object]<size_t... indices> (std::index_sequence<indices...> sequence) constexpr noexcept {
+                [&object]<size_t... indices> (std::index_sequence<indices...>) constexpr noexcept {
                     return decltype(detail::make_n_same_type_tuple<Type&>()){ object[indices]... };
                 }(std::make_index_sequence<arraySize>{});
         }

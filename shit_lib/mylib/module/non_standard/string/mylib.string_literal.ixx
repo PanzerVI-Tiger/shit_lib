@@ -25,6 +25,10 @@ export namespace mylib {
         using difference_type = ptrdiff_t;
         using traits_type     = std::char_traits<CharType>;
         
+        constexpr base_string_literal() noexcept :
+            string{}, stringSize{}
+        {}
+        
         template<size_t strSize>
         constexpr base_string_literal(const CharType(&str)[strSize]) noexcept :
             string{ str }, stringSize{ strSize - 1 }

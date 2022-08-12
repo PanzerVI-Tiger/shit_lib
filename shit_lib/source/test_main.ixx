@@ -2,8 +2,10 @@ module;
 
 //#pragma optimize("", off)
 
-#include <Windows.h>
+//#include <Windows.h>
 //#include <fast_io.h>
+//#include <iostream>
+//#include <boost\stacktrace.hpp>
 
 export module mylib.main;
 
@@ -14,10 +16,6 @@ import mylib;
 
 export int main() noexcept
 {
-    int a[100];
-    stdr::iota(a, 0);
-    std::cout << a;
-    
-    
+
     return 0;
 }
