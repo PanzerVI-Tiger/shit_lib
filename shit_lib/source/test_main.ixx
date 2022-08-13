@@ -19,7 +19,6 @@ export int main() noexcept
 {
     using namespace mylib::literals;
     
-    u8"sss"_sl.operator std::u8string();
     
     
     return 0;

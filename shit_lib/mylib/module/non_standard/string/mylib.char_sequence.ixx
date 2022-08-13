@@ -43,7 +43,7 @@ export namespace mylib {
         static constexpr CharType char_at = data_at<index, chars...>;
     };
 
-    namespace literals {
+    inline namespace literals {
         inline namespace char_sequence_literals {
             
             // char sequence
