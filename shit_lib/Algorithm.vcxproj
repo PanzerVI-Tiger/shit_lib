@@ -43,7 +43,6 @@
     <None Include="mylib\module\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mylib.char_sequence.ixx" />
     <ClCompile Include="mylib\module\mylib.ixx" />
     <ClCompile Include="mylib\module\non_standard\algorithm\mylib.concat.ixx" />
     <ClCompile Include="mylib\module\non_standard\algorithm\mylib.sort.ixx" />
@@ -56,6 +55,7 @@
     <ClCompile Include="mylib\module\non_standard\container\tree\mylib.huffman_tree.ixx" />
     <ClCompile Include="mylib\module\non_standard\container\tree\mylib.red_black_tree.ixx" />
     <ClCompile Include="mylib\module\non_standard\io\mylib.stream_output.ixx" />
+    <ClCompile Include="mylib\module\non_standard\string\mylib.char_sequence.ixx" />
     <ClCompile Include="mylib\module\non_standard\string\mylib.stack_string.ixx" />
     <ClCompile Include="mylib\module\non_standard\string\mylib.string_literal.ixx" />
     <ClCompile Include="mylib\module\non_standard\templates\mylib.templates_utility.ixx" />

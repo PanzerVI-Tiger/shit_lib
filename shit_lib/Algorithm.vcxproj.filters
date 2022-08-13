@@ -275,7 +275,7 @@
     <ClCompile Include="source\源.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.char_sequence.ixx">
+    <ClCompile Include="mylib\module\non_standard\string\mylib.char_sequence.ixx">
       <Filter>mylib\module\non_standard\string</Filter>
     </ClCompile>
   </ItemGroup>
