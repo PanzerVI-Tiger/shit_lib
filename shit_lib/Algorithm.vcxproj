@@ -39,6 +39,8 @@
     <None Include="mylib\head\cpp\standard\type_traits" />
     <None Include="mylib\head\cpp\standard\utility" />
     <None Include="mylib\head\cpp\standard\vector" />
+    <None Include="mylib\head\README.md" />
+    <None Include="mylib\module\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mylib.char_sequence.ixx" />

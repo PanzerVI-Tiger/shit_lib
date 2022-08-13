@@ -147,6 +147,12 @@
       <Filter>mylib\head\cpp\standard</Filter>
     </None>
     <None Include="..\README.md" />
+    <None Include="mylib\head\README.md">
+      <Filter>mylib\head</Filter>
+    </None>
+    <None Include="mylib\module\README.md">
+      <Filter>mylib\module</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mylib\module\standard\algorithm\mylib.algorithm.ixx">
