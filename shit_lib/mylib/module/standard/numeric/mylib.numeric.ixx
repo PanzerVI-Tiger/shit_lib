@@ -107,8 +107,9 @@ export namespace mylib {
         
         while (value2 != 0) {
             std::common_type_t<Type1, Type2> temp = value1 % value2;
-            value1                                = std::move(value2);
-            value2                                = std::move(temp);
+            
+            value1 = std::move(value2);
+            value2 = std::move(temp);
         }
 
         return value1;

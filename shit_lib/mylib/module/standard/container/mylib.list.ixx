@@ -41,7 +41,9 @@ export namespace mylib {
     };
 
     template<typename ElementType>
-    struct list_node : head_node<ElementType> {
+    struct list_node : 
+        head_node<ElementType> 
+    {
         using head_node<ElementType>::next;
         using head_node<ElementType>::prior;
 
@@ -393,7 +395,7 @@ export namespace mylib {
                     make_list_node_ptr(&headNode) 
                 };
             
-            headNode.prior       = headNode.prior->next;
+            headNode.prior = headNode.prior->next;
             numOfNode++;
         }
 
@@ -404,7 +406,7 @@ export namespace mylib {
                     make_list_node_ptr(&headNode) 
                 };
             
-            headNode.prior       = headNode.prior->next;
+            headNode.prior = headNode.prior->next;
             numOfNode++;
         }
 
@@ -416,7 +418,7 @@ export namespace mylib {
                     headNode.next 
                 };
             
-            headNode.next        = headNode.next->prior;
+            headNode.next = headNode.next->prior;
             numOfNode++;
         }
 
@@ -428,7 +430,7 @@ export namespace mylib {
                     headNode.next
                 };
             
-            headNode.next        = headNode.next->prior;
+            headNode.next = headNode.next->prior;
             numOfNode++;
         }
 

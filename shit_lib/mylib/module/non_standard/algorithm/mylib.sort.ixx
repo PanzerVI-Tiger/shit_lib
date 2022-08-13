@@ -23,7 +23,10 @@ import std.core;
 export namespace mylib::inline sorts {
 
     template<typename BidirectionalIterator, typename Predicate>
-    constexpr void bubble_sort(BidirectionalIterator first, BidirectionalIterator last, Predicate pred) noexcept {
+    constexpr void bubble_sort(
+        BidirectionalIterator first, BidirectionalIterator last, Predicate pred
+    ) noexcept {
+
         for (auto i = last; i != first; --i) {
             for (auto j = first; j != i;) {
                 auto temp = j;
@@ -35,24 +38,34 @@ export namespace mylib::inline sorts {
     }
 
     template<typename BidirectionalIterator>
-    constexpr void bubble_sort(BidirectionalIterator first, BidirectionalIterator last) noexcept {
-        bubble_sort(first, last, std::less<>{});
+    constexpr void bubble_sort(
+        BidirectionalIterator first, BidirectionalIterator last
+    ) noexcept {
+        bubble_sort(first, last, std::less{});
     }
 
     template<typename ForwardIterator, typename Predicate>
-    constexpr void selection_sort(ForwardIterator first, ForwardIterator last, Predicate pred) noexcept {
+    constexpr void selection_sort(
+        ForwardIterator first, ForwardIterator last, Predicate pred
+    ) noexcept {
+        
         for (auto i = first; i != last; ++i) {
             std::swap(*i, *std::min_element(i, last, pred));
         }
     }
 
     template<typename ForwardIterator>
-    constexpr void selection_sort(ForwardIterator first, ForwardIterator last) noexcept {
-        selection_sort(first, last, std::less<>{});
+    constexpr void selection_sort(
+        ForwardIterator first, ForwardIterator last
+    ) noexcept {
+        selection_sort(first, last, std::less{});
     }
 
     template<typename BidirectionalIterator, typename Predicate>
-    constexpr void insertion_sort(BidirectionalIterator first, BidirectionalIterator last, Predicate pred) noexcept {
+    constexpr void insertion_sort(
+        BidirectionalIterator first, BidirectionalIterator last, Predicate pred
+    ) noexcept {
+        
         if (first == last) {
             return;
         }
@@ -70,12 +83,17 @@ export namespace mylib::inline sorts {
     }
 
     template<typename BidirectionalIterator>
-    constexpr void insertion_sort(BidirectionalIterator first, BidirectionalIterator last) noexcept {
-        insertion_sort(first, last, std::less<>{});
+    constexpr void insertion_sort(
+        BidirectionalIterator first, BidirectionalIterator last
+    ) noexcept {
+        insertion_sort(first, last, std::less{});
     }
 
     template<typename RandomAccessIterator, typename Predicate>
-    constexpr void shell_sort(RandomAccessIterator first, RandomAccessIterator last, Predicate pred) noexcept {
+    constexpr void shell_sort(
+        RandomAccessIterator first, RandomAccessIterator last, Predicate pred
+    ) noexcept {
+        
         const size_t buffSize = last - first;
         size_t       distance = 1;
 
@@ -98,12 +116,18 @@ export namespace mylib::inline sorts {
     }
 
     template<typename RandomAccessIterator>
-    constexpr void shell_sort(RandomAccessIterator first, RandomAccessIterator last) noexcept {
-        shell_sort(first, last, std::less<>{});
+    constexpr void shell_sort(
+        RandomAccessIterator first, RandomAccessIterator last
+    ) noexcept {
+        
+        shell_sort(first, last, std::less{});
     }
     
     template<typename RandomAccessIterator, typename Predicate>
-    constexpr void merge_sort(RandomAccessIterator first, RandomAccessIterator last, Predicate pred) noexcept {
+    constexpr void merge_sort(
+        RandomAccessIterator first, RandomAccessIterator last, Predicate pred
+    ) noexcept {
+        
         using move_iter1 = std::move_iterator<RandomAccessIterator>;
 
         auto first = move_iter1{ first };
@@ -160,7 +184,9 @@ export namespace mylib::inline sorts {
     }
 
     template<typename RandomAccessIterator>
-    constexpr void merge_sort(RandomAccessIterator first, RandomAccessIterator last) noexcept {
-        merge_sort(first, last, std::less<>{});
+    constexpr void merge_sort(
+        RandomAccessIterator first, RandomAccessIterator last
+    ) noexcept {
+        merge_sort(first, last, std::less{});
     }
 }

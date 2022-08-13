@@ -3,6 +3,7 @@ module;
 #ifdef __INTELLISENSE__
 
 #include <string>
+#include <compare>
 
 #endif
 
@@ -38,27 +39,39 @@ export namespace mylib {
         using const_pointer   = const CharType*;
         
         constexpr stack_string() : 
-            stringSize{}, chars{}
+            stringSize{}, charArray{}
         {}
 
+        // copy
         template<size_t rightSize>
         constexpr stack_string(
             const stack_string<rightSize, CharType, CharTraits>& other
-        ) : stringSize{ std::min(maxStringSize, other.stringSize) }, chars{} {    
-            traits_type::copy(chars, other.chars, stringSize);
+        ) : stringSize{ std::min(maxStringSize, other.stringSize) }, charArray{} {
+            traits_type::copy(charArray, other.charArray, stringSize);
         }
         
-        constexpr stack_string(const CharType* str) noexcept :
-            stringSize{ std::min(traits_type::length(str), maxStringSize) }, chars{} 
-        {           
-            traits_type::copy(chars, str, stringSize);
-        };
-
         template<size_t size>
         constexpr stack_string(const CharType(&str)[size]) noexcept :
-            stringSize{ maxStringSize }, chars{} {
+            stringSize{ maxStringSize }, charArray{} 
+        {
+            traits_type::copy(charArray, str, stringSize);
+        };
 
-            traits_type::copy(chars, str, stringSize);
+        template<CharType... chars>
+        constexpr stack_string(char_sequence<CharType, chars...>) noexcept :
+            stringSize{ std::min(maxStringSize - 1, sizeof...(chars)) }, charArray{ chars... }
+        {};
+        
+        constexpr stack_string(const CharType* str) noexcept :
+            stringSize{ std::min(traits_type::length(str), maxStringSize) }, charArray{} 
+        {           
+            traits_type::copy(charArray, str, stringSize);
+        };
+
+        constexpr stack_string(basic_string_literal<CharType> str) noexcept :
+            stringSize{ std::min(str.size(), maxStringSize) }, charArray{} 
+        {
+            traits_type::copy(charArray, str.data(), stringSize);
         };
 
         template<size_t rightSize>
@@ -67,33 +80,65 @@ export namespace mylib {
         ) noexcept {
             
             stringSize = std::min(maxStringSize, right.stringSize);
-            traits_type::copy(chars, right.chars, stringSize);
+            traits_type::copy(charArray, right.charArray, stringSize);
             
             return *this;
         }
 
-        operator std::string() noexcept {
-            return std::string{ chars, stringSize };
+        template<size_t rightSize>
+        constexpr bool operator ==(
+            const stack_string<rightSize, CharType, CharTraits>& right
+        ) const noexcept {
+            return 
+                length() == right.length() &&
+                traits_type::compare(
+                    c_str(), right.c_str(), std::min(size(), right.size())
+                ) == 0;
+        }
+
+        template<size_t rightSize>
+        constexpr std::strong_ordering operator <=>(
+            const stack_string<rightSize, CharType, CharTraits>& right
+        ) const noexcept {
+            
+            auto compareResult = traits_type::compare(
+                c_str(), right.c_str(), std::min(size(), right.size())
+            ) <=> 0;
+
+            [[unlikely]]
+            if (compareResult == std::strong_ordering::equal) {
+                return length() <=> right.length();
+            } else {
+                return compareResult;
+            }
+        }
+        
+        constexpr operator std::string() noexcept {
+            return std::string{ c_str(), capacity() };
+        }
+
+        constexpr operator std::string_view() noexcept {
+            return std::string_view{ c_str(), capacity() };
         }
 
         constexpr CharType& operator [](size_type index) noexcept {
-            return chars[index];
+            return charArray[index];
         }
         
         constexpr const CharType& operator [](size_type index) const noexcept {
-            return chars[index];
+            return charArray[index];
         }
         
         constexpr CharType* data() noexcept {
-            return chars;
+            return charArray;
         }
 
         constexpr const CharType* data() const noexcept {
-            return chars;
+            return charArray;
         }
 
         constexpr const CharType* c_str() const noexcept {
-            return chars;
+            return charArray;
         }
 
         constexpr size_t size() const noexcept {
@@ -105,12 +150,12 @@ export namespace mylib {
         }
         
         constexpr size_t capacity() const noexcept {
-            return maxStringSize + 1;
+            return maxStringSize;
         }
         
         size_t   stringSize;
-        CharType chars[maxStringSize + 1];
-    };
+        CharType charArray[maxStringSize + 1];
+    };  
 
     template<
         size_t size, typename CharType
@@ -124,6 +169,10 @@ export namespace mylib {
     > stack_string(
         const stack_string<rightSize, CharType, CharTraits>&other
     ) -> stack_string<rightSize, CharType, CharTraits>;
+    
+    template<typename CharType, CharType... chars>
+    stack_string(const char_sequence<CharType, chars...>& str) ->
+        stack_string<sizeof...(chars), CharType>;
 
     template<
         size_t   stringSize,
@@ -139,7 +188,7 @@ export namespace mylib {
     }
 
     inline namespace literals {
-        inline namespace string_literals {
+        inline namespace stack_string_literals {
             
             template<stack_string literal>
             constexpr auto operator ""_ss() noexcept {

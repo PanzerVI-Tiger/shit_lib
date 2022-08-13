@@ -115,6 +115,7 @@ mylib
 |     |
 |     |- string
 |     |  |- mylib.stack_string.ixx
+|     |  |- mylib.char_sequence.ixx
 |     |  |- mylib.string_literal.ixx
 |     |  |- # TODO: more non_standard string module
 |     |

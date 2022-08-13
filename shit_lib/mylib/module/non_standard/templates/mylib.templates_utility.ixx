@@ -2,6 +2,7 @@ module;
 
 #ifdef __INTELLISENSE__
 
+#include <cstddef>
 #include <concepts>
 #include <algorithm>
 
@@ -88,4 +89,10 @@ export namespace mylib {
                 std::min(numbers1, numbers2)...
             >;
     };
+
+    template<size_t index, auto data1, auto... data>
+    inline constexpr auto data_at = data_at<index - 1, data...>;
+
+    template<auto data1, auto... data>
+    inline constexpr auto data_at<0, data1, data...> = data1;
 }

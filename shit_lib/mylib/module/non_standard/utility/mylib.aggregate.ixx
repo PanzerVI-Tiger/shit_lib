@@ -567,8 +567,7 @@ export namespace mylib {
 
             std::string name{ "" };
             [&name] <typename... Types> (
-                [[maybe_unused]]
-                std::tuple<Types...> tupleObject
+                std::tuple<Types...>
             ) constexpr noexcept {
                 bool isStart = true;
                 (..., (name += (isStart ? isStart = false, ""s : ", "s) + typeid(Types).name()));
@@ -661,7 +660,7 @@ export namespace mylib {
         return 
             std::string{ typeid(Type).name() }                                            + " {\n"
             "    size: "                    + to_string(traits::size())                   + ",\n"
-            "    member objects' types: ("  + traits::types_string()                      + "),\n"
+            "    member objects' types: <"  + traits::types_string()                      + ">,\n"
             "    member objects: "          + to_string(traits::member_objects(object))   + "\n"
             "}";
 #       endif
@@ -725,7 +724,7 @@ export namespace mylib {
                       << aggregate_to_string(b)
                       << "\n\n"
                       << aggregate_to_string(arr)
-                      << "\n\n" 
+                      << "\n\n"
                       << mylib::get<1>(b);
         }
     }

@@ -26,7 +26,7 @@ export namespace mylib {
     template<std::ranges::range Container>
         requires
           (!requires(const Container& c) { // not a string
-              c.c_str();
+              c.substr();
           })                               &&
           (!requires(const Container& c) { // and not a c style string
               printf(c);

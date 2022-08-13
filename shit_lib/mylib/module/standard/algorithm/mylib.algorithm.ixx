@@ -24,8 +24,10 @@ export namespace mylib {
 
 
     template<typename InputIterator, typename UnaryPredicate>
-    inline constexpr bool all_of(InputIterator  first, InputIterator last,
-                                 UnaryPredicate unaryPred) noexcept {
+    inline constexpr bool all_of(
+        InputIterator  first, InputIterator last,
+        UnaryPredicate unaryPred
+    ) noexcept {
 
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
@@ -40,8 +42,10 @@ export namespace mylib {
     }
     
     template<typename InputIterator, typename UnaryPredicate>
-    inline constexpr bool any_of(InputIterator  first, InputIterator last, 
-                                 UnaryPredicate unaryPred) noexcept {
+    inline constexpr bool any_of(
+        InputIterator  first, InputIterator last, 
+        UnaryPredicate unaryPred
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
@@ -56,8 +60,10 @@ export namespace mylib {
     }
 
     template<typename InputIterator, typename UnaryPredicate>
-    inline constexpr bool none_of(InputIterator  first, InputIterator last, 
-                                  UnaryPredicate unaryPred) noexcept {
+    inline constexpr bool none_of(
+        InputIterator  first, InputIterator last, 
+        UnaryPredicate unaryPred
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
@@ -72,8 +78,10 @@ export namespace mylib {
     }
 
     template<typename InputIterator, typename UnaryFunction>
-    inline constexpr UnaryFunction for_each(InputIterator first, InputIterator last, 
-                                            UnaryFunction unaryFunc) noexcept {
+    inline constexpr UnaryFunction for_each(
+        InputIterator first, InputIterator last, 
+        UnaryFunction unaryFunc
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
@@ -85,9 +93,14 @@ export namespace mylib {
         return unaryFunc;
     }
 
-    template<typename InputIterator, typename _Size, typename UnaryPredicate>
-    inline constexpr UnaryPredicate for_each_n(InputIterator  first, _Size _Count, 
-                                               UnaryPredicate unaryPred) noexcept {
+    template<
+        typename InputIterator,
+        typename SizeType,
+        typename UnaryPredicate
+    > inline constexpr UnaryPredicate for_each_n(
+        InputIterator  first, SizeType _Count, 
+        UnaryPredicate unaryPred
+    ) noexcept {
         
         while (_Count--) {
             MYLIB_CHECK_ITERATOR_IS_END(first);
@@ -137,8 +150,11 @@ export namespace mylib {
         return count;
     }
 
-    template<typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
-    inline constexpr std::pair<InputIterator1, InputIterator2> mismatch(
+    template<
+        typename InputIterator1,
+        typename InputIterator2,
+        typename BinaryPredicate
+    > inline constexpr std::pair<InputIterator1, InputIterator2> mismatch(
         InputIterator1 first1, InputIterator1   last1, 
         InputIterator2 first2, BinaryPredicate  binaryPred
     ) noexcept {
@@ -169,8 +185,11 @@ export namespace mylib {
         return mylib::mismatch(first1, last1, first2, mylib::equal_to{});
     }
     
-    template<typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
-    inline constexpr std::pair<InputIterator1, InputIterator2> mismatch(
+    template<
+        typename InputIterator1,
+        typename InputIterator2,
+        typename BinaryPredicate
+    > inline constexpr std::pair<InputIterator1, InputIterator2> mismatch(
         InputIterator1  first1, InputIterator1 last1,
         InputIterator2  first2, InputIterator2 last2,
         BinaryPredicate binaryPred
@@ -199,12 +218,14 @@ export namespace mylib {
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first1, last1);
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first2, last2);
 
-        return mylib::mismatch(first1, last1, first2, last2, mylib::equal_to<>());
+        return mylib::mismatch(first1, last1, first2, last2, mylib::equal_to());
     }
     
     template<typename InputIterator, typename _Type>
-    inline constexpr InputIterator find(InputIterator first, InputIterator last, 
-                                         const _Type& value) noexcept {
+    inline constexpr InputIterator find(
+        InputIterator first, InputIterator last, 
+        const _Type&  value
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
@@ -220,8 +241,10 @@ export namespace mylib {
     }
 
     template<typename InputIterator, typename UnaryPredicate>
-    inline constexpr InputIterator find_if(InputIterator  first, InputIterator last, 
-                                           UnaryPredicate unaryPred) noexcept {
+    inline constexpr InputIterator find_if(
+        InputIterator  first, InputIterator last, 
+        UnaryPredicate unaryPred
+    ) noexcept {
 
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
@@ -237,8 +260,10 @@ export namespace mylib {
     }
 
     template<typename InputIterator, typename UnaryPredicate>
-    inline constexpr InputIterator find_if_not(InputIterator  first, InputIterator last, 
-                                               UnaryPredicate unaryPred) noexcept {
+    inline constexpr InputIterator find_if_not(
+        InputIterator  first, InputIterator last, 
+        UnaryPredicate unaryPred
+    ) noexcept {
 
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
@@ -255,8 +280,10 @@ export namespace mylib {
 
     
     template<typename InputIterator, typename OutputIterator>
-    inline constexpr OutputIterator copy(InputIterator  first, InputIterator last, 
-                                         OutputIterator output) noexcept {
+    inline constexpr OutputIterator copy(
+        InputIterator  first, InputIterator last, 
+        OutputIterator output
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
@@ -269,8 +296,11 @@ export namespace mylib {
         return output;
     }
 
-    template<typename InputIterator, typename OutputIterator, typename UnaryPredicate>
-    inline constexpr OutputIterator copy_if(
+    template<
+        typename InputIterator,
+        typename OutputIterator,
+        typename UnaryPredicate
+    > inline constexpr OutputIterator copy_if(
         InputIterator  first,  InputIterator  last, 
         OutputIterator output, UnaryPredicate unaryPred
     ) noexcept {
@@ -289,8 +319,10 @@ export namespace mylib {
     }
 
     template<typename ForwardIterator, typename Compare>
-    inline constexpr bool is_sorted(ForwardIterator first, ForwardIterator last, 
-                                    Compare         comp) noexcept {
+    inline constexpr bool is_sorted(
+        ForwardIterator first, ForwardIterator last, 
+        Compare         comp
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
@@ -313,16 +345,25 @@ export namespace mylib {
     }
 
     template<typename ForwardIterator>
-    inline constexpr bool is_sorted(ForwardIterator first, ForwardIterator last) noexcept {
+    inline constexpr bool is_sorted(
+        ForwardIterator first, ForwardIterator last
+    ) noexcept {
+        
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
         
         return mylib::is_sorted(first, last, mylib::less{});
     }
     
-    template<typename InputIterator1, typename InputIterator2, typename OutputIterator, typename Compare>
-    inline constexpr OutputIterator merge(InputIterator1 first1,  InputIterator1 last1, 
-                                          InputIterator2 first2,  InputIterator2 last2, 
-                                          OutputIterator output,  Compare        comp) noexcept {
+    template<
+        typename InputIterator1, 
+        typename InputIterator2, 
+        typename OutputIterator, 
+        typename Compare
+    > inline constexpr OutputIterator merge(
+        InputIterator1 first1,  InputIterator1 last1, 
+        InputIterator2 first2,  InputIterator2 last2, 
+        OutputIterator output,  Compare        comp
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first1, last1);
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first2, last2);
@@ -342,10 +383,15 @@ export namespace mylib {
         }
     }
 
-    template<typename InputIterator1, typename InputIterator2, typename OutputIterator>
-    inline constexpr OutputIterator merge(InputIterator1 first1, InputIterator1 last1,
-                                          InputIterator2 first2, InputIterator2 last2,
-                                          OutputIterator output) noexcept {
+    template<
+        typename InputIterator1, 
+        typename InputIterator2, 
+        typename OutputIterator
+    > inline constexpr OutputIterator merge(
+        InputIterator1 first1, InputIterator1 last1,
+        InputIterator2 first2, InputIterator2 last2,
+        OutputIterator output
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first1, last1);
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first2, last2);
@@ -354,8 +400,10 @@ export namespace mylib {
     }
     
     template<typename ForwardIterator, typename Compare>
-    inline constexpr void inplace_merge(ForwardIterator first, ForwardIterator middle, 
-                                        ForwardIterator last,  Compare         comp) noexcept {
+    inline constexpr void inplace_merge(
+        ForwardIterator first, ForwardIterator middle, 
+        ForwardIterator last,  Compare         comp
+    ) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, middle);
         
@@ -374,8 +422,9 @@ export namespace mylib {
     }
 
     template<typename _BidirectionalIterator>
-    inline constexpr void inplace_merge(_BidirectionalIterator first, _BidirectionalIterator middle, 
-                                        _BidirectionalIterator last) noexcept {
+    inline constexpr void inplace_merge(
+        _BidirectionalIterator first, _BidirectionalIterator middle, 
+        _BidirectionalIterator last) noexcept {
         
         MYLIB_CHECK_ITERATOR_CONTAINER_IS_SAME(first, last);
 
