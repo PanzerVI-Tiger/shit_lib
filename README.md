@@ -1,10 +1,12 @@
 # shit_lib
 ## introduction
 This worst STL implementation is just for handing in homework.  
-It's base on C++2b, use module organize, and disable exception.
+It's base on C++2b, use module organize, and disable exception.  
+  
 ## environment
 visual studio 2022  
-std = C++2b(23)
+std = C++2b(23)  
+  
 ## structure
 ```
 mylib
@@ -15,37 +17,43 @@ mylib
 |  |  |  |- # TODO: more c standard head
 |  |  |
 |  |  |- non_standard
-|  |     |- macro_meta
-|  |     |  |- # TODO: some macro_meta head
-|  |     |
 |  |     |- # TODO: more non_standard head
 |  |
 |  |- cpp
-|     |- standard
-|     |  |- algorithm
-|     |  |- compare
-|     |  |- deque
-|     |  |- functional
-|     |  |- iterator
-|     |  |- list
-|     |  |- memory
-|     |  |- numeric
-|     |  |- queue
-|     |  |- stack
-|     |  |- string
-|     |  |- type_traits
-|     |  |- utility
-|     |  |- vector
-|     |  |- # TODO: more cpp standard head
-|     |
-|     |- non_standard
-|     |  |- macro
-|     |  |  |- macro_meta
-|     |  |     |- # TODO: some macro_meta head
-|     |  |
-|     |  |- mylib_sort.h
-|     |
-|     |- cxxstd.h
+|  |  |- standard
+|  |  |  |- algorithm
+|  |  |  |- compare
+|  |  |  |- deque
+|  |  |  |- functional
+|  |  |  |- iterator
+|  |  |  |- list
+|  |  |  |- memory
+|  |  |  |- numeric
+|  |  |  |- queue
+|  |  |  |- stack
+|  |  |  |- string
+|  |  |  |- type_traits
+|  |  |  |- utility
+|  |  |  |- vector
+|  |  |  |- # TODO: more cpp standard head
+|  |  |
+|  |  |- non_standard
+|  |  |  |- macro
+|  |  |  |
+|  |  |  |- mylib_sort.h
+|  |  |
+|  |  |- cxxstd.h
+|  |
+|  |- macro_meta
+|  |  |- macro_base.h
+|  |  |- macro_minus.h
+|  |  |- macro_plus.h
+|  |  |- macro_repet.h
+|  |  |- macro_tuple.h
+|  |  |- more macro_meta head
+|  |
+|  |- macro_meta.h
+|  |- more macro head
 |
 |- module
 |  |- standard
@@ -133,14 +141,20 @@ mylib
 |        |- # TODO: more non_standard utility module
 |
 |- mylib.ixx # import all mylib module
-```
-
+```  
+  
+## conditional compilation macro
+`MYLIB_ASSERT`   : to open mylib's assert    (default: close)  
+`MYLIB_UNIITEST` : to open mylib's unittest  (default: close)  
+`MYLIB_EXCEPTION`: to open mylib's exception (default: close)  
+  
 ## unittest
-If you want to use unittest to test shitlib, please predefined macro `MYLIB_UNITTEST`.  
+If you want to use unittest to test mylib, please predefined macro `MYLIB_UNITTEST`.  
 There are two test method: by static_assert and by print example.  
 The former will automatic test all module, will report error when test failed.  
 The latter shall call print test function to print test example,  
 all print test function is in namespace `myib::unittest`,  
 and naming style is `module_name` + `_print_test`.  
 Such as module vector's is `mylib::uniitest::vector_print_test`.  
-If you want to run all print test, you can call `mylib::unittest::print_test`.
+If you want to run all print test, you can call `mylib::unittest::print_test`.  
+  

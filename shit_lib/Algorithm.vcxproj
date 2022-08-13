@@ -22,6 +22,12 @@
     <ClInclude Include="mylib\head\cpp\cxxstd.h" />
     <ClInclude Include="mylib\head\cpp\non_standard\macro\mylib_assert.h" />
     <ClInclude Include="mylib\head\cpp\non_standard\mylib_sort.h" />
+    <ClInclude Include="mylib\head\c\macro\macro_meta.h" />
+    <ClInclude Include="mylib\head\macro_meta.h" />
+    <ClInclude Include="mylib\head\macro_meta\macro_base.h" />
+    <ClInclude Include="mylib\head\macro_meta\macro_minus.h" />
+    <ClInclude Include="mylib\head\macro_meta\macro_plus.h" />
+    <ClInclude Include="mylib\head\macro_meta\macro_tuple.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
@@ -87,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <MASM Include="source\asm.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="mylib\head\macro_meta\macro_repet.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

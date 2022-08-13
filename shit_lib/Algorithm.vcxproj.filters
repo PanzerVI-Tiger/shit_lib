@@ -22,9 +22,6 @@
     <Filter Include="mylib\head\cpp\non_standard\macro">
       <UniqueIdentifier>{32d227ce-8724-4080-a359-88b735bfa172}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mylib\head\cpp\non_standard\macro\macro_meta">
-      <UniqueIdentifier>{5aef825a-d59c-4487-88e9-55bc3c631bb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="mylib\head\c">
       <UniqueIdentifier>{5ea567aa-8430-4386-8b13-aea53b08b627}</UniqueIdentifier>
     </Filter>
@@ -33,9 +30,6 @@
     </Filter>
     <Filter Include="mylib\head\c\non_standard">
       <UniqueIdentifier>{d8df740a-7608-42c2-bd4c-2676562040c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mylib\head\c\non_standard\macro_meta">
-      <UniqueIdentifier>{6cc18df7-a6ad-4ce2-9593-779d232c9623}</UniqueIdentifier>
     </Filter>
     <Filter Include="mylib\module">
       <UniqueIdentifier>{11f97d21-2f5a-47c7-aba1-bcf6fe53e532}</UniqueIdentifier>
@@ -91,6 +85,12 @@
     <Filter Include="mylib\module\non_standard\utility">
       <UniqueIdentifier>{23ad2a4d-d37e-4ecc-acbf-5df0625d2f64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\head\c\non_standard\macro">
+      <UniqueIdentifier>{08b91a1e-acb3-4ba5-b6a3-23cb2003837e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\head\macro_meta">
+      <UniqueIdentifier>{6cc18df7-a6ad-4ce2-9593-779d232c9623}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mylib\head\cpp\cxxstd.h">
@@ -101,6 +101,24 @@
     </ClInclude>
     <ClInclude Include="mylib\head\cpp\non_standard\macro\mylib_assert.h">
       <Filter>mylib\head\cpp\non_standard\macro</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\c\macro\macro_meta.h">
+      <Filter>mylib\head\c\non_standard\macro</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\macro_base.h">
+      <Filter>mylib\head\macro_meta</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\macro_minus.h">
+      <Filter>mylib\head\macro_meta</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\macro_plus.h">
+      <Filter>mylib\head\macro_meta</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\macro_tuple.h">
+      <Filter>mylib\head\macro_meta</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta.h">
+      <Filter>mylib\head</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,5 +301,10 @@
     <MASM Include="source\asm.asm">
       <Filter>source</Filter>
     </MASM>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="mylib\head\macro_meta\macro_repet.txt">
+      <Filter>mylib\head\macro_meta</Filter>
+    </Text>
   </ItemGroup>
 </Project>

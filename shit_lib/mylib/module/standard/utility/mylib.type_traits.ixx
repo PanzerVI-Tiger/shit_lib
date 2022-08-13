@@ -71,19 +71,19 @@ export namespace mylib {
     using conditional_t = typename conditional<cond, TrueCase, FalseCase>::type;
     
     namespace detail {
-        // use auxiliary_disjunction to avoid too many inherit
-        // auxiliary template
+        // use disjunction_impl to avoid too many inherit
+        // implementation
         template<bool firstValue, typename FirstConstant, typename... BoolConstants>
-        struct auxiliary_conjunction { // handle false case and end, will end try
+        struct conjunction_impl { // handle false case and end, will end try
             using type = FirstConstant;
         };
 
-        // auxiliary template
+        // implementation
         template<typename FirstConstant, typename NextConstant, typename... BoolConstants>
-        struct auxiliary_conjunction<true, FirstConstant, NextConstant, BoolConstants...> {
+        struct conjunction_impl<true, FirstConstant, NextConstant, BoolConstants...> {
             // handle false case, then try to next
             using type =
-                typename auxiliary_conjunction<
+                typename conjunction_impl<
                     NextConstant::value,
                     NextConstant,
                     BoolConstants...
@@ -99,7 +99,7 @@ export namespace mylib {
     // C++17
     template<typename BoolConstant1, typename... BoolConstants>
     struct conjunction<BoolConstant1, BoolConstants...> :
-        detail::auxiliary_conjunction<BoolConstant1::value, BoolConstant1, BoolConstants...> {
+        detail::conjunction_impl<BoolConstant1::value, BoolConstant1, BoolConstants...> {
     };
 
     // C++17
@@ -107,19 +107,19 @@ export namespace mylib {
     using conjunction_t = typename conjunction<BoolConstants...>::type;
     
     namespace detail {
-        // use auxiliary_disjunction to avoid too many inherit
-        // auxiliary template
+        // use disjunction_impl to avoid too many inherit
+        // implementation
         template<bool firstValue, typename FirstConstant, typename... BoolConstants>
-        struct auxiliary_disjunction { // handle true case and end, will end try
+        struct disjunction_impl { // handle true case and end, will end try
             using type = FirstConstant;
         };
 
-        // auxiliary template
+        // implementation
         template<typename FirstConstant, typename NextConstant, typename... BoolConstants>
-        struct auxiliary_disjunction<false, FirstConstant, NextConstant, BoolConstants...> {
+        struct disjunction_impl<false, FirstConstant, NextConstant, BoolConstants...> {
             // handle false case, then try to next
             using type =
-                typename auxiliary_disjunction<
+                typename disjunction_impl<
                     NextConstant::value,
                     NextConstant,
                     BoolConstants...
@@ -135,7 +135,7 @@ export namespace mylib {
     // C++17
     template<typename BoolConstant1, typename... BoolConstants>
     struct disjunction<BoolConstant1, BoolConstants...> : 
-        detail::auxiliary_disjunction<BoolConstant1::value, BoolConstant1, BoolConstants...>
+        detail::disjunction_impl<BoolConstant1::value, BoolConstant1, BoolConstants...>
     {};
 
     // C++17
@@ -714,18 +714,18 @@ export namespace mylib {
     {};
 
     namespace detail {
-        // auxiliary template
+        // implementation
         template<typename Type>
-        inline constexpr bool auxiliary_is_pointer_v        = false;
+        inline constexpr bool is_pointer_v_impl        = false;
 
-        // auxiliary template
+        // implementation
         template<typename Type>
-        inline constexpr bool auxiliary_is_pointer_v<Type*> = true;
+        inline constexpr bool is_pointer_v_impl<Type*> = true;
     }
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_pointer_v = detail::auxiliary_is_pointer_v<remove_cv_t<Type>>;
+    inline constexpr bool is_pointer_v = detail::is_pointer_v_impl<remove_cv_t<Type>>;
     
     template<typename Type>
     struct is_pointer :
@@ -786,21 +786,21 @@ export namespace mylib {
 #   else
     
     namespace detail {
-        // auxiliary template
+        // implementation
         template<typename Type>
-        inline constexpr bool auxiliary_is_member_pointer_v
+        inline constexpr bool is_member_pointer_v_impl
             = false;
 
-        // auxiliary template
+        // implementation
         template<typename MemberType, typename ClassType>
-        inline constexpr bool auxiliary_is_member_pointer_v<MemberType ClassType::*>
+        inline constexpr bool is_member_pointer_v_impl<MemberType ClassType::*>
             = true;
     }
     
     // C++17
     template<typename Type>
     inline constexpr bool is_member_pointer_v = 
-        detail::auxiliary_is_member_pointer_v<remove_cv_t<Type>>;
+        detail::is_member_pointer_v_impl<remove_cv_t<Type>>;
     
 #   endif
 
@@ -820,21 +820,21 @@ export namespace mylib {
 #   else
     
     namespace detail {
-        // auxiliary template
+        // implementation
         template<typename Type>
-        inline constexpr bool auxiliary_is_member_object_pointer_v
+        inline constexpr bool is_member_object_pointer_v_impl
             = false;
 
-        // auxiliary templatye
+        // implementation
         template<typename MemberType, typename ClassType>
-        inline constexpr bool auxiliary_is_member_object_pointer_v<MemberType ClassType::*>
+        inline constexpr bool is_member_object_pointer_v_impl<MemberType ClassType::*>
             = !is_function_v<MemberType>;
     }
     
     // C++17
     template<typename Type>
     inline constexpr bool is_member_object_pointer_v 
-        = detail::auxiliary_is_member_object_pointer_v<remove_cv_t<Type>>;
+        = detail::is_member_object_pointer_v_impl<remove_cv_t<Type>>;
     
 #endif
 
@@ -854,21 +854,21 @@ export namespace mylib {
 #   else
 
     namespace detail {
-        // auxiliary template
+        // implementation
         template<typename Type>
-        inline constexpr bool auxiliary_is_member_function_pointer_v
+        inline constexpr bool is_member_function_pointer_v_impl
             = false;
 
-        // auxiliary template
+        // implementation
         template<typename MemberType, typename ClassType>
-        inline constexpr bool auxiliary_is_member_function_pointer_v<MemberType ClassType::*>
+        inline constexpr bool is_member_function_pointer_v_impl<MemberType ClassType::*>
             = is_function_v<MemberType>;
     }
     
     // C++17
     template<typename Type>
     inline constexpr bool is_member_function_pointer_v
-        = detail::auxiliary_is_member_function_pointer_v<remove_cv_t<Type>>;
+        = detail::is_member_function_pointer_v_impl<remove_cv_t<Type>>;
 
 #   endif
 
@@ -1027,26 +1027,26 @@ export namespace mylib {
 
     namespace detail {
         
-        // auxiliary function template
+        // helper function template
         // if To is argument's type or it's base class, match this,
         // and when To is argument's private, protected or ambigous base class, will result in failure
         template<typename To>
         constexpr true_type  test_is_pointer_convertible(const volatile To*)   noexcept
         {}
         
-        // auxiliary function template
+        // helper function template
         // else match this
         template<typename To>
         constexpr false_type test_is_pointer_convertible(const volatile void*) noexcept
         {}
 
-        // auxiliary function template
+        // helper function template
         // a private, protected or ambigous base class will match this function template
         template<typename BaseClass, typename DerivedClass>
         constexpr auto test_is_base_of(...) noexcept -> true_type
         {}
         
-        // auxiliary function template
+        // helper function template
         template<typename BaseClass, typename DerivedClass>
         constexpr auto test_is_base_of(int) noexcept ->
             // check can the derived class cast to base class

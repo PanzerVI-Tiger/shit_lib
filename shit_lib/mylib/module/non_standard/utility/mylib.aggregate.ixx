@@ -585,27 +585,29 @@ export namespace mylib {
     };
 
     namespace detail {
-        template<typename Type, size_t size>
-        constexpr auto make_n_same_type_tuple() noexcept {
-            return 
-                []<size_t index, size_t... indices, typename... Types> (
-                    this auto self,
-                    std::tuple<Types...>,
-                    std::index_sequence<index, indices...>
-                ) constexpr noexcept {               
-                    if constexpr (sizeof...(indices) == 0) {
-                        return std::tuple<Types..., Type>{};
-                    } else {
-                        return self(std::tuple<Type, Types...>{}, std::index_sequence<indices...>{});
-                    }
-                }(std::make_tuple(), std::make_index_sequence<size>{});
-        }
+        template<size_t count, typename Type, typename... Types>
+        struct make_n_same_type_tuple_implementation {
+            using type = typename make_n_same_type_tuple_implementation<count - 1, Type, Type, Types...>::type;
+        };
+
+        template<typename Type, typename... Types>
+        struct make_n_same_type_tuple_implementation<0, Type, Types...> {
+            using type = std::tuple<Types...>;
+        };
+        
+        template<size_t count, typename Type>
+        struct make_n_same_type_tuple {
+            using type = typename make_n_same_type_tuple_implementation<count, Type>::type;
+        };
+
+        template<size_t count, typename Type>
+        using make_n_same_type_tuple_t = typename make_n_same_type_tuple<count, Type>::type;       
     }
     
     template<typename Type, size_t arraySize>
     struct aggregate_traits<Type[arraySize]> {
         using type  = Type[arraySize];
-        using types = decltype(detail::make_n_same_type_tuple<Type, arraySize>());
+        using types = detail::make_n_same_type_tuple_t<arraySize, Type>;
 
         static size_t size() noexcept {
             return arraySize;
@@ -634,7 +636,7 @@ export namespace mylib {
         static constexpr auto member_objects_ref(Type (&object)[arraySize]) noexcept {
             return
                 [&object]<size_t... indices> (std::index_sequence<indices...>) constexpr noexcept {
-                    return decltype(detail::make_n_same_type_tuple<Type&>()){ object[indices]... };
+                    return detail::make_n_same_type_tuple_t<arraySize, Type&>{ object[indices]... };
                 }(std::make_index_sequence<arraySize>{});
         }
 
