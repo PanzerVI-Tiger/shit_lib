@@ -1,8 +1,7 @@
 #ifdef __INTELLISENSE__
 
-#include <cString>
+#include <string>
 #include <iostream>
-#include <type_traits>
 
 #endif
 
@@ -92,31 +91,10 @@ export namespace mylib {
     using u8string_literal  = basic_string_literal<char8_t>;
     using u16string_literal = basic_string_literal<char16_t>;
     using u32string_literal = basic_string_literal<char32_t>;
-    
-    template<typename CharType, CharType... chars>
-    struct char_sequence :
-        std::integer_sequence<CharType, chars...>
-    {
-        constexpr CharType operator [](size_t index) noexcept {
-            return data_at<index, chars...>;
-        }
-        
-        constexpr operator std::basic_string<CharType>() const noexcept {
-            return { { chars... } };
-        }
-
-        template<typename CharType, CharType... rightChars>
-        constexpr char_sequence<CharType, chars..., rightChars...>
-            operator +(char_sequence<CharType, rightChars...>) noexcept 
-        {}
-
-        template<size_t index>
-        static constexpr CharType char_at = data_at<index, chars...>;
-    };
 
     inline namespace literals {
-        
         inline namespace string_literal_literals {
+            
             // string literal
             constexpr string_literal    operator""_sl(const char* str, size_t size) noexcept {
                 return string_literal{ str, size };
@@ -140,19 +118,6 @@ export namespace mylib {
             // string literal
             constexpr u32string_literal operator""_sl(const char32_t* str, size_t size) noexcept {
                 return u32string_literal{ str, size };
-            }
-        }
-        
-        inline namespace char_sequence_literals {
-            // chars sequence
-            template<basic_string_literal literal>
-            constexpr auto operator ""_cs() noexcept {
-                return[]<size_t... indices>(std::index_sequence<indices...>) constexpr noexcept {
-                    return
-                        char_sequence<
-                            typename decltype(literal)::value_type, literal[indices]...
-                        >{};
-                }(std::make_index_sequence<literal.length()>{});
             }
         }
     }

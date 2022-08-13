@@ -17,6 +17,7 @@ import std.core;
 
 import mylib.algorithm;
 import mylib.type_traits;
+import mylib.char_sequence;
 import mylib.string_literal;
 import mylib.templates_utility;
 

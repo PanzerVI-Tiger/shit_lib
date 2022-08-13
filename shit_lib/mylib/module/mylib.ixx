@@ -56,6 +56,7 @@ export import mylib.stream_output;    // ouput some container to stream
 
 //           string
 export import mylib.stack_string;
+export import mylib.char_sequence;
 export import mylib.string_literal;
 
 //           utility

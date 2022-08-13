@@ -143,4 +143,4 @@ The latter shall call print test function to print test example,
 all print test function is in namespace `myib::unittest`,  
 and naming style is `module_name` + `_print_test`.  
 Such as module vector's is `mylib::uniitest::vector_print_test`.  
-If you want to run all print test, you can call `mylib::unittest::print_test()`.
+If you want to run all print test, you can call `mylib::unittest::print_test`.
