@@ -142,3 +142,9 @@
 import std.core;
 
 #endif
+
+// standard namespace alias
+namespace stdr = std::ranges;
+namespace stdc = std::chrono;
+namespace stdv = std::ranges::views;
+namespace stdl = std::literals;

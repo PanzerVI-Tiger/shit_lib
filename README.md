@@ -1,11 +1,11 @@
 # shit_lib
 ## introduction
 This worst STL implementation is just for handing in homework.  
-It's base on C++2b, use module organize, and disable exception.  
+It's base on C++2b, use module organize, and default disable exception.  
   
 ## environment
-visual studio 2022  
-std = C++2b(23)  
+visual studio 17.4.0(2022) preview 1.0  
+std: c++latest(C++2b\C++23)  
   
 ## structure
 ```
@@ -53,7 +53,7 @@ mylib
 |  |  |- more macro_meta head
 |  |
 |  |- macro_meta.h
-|  |- more macro head
+|  |- more head
 |
 |- module
 |  |- standard
@@ -155,6 +155,6 @@ The former will automatic test all module, will report error when test failed.
 The latter shall call print test function to print test example,  
 all print test function is in namespace `myib::unittest`,  
 and naming style is `module_name` + `_print_test`.  
-Such as module vector's is `mylib::uniitest::vector_print_test`.  
+Such as module vector's is `mylib::unittest::vector_print_test`.  
 If you want to run all print test, you can call `mylib::unittest::print_test`.  
   

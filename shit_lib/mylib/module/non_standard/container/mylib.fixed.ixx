@@ -12,15 +12,15 @@ export namespace mylib {
             struct {
                 ElementType decimals : sizeof(ElementType) << 2;
                 ElementType integer  : sizeof(ElementType) << 2;
-            };
+            } separatePart;
             ElementType entiretyPart;
         };
         
         constexpr fixed() : entiretyPart{ 0 } {};
         constexpr fixed(const fixed&) = default;
-        constexpr fixed(ElementType integer) : integer{ integer }, decimals{ 0 } {};
-        constexpr fixed(ElementType integer, unsigned _Scaling) : integer{ integer }, decimals{ 0 } {
-            *this = *this / _Scaling;
+        constexpr fixed(ElementType integer) :separatePart{ 0, integer } {};
+        constexpr fixed(ElementType integer, unsigned scaling) : separatePart{ 0, integer } {
+            *this = *this / scaling;
         };
 
         constexpr bool operator <(const fixed& right) const noexcept {
@@ -56,8 +56,10 @@ export namespace mylib {
 
         constexpr fixed operator /(const fixed& right) const noexcept {
             fixed result;
-            result.integer = entiretyPart / right.entiretyPart;
-            result.decimals = ((long long)(entiretyPart % right.entiretyPart) << (sizeof(ElementType) << 2)) / right.entiretyPart;
+            result.separatePart.integer  = entiretyPart / right.entiretyPart;
+            result.separatePart.decimals = 
+                (static_cast<long long>(entiretyPart % right.entiretyPart) << 
+                (sizeof(ElementType) << 2)) / right.entiretyPart;
 
             return result;
         }

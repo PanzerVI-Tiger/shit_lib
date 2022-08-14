@@ -17,12 +17,10 @@ import std.core;
 
 export namespace mylib {
     
-    // the class which is write by mylib has the tag mylib_tag.
     
-    // any mylib class's mylib_tag type were based on this tag class.
     struct mylib_class_tag {};
     
-    // the iterator type of some mylib container.
+    // the iterator type of mylib container.
     struct mylib_iterator_tag :
         public mylib_class_tag
     {};

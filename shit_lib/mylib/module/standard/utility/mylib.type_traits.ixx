@@ -1185,7 +1185,7 @@ export namespace mylib {
         template<typename Void = void>
         constexpr bool assert_test_type_traits() noexcept {
             // test integral_constant
-            constexpr integral_constant<int, 114514>                integralConstant1;
+            constexpr integral_constant<int,       114514>          integralConstant1;
             constexpr integral_constant<long long, 1145141919810LL> integralConstant2;
 
             // test value
