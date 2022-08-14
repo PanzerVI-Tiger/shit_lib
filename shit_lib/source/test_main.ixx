@@ -10,27 +10,25 @@ module;
 export module mylib.main;
 
 #include "cpp/cxxstd.h"
-#include "macro_meta.h"
+#include "preprocessor.h"
+#include <boost/preprocessor.hpp>
 
-import mylib;
+//import mylib;
 
 
 #define x(a)   #a
 #define y(...) #__VA_ARGS__
 #define z(...) y(__VA_ARGS__)
+#define x1(a) x(a)
 
-struct X {};
+struct X {
+    auto operator [](auto x) const {}
+};
 
-[[msvc::noinline]]
-void f(X)
-{
-    std::cout << "hello!\n";
-}
 
 export int main() noexcept
 {
-    using namespace mylib::literals;
-    
+    //using namespace mylib::literals;
     
     return 0;
 }

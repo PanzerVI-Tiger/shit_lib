@@ -46,13 +46,13 @@ mylib
 |  |
 |  |- macro_meta
 |  |  |- macro_base.h
-|  |  |- macro_minus.h
-|  |  |- macro_plus.h
-|  |  |- macro_repet.h
-|  |  |- macro_tuple.h
+|  |  |- minus.h
+|  |  |- plus.h
+|  |  |- repet.h
+|  |  |- variadic.h
 |  |  |- more macro_meta head
 |  |
-|  |- macro_meta.h
+|  |- preprocessor.h
 |  |- more head
 |
 |- module

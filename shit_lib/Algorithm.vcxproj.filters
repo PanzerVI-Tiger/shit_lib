@@ -108,17 +108,23 @@
     <ClInclude Include="mylib\head\macro_meta\macro_base.h">
       <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
-    <ClInclude Include="mylib\head\macro_meta\macro_minus.h">
+    <ClInclude Include="mylib\head\macro_meta\minus.h">
       <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
-    <ClInclude Include="mylib\head\macro_meta\macro_plus.h">
+    <ClInclude Include="mylib\head\macro_meta\plus.h">
       <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
-    <ClInclude Include="mylib\head\macro_meta\macro_tuple.h">
+    <ClInclude Include="mylib\head\macro_meta\variadic.h">
       <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
-    <ClInclude Include="mylib\head\macro_meta.h">
+    <ClInclude Include="mylib\head\preprocessor.h">
       <Filter>mylib\head</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\bool.h">
+      <Filter>mylib\head\macro_meta</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\if.h">
+      <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -303,7 +309,7 @@
     </MASM>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mylib\head\macro_meta\macro_repet.txt">
+    <Text Include="mylib\head\macro_meta\repet.h">
       <Filter>mylib\head\macro_meta</Filter>
     </Text>
   </ItemGroup>
