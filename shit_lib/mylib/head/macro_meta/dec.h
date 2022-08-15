@@ -1,0 +1,71 @@
+#pragma once
+
+
+#define mylib_pp_dec_impl(n) mylib_pp_dec ## n
+
+#define mylib_pp_dec(n) mylib_pp_dec_impl(n)
+
+#define mylib_pp_dec1  0
+#define mylib_pp_dec2  1
+#define mylib_pp_dec3  2
+#define mylib_pp_dec4  3
+#define mylib_pp_dec5  4
+#define mylib_pp_dec6  5
+#define mylib_pp_dec7  6
+#define mylib_pp_dec8  7
+#define mylib_pp_dec9  8
+#define mylib_pp_dec10 9
+#define mylib_pp_dec11 10
+#define mylib_pp_dec12 11
+#define mylib_pp_dec13 12
+#define mylib_pp_dec14 13
+#define mylib_pp_dec15 14
+#define mylib_pp_dec16 15
+#define mylib_pp_dec17 16
+#define mylib_pp_dec18 17
+#define mylib_pp_dec19 18
+#define mylib_pp_dec20 19
+#define mylib_pp_dec21 20
+#define mylib_pp_dec22 21
+#define mylib_pp_dec23 22
+#define mylib_pp_dec24 23
+#define mylib_pp_dec25 24
+#define mylib_pp_dec26 25
+#define mylib_pp_dec27 26
+#define mylib_pp_dec28 27
+#define mylib_pp_dec29 28
+#define mylib_pp_dec30 29
+#define mylib_pp_dec31 30
+#define mylib_pp_dec32 31
+#define mylib_pp_dec33 32
+#define mylib_pp_dec34 33
+#define mylib_pp_dec35 34
+#define mylib_pp_dec36 35
+#define mylib_pp_dec37 36
+#define mylib_pp_dec38 37
+#define mylib_pp_dec39 38
+#define mylib_pp_dec40 39
+#define mylib_pp_dec41 40
+#define mylib_pp_dec42 41
+#define mylib_pp_dec43 42
+#define mylib_pp_dec44 43
+#define mylib_pp_dec45 44
+#define mylib_pp_dec46 45
+#define mylib_pp_dec47 46
+#define mylib_pp_dec48 47
+#define mylib_pp_dec49 48
+#define mylib_pp_dec50 49
+#define mylib_pp_dec51 50
+#define mylib_pp_dec52 51
+#define mylib_pp_dec53 52
+#define mylib_pp_dec54 53
+#define mylib_pp_dec55 54
+#define mylib_pp_dec56 55
+#define mylib_pp_dec57 56
+#define mylib_pp_dec58 57
+#define mylib_pp_dec59 58
+#define mylib_pp_dec60 59
+#define mylib_pp_dec61 60
+#define mylib_pp_dec62 61
+#define mylib_pp_dec63 62
+#define mylib_pp_dec64 63

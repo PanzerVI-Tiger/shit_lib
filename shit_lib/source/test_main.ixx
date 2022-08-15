@@ -16,19 +16,11 @@ export module mylib.main;
 //import mylib;
 
 
-#define x(a)   #a
-#define y(...) #__VA_ARGS__
-#define z(...) y(__VA_ARGS__)
-#define x1(a) x(a)
-
-struct X {
-    auto operator [](auto x) const {}
-};
-
-
 export int main() noexcept
 {
     //using namespace mylib::literals;
+    
+    constexpr int arr[]{ mylib_pp_variadic_slice(2, 5, mylib_pp_iota(0, 10)) };
     
     return 0;
 }

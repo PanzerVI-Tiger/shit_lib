@@ -1,6 +1,33 @@
 #pragma once
 
 
+#define mylib_pp_variadic_size(...) \
+    mylib_pp_variadic_size_impl(__VA_ARGS__)
+
+#define mylib_pp_variadic_take_impl(count, ...) \
+    mylib_pp_variadic_take ## count(__VA_ARGS__)
+
+#define mylib_pp_variadic_take(count, ...) \
+    mylib_pp_variadic_take_impl(count, __VA_ARGS__)
+
+#define mylib_pp_variadic_drop_impl(count, ...) \
+    mylib_pp_variadic_drop ## count(__VA_ARGS__)
+
+#define mylib_pp_variadic_drop(count, ...) \
+    mylib_pp_variadic_drop_impl(count, __VA_ARGS__)
+
+#define mylib_pp_variadic_get_impl(index, ...) \
+    mylib_pp_variadic_get ## index(__VA_ARGS__)
+
+#define mylib_pp_variadic_get(index, ...) \
+    mylib_pp_variadic_get_impl(index, __VA_ARGS__)
+
+#define mylib_pp_variadic_slice_impl(first, last, ...) \
+    mylib_pp_variadic_drop(first, mylib_pp_variadic_take(last, __VA_ARGS__))
+
+#define mylib_pp_variadic_slice(first, last, ...) \
+    mylib_pp_variadic_slice_impl(first, last, __VA_ARGS__)
+
 #define mylib_pp_variadic_size_helper(                                             \
         e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16, \
         e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
@@ -11,7 +38,7 @@
 
 #ifdef __cplusplus
 
-#define mylib_pp_variadic_size(...)                                                  \
+#define mylib_pp_variadic_size_impl(...)                                             \
     mylib_pp_variadic_size_helper(                                                   \
         0, __VA_ARGS__ __VA_OPT__(,)                                                 \
         64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46,  \
@@ -23,7 +50,7 @@
 #elif defined(_MSC_VER)
 
 // need compiler extension `, ## __VA_ARGS__`
-#define mylib_pp_variadic_size(...)                                                  \
+#define mylib_pp_variadic_size_impl(...)                                             \
     mylib_pp_variadic_size_helper(                                                   \
         , ## __VA_ARGS__,                                                            \
         64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46,  \
@@ -35,7 +62,7 @@
 #else
 
 // when params is empty will return 1!!!
-#define mylib_pp_variadic_size(...)                                                  \
+#define mylib_pp_variadic_size_impl(...)                                             \
     mylib_pp_variadic_size_helper(                                                   \
         , __VA_ARGS__,                                                               \
         64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46,  \
@@ -516,9 +543,6 @@
     e47, e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61, \
     e62, e63 
 
-#define mylib_pp_variadic_take(count, ...) \
-    mylib_pp_variadic_take ## count(__VA_ARGS__)
-
 #define mylib_pp_variadic_drop0(\
         ...                     \
     ) __VA_ARGS__
@@ -827,9 +851,6 @@
         e58, e59, e60, e61, e62, e63, ...                                     \
     ) __VA_ARGS__
 
-#define mylib_pp_variadic_drop(count, ...) \
-    mylib_pp_variadic_drop ## count(__VA_ARGS__)
-
 #define mylib_pp_variadic_get0(\
         e0, ...                \
     ) e0
@@ -1124,6 +1145,3 @@
         e47, e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61, \
         e62, e63, ...                                                              \
     ) e63
-
-#define mylib_pp_variadic_get(index, ...) \
-    mylib_pp_variadic_get ## index(__VA_ARGS__)

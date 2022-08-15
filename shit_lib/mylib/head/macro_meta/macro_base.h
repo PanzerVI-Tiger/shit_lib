@@ -1,6 +1,9 @@
+#pragma once
+
 #include "macro_meta/variadic.h"
 
 
+#define mylib_space()     
 #define mylib_colon()     :
 #define mylib_comma()     ,
 #define mylib_semicolon() ;
@@ -10,6 +13,21 @@
 #define mylib_minus_sign()      -
 #define mylib_divides_sign()    /
 #define mylib_multiplies_sign() *
+
+// token to string literal
+#define mylib_pp_ttoa_impl(...)  #__VA_ARGS__
+#define mylib_pp_ttoa(...)       mylib_pp_ttoa_impl(__VA_ARGS__)
+
+#define mylib_pp_cat_ttoa_impl(...)   mylib_pp_ttoa(mylib_pp_cat(__VA_ARGS__))
+#define mylib_pp_cat_ttoa(...)        mylib_pp_cat_ttoa_impl(__VA_ARGS__)
+
+// cat token
+#define mylib_pp_catn_impl(count, ...) mylib_pp_cat ## count(__VA_ARGS__)
+
+#define mylib_pp_catn(count, ...)      mylib_pp_catn_impl(count, __VA_ARGS__)
+
+#define mylib_pp_cat(...) \
+    mylib_pp_call(mylib_pp_catn, mylib_pp_variadic_size(__VA_ARGS__), __VA_ARGS__)
 
 // universal version
 #define mylib_pp_forward(...)    __VA_ARGS__
@@ -662,10 +680,3 @@
     t34 ## t35 ## t36 ## t37 ## t38 ## t39 ## t40 ## t41 ## t42 ## t43 ## t44 ## \
     t45 ## t46 ## t47 ## t48 ## t49 ## t50 ## t51 ## t52 ## t53 ## t54 ## t55 ## \
     t56 ## t57 ## t58 ## t59 ## t60 ## t61 ## t62 ## t63
-
-#define mylib_pp_catn_impl(count, ...) mylib_pp_cat ## count(__VA_ARGS__)
-
-#define mylib_pp_catn(count, ...)      mylib_pp_catn_impl(count, __VA_ARGS__)
-
-#define mylib_pp_cat(...) \
-    mylib_pp_call(mylib_pp_catn, mylib_pp_variadic_size(__VA_ARGS__), __VA_ARGS__)

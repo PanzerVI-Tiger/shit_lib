@@ -46,7 +46,13 @@ mylib
 |  |
 |  |- macro_meta
 |  |  |- macro_base.h
+|  |  |- bool.h
+|  |  |- dec.h
+|  |  |- for.h
+|  |  |- if.h
+|  |  |- inc.h
 |  |  |- minus.h
+|  |  |- numeric
 |  |  |- plus.h
 |  |  |- repet.h
 |  |  |- variadic.h

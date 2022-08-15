@@ -1,5 +1,8 @@
 #pragma once
 
+
+#define mylib_pp_bool(n) mylib_pp_bool ## n
+
 #define mylib_pp_bool0  0
 #define mylib_pp_bool1  1
 #define mylib_pp_bool2  1
@@ -65,5 +68,3 @@
 #define mylib_pp_bool62 1
 #define mylib_pp_bool63 1
 #define mylib_pp_bool64 1
-
-#define mylib_pp_bool(n) mylib_pp_bool ## n
