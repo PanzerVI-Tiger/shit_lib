@@ -138,6 +138,12 @@
     <ClInclude Include="mylib\head\macro_meta\for.h">
       <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\tuple.h">
+      <Filter>mylib\head\macro_meta</Filter>
+    </ClInclude>
+    <ClInclude Include="mylib\head\macro_meta\compare.h">
+      <Filter>mylib\head\macro_meta</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="mylib\head\cpp\standard\algorithm">

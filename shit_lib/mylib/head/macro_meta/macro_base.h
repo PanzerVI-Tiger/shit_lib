@@ -22,12 +22,12 @@
 #define mylib_pp_cat_ttoa(...)        mylib_pp_cat_ttoa_impl(__VA_ARGS__)
 
 // cat token
-#define mylib_pp_catn_impl(count, ...) mylib_pp_cat ## count(__VA_ARGS__)
+#define mylib_pp_cat_n_impl(count, ...) mylib_pp_cat ## count(__VA_ARGS__)
 
-#define mylib_pp_catn(count, ...)      mylib_pp_catn_impl(count, __VA_ARGS__)
+#define mylib_pp_cat_n(count, ...)      mylib_pp_cat_n_impl(count, __VA_ARGS__)
 
 #define mylib_pp_cat(...) \
-    mylib_pp_call(mylib_pp_catn, mylib_pp_variadic_size(__VA_ARGS__), __VA_ARGS__)
+    mylib_pp_call(mylib_pp_cat_n, mylib_pp_variadic_size(__VA_ARGS__), __VA_ARGS__)
 
 // universal version
 #define mylib_pp_forward(...)    __VA_ARGS__

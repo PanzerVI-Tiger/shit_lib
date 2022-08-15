@@ -24,9 +24,11 @@
     <ClInclude Include="mylib\head\cpp\non_standard\mylib_sort.h" />
     <ClInclude Include="mylib\head\c\macro\macro_meta.h" />
     <ClInclude Include="mylib\head\macro_meta\dec.h" />
+    <ClInclude Include="mylib\head\macro_meta\compare.h" />
     <ClInclude Include="mylib\head\macro_meta\for.h" />
     <ClInclude Include="mylib\head\macro_meta\inc.h" />
     <ClInclude Include="mylib\head\macro_meta\numeric.h" />
+    <ClInclude Include="mylib\head\macro_meta\tuple.h" />
     <ClInclude Include="mylib\head\preprocessor.h" />
     <ClInclude Include="mylib\head\macro_meta\bool.h" />
     <ClInclude Include="mylib\head\macro_meta\if.h" />
