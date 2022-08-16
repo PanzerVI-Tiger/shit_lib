@@ -32,9 +32,12 @@
         (mylib_pp_tuple_extend(mylib_pp_tuple_take(tuple, index)),)        \
         ()                                                                 \
     value,                                                                 \
-   mylib_pp_tuple_extend(mylib_pp_tuple_drop(tuple, mylib_pp_inc(index))))
+    mylib_pp_tuple_extend(mylib_pp_tuple_drop(tuple, mylib_pp_inc(index))))
 #define mylib_pp_tuple_set(tuple, index, value)  \
     mylib_pp_tuple_set_impl(tuple, index, value)
+
+#define mylib_pp_tuple_set_f(tuple, index, callable)  \
+    mylib_pp_tuple_set(tuple, index, callable(mylib_pp_tuple_get(tuple, index)))
 
 #define mylib_pp_tuple_cat_n_impl(count, ...)                                    \
     (mylib_pp_foreach_n(count, mylib_pp_tuple_extend, mylib_comma, __VA_ARGS__))

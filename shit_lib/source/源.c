@@ -91,6 +91,10 @@ int maina()
 	initialB(pb, 6, 7);
 	pb->vt->f(pb);
 	free(pb);
-	
+	union X {
+		char* i;
+		double j;
+	} x = { 1 };
+
 	return 0;
 }

@@ -91,6 +91,9 @@
     <Filter Include="mylib\head\macro_meta">
       <UniqueIdentifier>{6cc18df7-a6ad-4ce2-9593-779d232c9623}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\module\non_standard\exception">
+      <UniqueIdentifier>{febb4b27-ee41-4207-a594-61272042beac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mylib\head\cpp\cxxstd.h">
@@ -108,10 +111,7 @@
     <ClInclude Include="mylib\head\macro_meta\macro_base.h">
       <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
-    <ClInclude Include="mylib\head\macro_meta\minus.h">
-      <Filter>mylib\head\macro_meta</Filter>
-    </ClInclude>
-    <ClInclude Include="mylib\head\macro_meta\plus.h">
+    <ClInclude Include="mylib\head\macro_meta\arithmetic.h">
       <Filter>mylib\head\macro_meta</Filter>
     </ClInclude>
     <ClInclude Include="mylib\head\macro_meta\variadic.h">
@@ -319,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="mylib\module\non_standard\string\mylib.char_sequence.ixx">
       <Filter>mylib\module\non_standard\string</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\exception\mylib.assert.ixx">
+      <Filter>mylib\module\non_standard\exception</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -33,8 +33,7 @@
     <ClInclude Include="mylib\head\macro_meta\bool.h" />
     <ClInclude Include="mylib\head\macro_meta\if.h" />
     <ClInclude Include="mylib\head\macro_meta\macro_base.h" />
-    <ClInclude Include="mylib\head\macro_meta\minus.h" />
-    <ClInclude Include="mylib\head\macro_meta\plus.h" />
+    <ClInclude Include="mylib\head\macro_meta\arithmetic.h" />
     <ClInclude Include="mylib\head\macro_meta\variadic.h" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +67,7 @@
     <ClCompile Include="mylib\module\non_standard\container\tree\mylib.binary_tree.ixx" />
     <ClCompile Include="mylib\module\non_standard\container\tree\mylib.huffman_tree.ixx" />
     <ClCompile Include="mylib\module\non_standard\container\tree\mylib.red_black_tree.ixx" />
+    <ClCompile Include="mylib\module\non_standard\exception\mylib.assert.ixx" />
     <ClCompile Include="mylib\module\non_standard\io\mylib.stream_output.ixx" />
     <ClCompile Include="mylib\module\non_standard\string\mylib.char_sequence.ixx" />
     <ClCompile Include="mylib\module\non_standard\string\mylib.stack_string.ixx" />
@@ -249,7 +249,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);MYLIB_UNITTEST</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);MYLIB_UNITTEST;MYLIB_ASSERT</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <EnableModules>true</EnableModules>
       <LanguageStandard>stdcpplatest</LanguageStandard>

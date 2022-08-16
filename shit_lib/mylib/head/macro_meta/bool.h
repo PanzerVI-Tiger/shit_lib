@@ -1,10 +1,12 @@
 #pragma once
 
+#include "macro_base.h"
 
-#define mylib_pp_bool(n) mylib_pp_bool ## n
 
-#define mylib_pp_not_impl(cond) mylib_pp_not ## cond
-#define mylib_pp_not(cond) mylib_pp_not_impl(mylib_pp_bool(cond))
+#define mylib_pp_bool(n)        mylib_pp_cat_n(2, mylib_pp_bool, n)
+
+#define mylib_pp_not_impl(cond) mylib_pp_cat_n(2, mylib_pp_not, cond)
+#define mylib_pp_not(cond)      mylib_pp_not_impl(mylib_pp_bool(cond))
 
 #define mylib_pp_bool0  0
 #define mylib_pp_bool1  1

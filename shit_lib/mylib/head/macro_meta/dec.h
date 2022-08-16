@@ -5,6 +5,7 @@
 
 #define mylib_pp_dec(n) mylib_pp_dec_impl(n)
 
+#define mylib_pp_dec0  0
 #define mylib_pp_dec1  0
 #define mylib_pp_dec2  1
 #define mylib_pp_dec3  2

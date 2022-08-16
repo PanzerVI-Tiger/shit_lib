@@ -5,7 +5,6 @@
 #if defined(DEBUG) || defined(MYLIB_ASSERT)
 
 
-#pragma optimize("", off)
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>

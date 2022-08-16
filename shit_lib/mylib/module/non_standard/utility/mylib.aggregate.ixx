@@ -43,7 +43,7 @@ export namespace mylib {
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 0> :
-        bool_constant<requires{ Type{}; }> 
+        bool_constant<requires{ Type{}; }>
     {};
 
     template<typename Type>

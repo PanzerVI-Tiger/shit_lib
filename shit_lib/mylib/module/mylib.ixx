@@ -48,6 +48,9 @@ export import mylib.red_black_tree;
 //             io
 export import mylib.stream_output;    // ouput some container to stream
 
+//         exception
+export import mylib.assert;
+
 //           string
 export import mylib.stack_string;
 export import mylib.char_sequence;
