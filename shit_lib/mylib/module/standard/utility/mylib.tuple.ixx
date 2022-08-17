@@ -27,7 +27,7 @@ export namespace mylib {
         {}
         
         Type            current;
-        tuple<Types...> next;
+        mylib::tuple<Types...> next;
     };
 
     template<typename Type>

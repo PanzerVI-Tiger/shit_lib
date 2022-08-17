@@ -611,7 +611,7 @@
     s() c(e61) s() c(e62) s() c(e63)
 
 #define mylib_pp_for0(var, pred, inc) \
-    mylib_pp_if(pred(var)) () (var)
+    mylib_pp_if(pred(var)) (var) (var)
 #define mylib_pp_for1(var, pred, inc)                                 \
     mylib_pp_if(pred(var)) (mylib_pp_for0(inc(var), pred, inc)) (var)
 #define mylib_pp_for2(var, pred, inc)                                 \

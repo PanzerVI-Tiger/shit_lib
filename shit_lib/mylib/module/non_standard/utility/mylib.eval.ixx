@@ -43,12 +43,12 @@ export namespace mylib {
     
     template<typename LanguageTag>
     constexpr auto eval(LanguageTag, const std::string& expression) noexcept {
-        if constexpr (is_same_v<LanguageTag, scheme_tag>) {
+        if constexpr (mylib::is_same_v<LanguageTag, mylib::scheme_tag>) {
             return eval_scheme(expression);
         }
     }
 
     constexpr auto eval(const std::string& expression) noexcept {
-        return eval(scheme_lang, expression);
+        return eval(mylib::scheme_lang, expression);
     }
 }

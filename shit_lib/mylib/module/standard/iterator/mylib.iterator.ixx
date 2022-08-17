@@ -30,25 +30,33 @@ export namespace mylib {
     {};
 
     struct forward_iterator_tag : 
-        input_iterator_tag, std::input_iterator_tag, 
+        mylib::input_iterator_tag, 
+        std::input_iterator_tag,
         std::forward_iterator_tag
     {};
 
     struct bidirectional_iterator_tag : 
-        forward_iterator_tag,      std::input_iterator_tag, 
-        std::forward_iterator_tag, std::bidirectional_iterator_tag
+        mylib::forward_iterator_tag,
+        std::input_iterator_tag,
+        std::forward_iterator_tag, 
+        std::bidirectional_iterator_tag
     {};
 
     struct random_access_iterator_tag : 
-        bidirectional_iterator_tag, std::input_iterator_tag, 
-        std::forward_iterator_tag,  std::bidirectional_iterator_tag, 
+        mylib::bidirectional_iterator_tag, 
+        std::input_iterator_tag,
+        std::forward_iterator_tag,  
+        std::bidirectional_iterator_tag, 
         std::random_access_iterator_tag
     {};
 
     struct contiguous_iterator_tag :
-        random_access_iterator_tag,      std::input_iterator_tag,
-        std::forward_iterator_tag,       std::bidirectional_iterator_tag,
-        std::random_access_iterator_tag, std::contiguous_iterator_tag 
+        mylib::random_access_iterator_tag,
+        std::input_iterator_tag,
+        std::forward_iterator_tag,
+        std::bidirectional_iterator_tag,
+        std::random_access_iterator_tag,
+        std::contiguous_iterator_tag 
     {};
 
     

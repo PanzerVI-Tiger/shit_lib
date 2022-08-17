@@ -36,7 +36,7 @@ export namespace mylib {
         using reverse_iterator       = std::reverse_iterator<iterator>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
         
-        using mylib_tag              = mylib_container_tag;
+        using mylib_tag              = mylib::mylib_container_tag;
         
         value_type data[vertical][horizontal];
     };

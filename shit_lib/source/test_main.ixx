@@ -14,13 +14,14 @@ export module mylib.main;
 #include "cpp/cxxstd.h"
 //#include "preprocessor.h"
 //#include <boost/preprocessor.hpp>
+
 import mylib;
+import mylib.new_binary_tree;
 
 
 export int main() noexcept
 {
-    (mylib::assert)(false, "What do you Fuck do!!!");
+    using mylib::operator <<;
     
-
     return 0;
 }

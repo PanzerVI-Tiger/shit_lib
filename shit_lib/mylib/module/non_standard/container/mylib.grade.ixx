@@ -18,11 +18,10 @@ import std.core;
 
 import mylib.type_traits;
 
-
 export namespace mylib {
     
     template<typename ElementType>
-        requires is_integral_v<ElementType>
+        requires mylib::is_integral_v<ElementType>
     struct grade {
         using TemplateParameter = ElementType;
         using SignedType        = std::make_signed_t<ElementType>;

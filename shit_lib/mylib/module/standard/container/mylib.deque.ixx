@@ -2,6 +2,7 @@ module;
 
 #ifdef __INTELLISENSE__
 
+#include <bit>
 #include <memory>;
 #include <iterator>;
 
@@ -32,10 +33,13 @@ export namespace mylib {
         
         constexpr static size_type block_size = block_type::block_size;
 
-        constexpr deque_const_iterator() noexcept : container{}, position{} {}
+        constexpr deque_const_iterator() noexcept : 
+            container{}, position{} 
+        {}
 
         constexpr deque_const_iterator(const DequeType* pDeque, size_type index) noexcept :
-            container{ const_cast<DequeType*>(pDeque) }, position{ index } {}
+            container{ const_cast<DequeType*>(pDeque) }, position{ index } 
+        {}
 
         constexpr const_reference operator *() const noexcept {
             return (*container)[position];
@@ -113,7 +117,7 @@ export namespace mylib {
 
     template<typename DequeType>
     struct deque_iterator :
-        deque_const_iterator<DequeType> {
+        mylib::deque_const_iterator<DequeType> {
         
         using deque_const_iterator<DequeType>::container;
         using deque_const_iterator<DequeType>::position;
@@ -220,8 +224,10 @@ export namespace mylib {
         static constexpr size_type exponent      = std::bit_width(std::bit_ceil(block_size)) - 1;
 
         constexpr deque_block(deque_block const& other) noexcept :
-                numberOfBlocks{ other.numberOfBlocks }, numberOfElement{ other.numberOfElement },
-                head{ other.head } {
+            numberOfBlocks { other.numberOfBlocks }, 
+            numberOfElement{ other.numberOfElement },
+            head           { other.head } 
+        {
             map = ::new pointer[numberOfBlocks];
             for (size_type i = 0; i < numberOfBlocks; ++i) {
                 map[i] = ::new value_type[block_size];
@@ -232,15 +238,20 @@ export namespace mylib {
         }
         
         constexpr deque_block(deque_block&& other) noexcept :
-                numberOfBlocks{ other.numberOfBlocks }, numberOfElement{ other.numberOfElement },
-                head{ other.head }, map{ other.map } {
+            numberOfBlocks { other.numberOfBlocks }, 
+            numberOfElement{ other.numberOfElement },
+            head           { other.head }, 
+            map            { other.map } 
+        {
             other.numberOfBlocks   = 0;
             other.numberOfElement  = 0;
             other.head             = 0;
             other.map              = nullptr;
         }
         
-        constexpr deque_block() : map{ nullptr }, head{}, numberOfElement{}, numberOfBlocks{} {}
+        constexpr deque_block() : 
+            map{}, head{}, numberOfElement{}, numberOfBlocks{} 
+        {}
         
         constexpr deque_block(std::initializer_list<value_type> initializerList) noexcept {
             size_t const elementSize = initializerList.size();
@@ -394,7 +405,7 @@ export namespace mylib {
 
         using value_type             = _ElementType;
 
-        using block_type             = deque_block<deque<_ElementType, _Allocator>>;
+        using block_type             = mylib::deque_block<deque<_ElementType, _Allocator>>;
 
         using allocator_type         = _Allocator;
 
@@ -407,9 +418,9 @@ export namespace mylib {
         using pointer                = typename std::allocator_traits<_Allocator>::pointer;
         using const_point            = typename std::allocator_traits<_Allocator>::const_pointer;
 
-        using iterator               = deque_iterator<deque<_ElementType, _Allocator>>;
+        using iterator               = mylib::deque_iterator<deque<_ElementType, _Allocator>>;
         using reverse_iterator       = std::reverse_iterator<iterator>;
-        using const_iterator         = deque_const_iterator<deque<_ElementType, _Allocator>>;
+        using const_iterator         = mylib::deque_const_iterator<deque<_ElementType, _Allocator>>;
         using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     private:

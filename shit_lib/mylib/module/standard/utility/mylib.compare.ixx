@@ -14,8 +14,8 @@ export namespace mylib {
         signed char value;
     };
 
-    inline constexpr strong_ordering strong_ordering::less      { -1 };
-    inline constexpr strong_ordering strong_ordering::equivalent{  0 };
-    inline constexpr strong_ordering strong_ordering::equal     {  0 };
-    inline constexpr strong_ordering strong_ordering::greater   {  1 };
+    inline constexpr mylib::strong_ordering mylib::strong_ordering::less      { -1 };
+    inline constexpr mylib::strong_ordering mylib::strong_ordering::equivalent{  0 };
+    inline constexpr mylib::strong_ordering mylib::strong_ordering::equal     {  0 };
+    inline constexpr mylib::strong_ordering mylib::strong_ordering::greater   {  1 };
 }

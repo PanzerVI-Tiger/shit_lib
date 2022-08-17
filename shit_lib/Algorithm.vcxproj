@@ -56,6 +56,9 @@
     <None Include="mylib\module\README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="mylib.iterator_check.ixx" />
+    <ClCompile Include="mylib.iterator_traits.ixx" />
+    <ClCompile Include="mylib.new_binary_tree.ixx" />
     <ClCompile Include="mylib\module\mylib.ixx" />
     <ClCompile Include="mylib\module\non_standard\algorithm\mylib.concat.ixx" />
     <ClCompile Include="mylib\module\non_standard\algorithm\mylib.sort.ixx" />
@@ -179,9 +182,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\EdgeDownload\boost_1_78_0\;E:\EdgeDownload\boost_1_78_0\boost;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);E:\EdgeDownload\fast_io-master\include</IncludePath>
-    <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <IncludePath>C:\Users\PanzerVI-Tiger\source\repos\fmt\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\EdgeDownload\boost_1_78_0\;E:\EdgeDownload\boost_1_78_0\boost;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);E:\EdgeDownload\fast_io-master\include;C:\Users\PanzerVI-Tiger\source\repos\STL\stl</IncludePath>
+    <ExternalIncludePath>C:\Users\PanzerVI-Tiger\source\repos\fmt\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);E:\EdgeDownload\boost_1_78_0\bin.v2</LibraryPath>
+    <PublicModuleDirectories>C:\Users\PanzerVI-Tiger\source\repos\fmt\src</PublicModuleDirectories>
+    <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

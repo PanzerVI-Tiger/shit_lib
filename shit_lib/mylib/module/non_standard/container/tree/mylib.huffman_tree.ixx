@@ -27,13 +27,13 @@ export namespace mylib {
         typename MappedType, 
         typename Compare      = std::less<size_t>, 
         typename Allocator    = std::allocator<WeightType>,
-        typename RootNodeType = pair_binary_search_tree_node<WeightType, MappedType, Compare, Allocator>
+        typename RootNodeType = mylib::pair_binary_search_tree_node<WeightType, MappedType, Compare, Allocator>
     >
     struct list_huffman_tree : 
-        public base_pair_binary_search_tree<WeightType, MappedType, Compare, Allocator> {
+        mylib::base_pair_binary_search_tree<WeightType, MappedType, Compare, Allocator> {
         
     public:
-        using base_type       = base_pair_binary_search_tree<WeightType, MappedType, Compare, Allocator>;
+        using base_type       = mylib::base_pair_binary_search_tree<WeightType, MappedType, Compare, Allocator>;
         
         using key_type        = WeightType;
         using mapped_type     = MappedType;

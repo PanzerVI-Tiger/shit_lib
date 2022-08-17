@@ -5,8 +5,18 @@
 
 #define mylib_pp_bool(n)        mylib_pp_cat_n(2, mylib_pp_bool, n)
 
-#define mylib_pp_not_impl(cond) mylib_pp_cat_n(2, mylib_pp_not, cond)
-#define mylib_pp_not(cond)      mylib_pp_not_impl(mylib_pp_bool(cond))
+#define mylib_pp_logical_not_impl(cond) mylib_pp_cat_n(2, mylib_pp_logical_not, cond)
+#define mylib_pp_logical_not(cond)      mylib_pp_logical_not_impl(mylib_pp_bool(cond))
+
+#define mylib_pp_logical_and_impl(left, right)           \
+    mylib_pp_cat_n(3, mylib_pp_logical_and, left, right)
+#define mylib_pp_logical_and(left, right)                                \
+    mylib_pp_logical_and_impl(mylib_pp_bool(left), mylib_pp_bool(right))
+
+#define mylib_pp_logical_or_impl(left, right)           \
+    mylib_pp_cat_n(3, mylib_pp_logical_or, left, right)
+#define mylib_pp_logical_or(left, right)                                \
+    mylib_pp_logical_or_impl(mylib_pp_bool(left), mylib_pp_bool(right))
 
 #define mylib_pp_bool0  0
 #define mylib_pp_bool1  1
@@ -74,5 +84,15 @@
 #define mylib_pp_bool63 1
 #define mylib_pp_bool64 1
 
-#define mylib_pp_not0   1
-#define mylib_pp_not1   0
+#define mylib_pp_logical_not0 1
+#define mylib_pp_logical_not1 0
+
+#define mylib_pp_logical_and00 0
+#define mylib_pp_logical_and01 0
+#define mylib_pp_logical_and10 0
+#define mylib_pp_logical_and11 1
+
+#define mylib_pp_logical_or00 0
+#define mylib_pp_logical_or01 1
+#define mylib_pp_logical_or10 1
+#define mylib_pp_logical_or11 1

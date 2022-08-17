@@ -2,8 +2,6 @@ module;
 
 #ifdef __INTELLISENSE__
 
-#include <string>
-#include <utility>
 #include <iostream>
 #include <stacktrace>
 #include <source_location>
@@ -17,6 +15,8 @@ export module mylib.assert;
 import std.core;
 
 #endif
+
+import mylib.type_traits;
 
 
 export namespace mylib {
@@ -32,22 +32,36 @@ export namespace mylib {
 #   endif
     
     struct abortor {
-        [[noreturn]]
-        static void abort() noexcept
+        constexpr abortor(bool _isAbort = false) :
+            isAbort(_isAbort)
         {}
 
-        ~abortor() noexcept {
-            if (isAbort) {
-                abort();
+        constexpr abortor(abortor&& other) :
+            isAbort(other.isAbort)
+        {
+            other.isAbort = false;
+        }
+
+        constexpr abortor(const abortor&) = delete;
+
+        constexpr ~abortor() noexcept {
+            if (!std::is_constant_evaluated()) {
+                if (isAbort) {
+                    abort();
+                }
             }
         }
     
+        [[noreturn]]
+        constexpr static void abort() noexcept
+        {}
+        
         bool isAbort;
     };
     
 #   if !defined(__INTELLISENSE__) && defined(MYLIB_ASSERT)
 
-    abortor (assert)(
+    mylib::abortor (assert)(
         bool                 expression,
         const char*          description           = "",
         std::source_location loactionInformation   = std::source_location::current(),
@@ -56,11 +70,11 @@ export namespace mylib {
         
         if (!expression) {
             std::cerr
-                << "Assertion failed: " << description << "\n"
-                << "  at file:  " << loactionInformation.file_name() << "\n"
-                << "  line:     " << loactionInformation.line() << "\n"
-                << "  column:   " << loactionInformation.column() << "\n"
-                << "  function: " << loactionInformation.function_name() << "\n\n"
+                << "Assertion failed: " << description                         << "\n"
+                << "  at file:  "       << loactionInformation.file_name()     << "\n"
+                << "  line:     "       << loactionInformation.line()          << "\n"
+                << "  column:   "       << loactionInformation.column()        << "\n"
+                << "  function: "       << loactionInformation.function_name() << "\n\n"
                 << "stacktrace:\n"
                 << stacktraceInformation;
 
@@ -72,7 +86,12 @@ export namespace mylib {
 
 #   else
     
-    void (assert)(bool expression, const char* description = "") noexcept 
+    mylib::abortor (assert)(
+        bool                 expression, 
+        const char*          description         = "",
+        std::source_location sourceLoacationInfo = {},
+        std::stacktrace      stacktraceInfo      = {}
+    ) noexcept 
     {}
     
 #   endif 

@@ -31,7 +31,9 @@ export namespace mylib {
         if (pNode == nullptr) {
             return _Count;
         }
-        return tree_size(pNode->leftNode, _Count + 1) + tree_size(pNode->rightNode, _Count + 1);
+        return 
+            mylib::tree_size(pNode->leftNode,  _Count + 1) + 
+            mylib::tree_size(pNode->rightNode, _Count + 1);
     }
 
     template<typename KeyType, typename Allocator>
@@ -54,15 +56,22 @@ export namespace mylib {
             return false;
         }
 
-        constexpr key_binary_tree_node(const value_type& data, node_pointer pLeftNode = nullptr,
-            node_pointer pRightNode = nullptr) noexcept :
-                valueData{ data }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
+        constexpr key_binary_tree_node(
+            const value_type& data, node_pointer pLeftNode = nullptr,
+            node_pointer      pRightNode = nullptr
+        ) noexcept :
+                valueData{ data }, leftNode{ pLeftNode }, rightNode{ pRightNode } 
+        {}
 
-        constexpr key_binary_tree_node(value_type&& value, node_pointer pLeftNode = nullptr,
-            node_pointer pRightNode = nullptr) noexcept :
-                valueData{ std::move(value) }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
+        constexpr key_binary_tree_node(
+            value_type&& value, node_pointer pLeftNode = nullptr,
+            node_pointer pRightNode = nullptr
+        ) noexcept :
+                valueData{ std::move(value) }, leftNode{ pLeftNode }, rightNode{ pRightNode } 
+        {}
 
-        constexpr key_binary_tree_node() noexcept : valueData{}, leftNode{ nullptr }, rightNode{ nullptr } {}
+        constexpr key_binary_tree_node() noexcept : valueData{}, leftNode{ nullptr }, rightNode{ nullptr } 
+        {}
 
         constexpr key_binary_tree_node(const key_binary_tree_node&) noexcept = delete;
 
@@ -94,7 +103,12 @@ export namespace mylib {
             if (pNode == nullptr) {
                 return nullptr;
             }
-            return new node_type{ pNode->value(), make_new(pNode->left()), make_new(pNode->right()) };
+            return 
+                new node_type{ 
+                    pNode->value(), 
+                    make_new(pNode->left()), 
+                    make_new(pNode->right()) 
+                };
         }
 
         constexpr node_pointer& left() noexcept {
@@ -128,9 +142,10 @@ export namespace mylib {
 
     template<typename KeyType, typename MappedType, typename Allocator>
     struct pair_binary_tree_node :
-        public key_binary_tree_node<std::pair<KeyType, MappedType>, Allocator> {
+        mylib::key_binary_tree_node<std::pair<KeyType, MappedType>, Allocator> 
+    {
 
-        using base_type       = key_binary_tree_node<std::pair<KeyType, MappedType>, Allocator>;
+        using base_type       = mylib::key_binary_tree_node<std::pair<KeyType, MappedType>, Allocator>;
 
         using key_type        = KeyType;
         using mapped_type     = MappedType;
@@ -157,25 +172,30 @@ export namespace mylib {
 
         constexpr pair_binary_tree_node(const value_type& value, node_pointer pLeftNode = nullptr,
             node_pointer pRightNode = nullptr) noexcept :
-            base_type{ value, pLeftNode, pRightNode } {}
+            base_type{ value, pLeftNode, pRightNode } 
+        {}
 
         constexpr pair_binary_tree_node(value_type&& value, node_pointer pLeftNode = nullptr,
             node_pointer pRightNode = nullptr) noexcept :
-            base_type{ std::move(value), pLeftNode, pRightNode } {}
+            base_type{ std::move(value), pLeftNode, pRightNode } 
+        {}
 
         constexpr pair_binary_tree_node(
             const key_type& key,       const mapped_type& mapped, 
             node_pointer    pLeftNode, node_pointer       pRightNode = nullptr
         ) noexcept :
-            base_type{ std::make_pair(key, mapped), pLeftNode, pRightNode } {}
+            base_type{ std::make_pair(key, mapped), pLeftNode, pRightNode } 
+        {}
 
         constexpr pair_binary_tree_node(
             key_type&&   key,                 mapped_type&& mapped, 
             node_pointer pLeftNode = nullptr, node_pointer  pRightNode = nullptr
         ) noexcept :
-            base_type{ std::make_pair(std::move(key), std::move(mapped)), pLeftNode, pRightNode } {}
+            base_type{ std::make_pair(std::move(key), std::move(mapped)), pLeftNode, pRightNode }
+        {}
 
-        constexpr pair_binary_tree_node() noexcept : base_type{} {}
+        constexpr pair_binary_tree_node() noexcept : base_type{} 
+        {}
 
         constexpr pair_binary_tree_node(const pair_binary_tree_node&) noexcept = delete;
 
@@ -228,10 +248,11 @@ export namespace mylib {
 
     template<typename KeyType, typename Compare, typename Allocator>
     struct key_binary_search_tree_node : 
-        public key_binary_tree_node<KeyType, Allocator> {
+        mylib::key_binary_tree_node<KeyType, Allocator> 
+    {
 
-        using base_type       = key_binary_tree_node<KeyType, Allocator>;
-        using value_type      = std::remove_reference_t<KeyType>;
+        using base_type       = mylib::key_binary_tree_node<KeyType, Allocator>;
+        using value_type      = KeyType;
         using key_type        = value_type;
         
         using value_compare   = Compare;
@@ -256,15 +277,20 @@ export namespace mylib {
             return false;
         }
 
-        constexpr key_binary_search_tree_node(const value_type& data, node_pointer pLeftNode = nullptr,
-                node_pointer pRightNode = nullptr) noexcept :
-            valueData{ data }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
+        constexpr key_binary_search_tree_node(
+            const value_type& data, node_pointer pLeftNode = nullptr,
+            node_pointer      pRightNode = nullptr
+        ) noexcept :
+            valueData{ data }, leftNode{ pLeftNode }, rightNode{ pRightNode } 
+        {}
 
         constexpr key_binary_search_tree_node(value_type&& data, node_pointer pLeftNode = nullptr,
             node_pointer pRightNode = nullptr) noexcept :
-            valueData{ std::move(data) }, leftNode{ pLeftNode }, rightNode{ pRightNode } {}
+            valueData{ std::move(data) }, leftNode{ pLeftNode }, rightNode{ pRightNode } 
+        {}
 
-        constexpr key_binary_search_tree_node() noexcept : valueData{}, leftNode{ nullptr }, rightNode{ nullptr } {}
+        constexpr key_binary_search_tree_node() noexcept : valueData{}, leftNode{ nullptr }, rightNode{ nullptr } 
+        {}
 
         constexpr key_binary_search_tree_node(const key_binary_search_tree_node&) noexcept = delete;
         
@@ -274,10 +300,10 @@ export namespace mylib {
 
         constexpr ~key_binary_search_tree_node() noexcept {
             if (leftNode != nullptr) {
-                delete leftNode;
+                ::delete leftNode;
             }
             if (rightNode != nullptr) {
-                delete rightNode;
+                ::delete rightNode;
             }
         }
         
@@ -296,7 +322,9 @@ export namespace mylib {
         }
 
         constexpr bool operator ==(const value_type& right) const noexcept {
-            return value_compare{}(this->value(), right) == false && value_compare{}(right, this->value()) == false;
+            return 
+                value_compare{}(this->value(), right) == false && 
+                value_compare{}(right, this->value()) == false;
         }
 
         constexpr bool operator <(const node_type& right) const noexcept {
@@ -308,14 +336,21 @@ export namespace mylib {
         }
 
         constexpr bool operator ==(const node_type& right) const noexcept {
-            return value_compare{}(this->value(), right.value()) == false && value_compare{}(right.value(), this->value()) == false;
+            return 
+                value_compare{}(this->value(), right.value()) == false && 
+                value_compare{}(right.value(), this->value()) == false;
         }
 
         constexpr static node_pointer make_new(const node_pointer pNode) noexcept {
             if (pNode == nullptr) {
                 return nullptr;
             }
-            return new node_type{ pNode->value(), make_new(pNode->left()), make_new(pNode->right()) };
+            return 
+                new node_type{ 
+                    pNode->value(),
+                    make_new(pNode->left()), 
+                    make_new(pNode->right()) 
+                };
         }
         
         constexpr node_pointer& left() noexcept {
@@ -335,14 +370,27 @@ export namespace mylib {
         }
     };
 
-    template<typename KeyType, typename MappedType, typename Compare, typename Allocator>
-    struct pair_binary_search_tree_node : 
-            public key_binary_search_tree_node<std::pair<KeyType, MappedType>, Compare, Allocator> {
+    template<
+        typename KeyType, 
+        typename MappedType, 
+        typename Compare, 
+        typename Allocator
+    > struct pair_binary_search_tree_node : 
+            mylib::key_binary_search_tree_node<
+                std::pair<KeyType, MappedType>, 
+                Compare, 
+                Allocator
+            > 
+    {
 
-        using base_type       = key_binary_search_tree_node<std::pair<KeyType, MappedType>, Compare, Allocator>;
+        using base_type       = 
+            mylib::key_binary_search_tree_node<
+                std::pair<KeyType, MappedType>, 
+                Compare, Allocator
+            >;
         
-        using key_type        = std::remove_reference_t<KeyType>;
-        using mapped_type     = std::remove_reference_t<MappedType>;
+        using key_type        = KeyType;
+        using mapped_type     = MappedType;
         using value_type      = std::pair<KeyType, MappedType>;
         
         using key_compare     = Compare;
@@ -388,25 +436,30 @@ export namespace mylib {
 
         constexpr pair_binary_search_tree_node(const value_type& value, node_pointer pLeftNode = nullptr,
                 node_pointer pRightNode = nullptr) noexcept :
-            base_type{ value, pLeftNode, pRightNode } {}
+            base_type{ value, pLeftNode, pRightNode } 
+        {}
         
         constexpr pair_binary_search_tree_node(value_type&& value, node_pointer pLeftNode = nullptr,
             node_pointer pRightNode = nullptr) noexcept :
-            base_type{ std::move(value), pLeftNode, pRightNode } {}
+            base_type{ std::move(value), pLeftNode, pRightNode } 
+        {}
         
         constexpr pair_binary_search_tree_node(
             const key_type& key,       const mapped_type& mapped, 
             node_pointer    pLeftNode, node_pointer       pRightNode = nullptr
         ) noexcept :
-            base_type{ std::make_pair(key, mapped), pLeftNode, pRightNode } {}
+            base_type{ std::make_pair(key, mapped), pLeftNode, pRightNode } 
+        {}
         
         constexpr pair_binary_search_tree_node(
             key_type&&   key,                 mapped_type&& mapped, 
             node_pointer pLeftNode = nullptr, node_pointer pRightNode = nullptr
         ) noexcept :
-            base_type{ std::make_pair(std::move(key), std::move(mapped)), pLeftNode, pRightNode } {}
+            base_type{ std::make_pair(std::move(key), std::move(mapped)), pLeftNode, pRightNode } 
+        {}
         
-        constexpr pair_binary_search_tree_node() noexcept : base_type{} {}
+        constexpr pair_binary_search_tree_node() noexcept : base_type{} 
+        {}
         
         constexpr pair_binary_search_tree_node(const pair_binary_search_tree_node&) noexcept = delete;
         
@@ -428,7 +481,9 @@ export namespace mylib {
         }
 
         constexpr bool operator ==(const value_type& right) const noexcept {
-            return key_compare{}(this->key(), right.first) == false && key_compare{}(right.first, this->key()) == false;
+            return 
+                key_compare{}(this->key(), right.first) == false && 
+                key_compare{}(right.first, this->key()) == false;
         }
 
         constexpr bool operator <(const key_type& right) const noexcept {
@@ -440,7 +495,9 @@ export namespace mylib {
         }
 
         constexpr bool operator ==(const key_type& right) const noexcept {
-            return key_compare{}(this->key(), right) == false && key_compare{}(right, this->key()) == false;
+            return 
+                key_compare{}(this->key(), right) == false && 
+                key_compare{}(right, this->key()) == false;
         }
 
         constexpr bool operator <(const node_type& right) const noexcept {
@@ -452,7 +509,9 @@ export namespace mylib {
         }
 
         constexpr bool operator ==(const node_type& right) const noexcept {
-            return key_compare{}(this->key(), right.key()) == false && key_compare{}(right.key(), this->key()) == false;
+            return 
+                key_compare{}(this->key(), right.key()) == false && 
+                key_compare{}(right.key(), this->key()) == false;
         }
         
         constexpr static node_pointer make_new(const node_pointer pNode) noexcept {
@@ -519,16 +578,21 @@ export namespace mylib {
             return false;
         }
 
-        constexpr key_binary_tree_root_node() noexcept : pRootNode{ nullptr }, nodesSize{ size_type{ 0 } } {}
+        constexpr key_binary_tree_root_node() noexcept : 
+            pRootNode{ nullptr }, nodesSize{ size_type{ 0 } } 
+        {}
         
         constexpr key_binary_tree_root_node(node_pointer pRootNode) noexcept :
-            pRootNode{ pRootNode }, nodesSize{ tree_size(pRootNode) } {}
+            pRootNode{ pRootNode }, nodesSize{ tree_size(pRootNode) } 
+        {}
         
         constexpr key_binary_tree_root_node(node_pointer pRootNode, size_type _nodeSize) noexcept :
-            pRootNode{ pRootNode }, nodesSize{ _nodeSize } {}
+            pRootNode{ pRootNode }, nodesSize{ _nodeSize } 
+        {}
 
         constexpr key_binary_tree_root_node(const key_binary_tree_root_node& other) noexcept :
-            pRootNode{ node_type::make_new(other.pRootNode) }, nodesSize{other.nodesSize} {}
+            pRootNode{ node_type::make_new(other.pRootNode) }, nodesSize{other.nodesSize} 
+        {}
 
         constexpr key_binary_tree_root_node(key_binary_tree_root_node&& other) noexcept :
             pRootNode{ other.pRootNode }, nodesSize{ other.nodesSize } {
@@ -791,9 +855,9 @@ export namespace mylib {
         typename NodeType = pair_binary_tree_node<KeyType, MappedType, Allocator>
     >
     struct pair_binary_tree_root_node :
-        public key_binary_tree_root_node<std::pair<KeyType, MappedType>, Allocator, NodeType> {
+        public mylib::key_binary_tree_root_node<std::pair<KeyType, MappedType>, Allocator, NodeType> {
 
-        using base_type       = key_binary_tree_root_node<std::pair<KeyType, MappedType>, Allocator, NodeType>;
+        using base_type       = mylib::key_binary_tree_root_node<std::pair<KeyType, MappedType>, Allocator, NodeType>;
 
         using size_type       = typename base_type::size_type;
 
@@ -812,13 +876,16 @@ export namespace mylib {
         using base_type::pRootNode;
         using base_type::nodesSize;
 
-        constexpr pair_binary_tree_root_node() noexcept : base_type{} {}
+        constexpr pair_binary_tree_root_node() noexcept : base_type{} 
+        {}
 
         constexpr pair_binary_tree_root_node(const pair_binary_tree_root_node& other) noexcept :
-            base_type{ other } {}
+            base_type{ other } 
+        {}
 
         constexpr pair_binary_tree_root_node(pair_binary_tree_root_node&& other) noexcept :
-            base_type{ std::move(other) } {}
+            base_type{ std::move(other) } 
+        {}
 
         constexpr pair_binary_tree_root_node& operator=(const pair_binary_tree_root_node& other) noexcept {
             base_type::operator=(other);
@@ -840,7 +907,7 @@ export namespace mylib {
     struct key_binary_search_tree_root_node :
         public key_binary_tree_root_node<KeyType, Allocator, NodeType> {
 
-        using base_type       = key_binary_tree_root_node<KeyType, Allocator, NodeType>;
+        using base_type       = mylib::key_binary_tree_root_node<KeyType, Allocator, NodeType>;
 
         using value_type      = KeyType;
 
@@ -865,21 +932,28 @@ export namespace mylib {
             return false;
         }
 
-        constexpr key_binary_search_tree_root_node() noexcept : base_type{} {}
+        constexpr key_binary_search_tree_root_node() noexcept : base_type{} 
+        {}
 
         constexpr key_binary_search_tree_root_node(node_pointer pRootNode) noexcept :
-            base_type{ pRootNode } {}
+            base_type{ pRootNode } 
+        {}
 
         constexpr key_binary_search_tree_root_node(node_pointer pRootNode, size_type _nodeSize) noexcept :
-            base_type{ pRootNode, _nodeSize } {}
+            base_type{ pRootNode, _nodeSize } 
+        {}
 
         constexpr key_binary_search_tree_root_node(const key_binary_search_tree_root_node& other) noexcept :
-            base_type{ other } {}
+            base_type{ other } 
+        {}
 
         constexpr key_binary_search_tree_root_node(key_binary_search_tree_root_node&& other) noexcept :
-            base_type{ std::move(other) } {}
+            base_type{ std::move(other) } 
+        {}
 
-        constexpr key_binary_search_tree_root_node& operator =(const key_binary_search_tree_root_node& right) noexcept {
+        constexpr key_binary_search_tree_root_node& operator =(
+            const key_binary_search_tree_root_node& right
+        ) noexcept {
             if (this != &right) {
                 if (pRootNode != nullptr) {
                     ::delete pRootNode;
@@ -890,7 +964,9 @@ export namespace mylib {
             return *this;
         }
 
-        constexpr key_binary_search_tree_root_node& operator =(key_binary_search_tree_root_node&& right) noexcept {
+        constexpr key_binary_search_tree_root_node& operator =(
+            key_binary_search_tree_root_node&& right
+        ) noexcept {
             if (this != &right) {
                 if (pRootNode != nullptr) {
                     ::delete pRootNode;
@@ -1286,9 +1362,21 @@ export namespace mylib {
         typename NodeType = pair_binary_search_tree_node<KeyType, MappedType, Compare, Allocator>
     >
     struct pair_binary_search_tree_root_node :
-        public key_binary_search_tree_root_node<std::pair<KeyType, MappedType>, Compare, Allocator, NodeType> {
+        public mylib::key_binary_search_tree_root_node<
+            std::pair<KeyType, MappedType>, 
+            Compare, 
+            Allocator, 
+            NodeType
+        > 
+    {
     
-        using base_type       = key_binary_search_tree_root_node<std::pair<KeyType, MappedType>, Compare, Allocator, NodeType>;
+        using base_type       = 
+            mylib::key_binary_search_tree_root_node<
+                std::pair<KeyType, MappedType>, 
+                Compare, 
+                Allocator, 
+                NodeType
+            >;
         
         using size_type       = typename base_type::size_type;
         
@@ -1308,20 +1396,27 @@ export namespace mylib {
         using base_type::pRootNode;
         using base_type::nodesSize;
         
-        constexpr pair_binary_search_tree_root_node() noexcept : base_type{} {}
+        constexpr pair_binary_search_tree_root_node() noexcept : base_type{} 
+        {}
 
         constexpr pair_binary_search_tree_root_node(const pair_binary_search_tree_root_node& other) noexcept :
-            base_type{ other } {}
+            base_type{ other } 
+        {}
 
         constexpr pair_binary_search_tree_root_node(pair_binary_search_tree_root_node&& other) noexcept :
-            base_type{ std::move(other) } {}
+            base_type{ std::move(other) } 
+        {}
 
-        constexpr pair_binary_search_tree_root_node& operator=(const pair_binary_search_tree_root_node& other) noexcept {
+        constexpr pair_binary_search_tree_root_node& operator=(
+            const pair_binary_search_tree_root_node& other
+        ) noexcept {
             base_type::operator=(other);
             return *this;
         }
 
-        constexpr pair_binary_search_tree_root_node& operator=(pair_binary_search_tree_root_node&& other) noexcept {
+        constexpr pair_binary_search_tree_root_node& operator=(
+            pair_binary_search_tree_root_node&& other
+        ) noexcept {
             base_type::operator=(std::move(other));
             return *this;
         }
@@ -1334,19 +1429,27 @@ export namespace mylib {
             return find(key, *this);
         }
 
-        constexpr static node_pointer& find(const key_type& key, pair_binary_search_tree_root_node& rootNode) noexcept {
+        constexpr static node_pointer& find(
+            const key_type& key, pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
             return find(key, rootNode.pRootNode);
         }
 
-        constexpr static const node_pointer& find(const key_type& key, const pair_binary_search_tree_root_node& rootNode) noexcept {
+        constexpr static const node_pointer& find(
+            const key_type& key, const pair_binary_search_tree_root_node& rootNode
+        ) noexcept {
             return find(key, rootNode.pRootNode);
         }
 
-        constexpr static node_pointer& find(const key_type& key, node_pointer& pRootNode) noexcept {
+        constexpr static node_pointer& find(
+            const key_type& key, node_pointer& pRootNode
+        ) noexcept {
             return const_cast<node_pointer&>(find(key, static_cast<const node_pointer&>(pRootNode)));
         }
 
-        constexpr static const node_pointer& find(const key_type& key, const node_pointer& pRootNode) noexcept {
+        constexpr static const node_pointer& find(
+            const key_type& key, const node_pointer& pRootNode
+        ) noexcept {
             const node_pointer* result = &pRootNode;
 
             while (*result != nullptr) {
@@ -1528,10 +1631,13 @@ export namespace mylib {
         }
     };
     
+    template<typename KeyType, typename Compare, typename Allocator, typename RootNodeType>
+    class base_key_binary_search_tree;
+
     template<
         typename KeyType,
         typename Allocator    = std::allocator  <KeyType>,
-        typename _RootNodeType = key_binary_tree_root_node<KeyType, Allocator>
+        typename RootNodeType = key_binary_tree_root_node<KeyType, Allocator>
     >
     class base_key_binary_tree {
     public:
@@ -1540,11 +1646,11 @@ export namespace mylib {
 
         using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
-        using node_type       = typename _RootNodeType::node_type;
+        using node_type       = typename RootNodeType::node_type;
 
         using node_pointer    = node_type*;
 
-        using root_node_type  = _RootNodeType;
+        using root_node_type  = RootNodeType;
 
         using allocator_type  = Allocator;
 
@@ -1553,13 +1659,17 @@ export namespace mylib {
         using const_reference = const value_type&;
 
 
-        constexpr base_key_binary_tree() noexcept : rootNode{} {}
+        constexpr base_key_binary_tree() noexcept : 
+            rootNode{} 
+        {}
 
         constexpr base_key_binary_tree(const base_key_binary_tree& other) noexcept : 
-            rootNode{ other.rootNode } {}
+            rootNode{ other.rootNode } 
+        {}
 
         constexpr base_key_binary_tree(base_key_binary_tree&& other) noexcept : 
-            rootNode{ std::move(other.rootNode) } {}
+            rootNode{ std::move(other.rootNode) } 
+        {}
 
         constexpr base_key_binary_tree& operator=(const base_key_binary_tree& other) noexcept {
             rootNode = other.rootNode;
@@ -1606,7 +1716,7 @@ export namespace mylib {
         }
 
     private:
-        template<typename KeyType, typename MappedType, typename Allocator, typename _RootNodeType>
+        template<typename KeyType, typename MappedType, typename Allocator, typename RootNodeType>
         friend class base_pair_binary_tree;
 
         root_node_type rootNode;
@@ -1634,31 +1744,31 @@ export namespace mylib {
             rootNode.pRootNode = insert_by_string(initialString, index);
         }
 
-        template<typename KeyType, typename Compare, typename Allocator, typename _RootNodeType>
-        friend class base_key_binary_search_tree;
+        template<typename KeyType, typename Compare, typename Allocator, typename RootNodeType>
+        friend class mylib::base_key_binary_search_tree;
     };
 
     template<
         typename KeyType,
         typename MappedType,
         typename Allocator    = std::allocator<KeyType>,
-        typename _RootNodeType = pair_binary_tree_root_node<KeyType, MappedType, Allocator>
+        typename RootNodeType = pair_binary_tree_root_node<KeyType, MappedType, Allocator>
     >
     class base_pair_binary_tree :
-        public base_key_binary_tree<std::pair<KeyType, MappedType>, Allocator, _RootNodeType> {
+        public base_key_binary_tree<std::pair<KeyType, MappedType>, Allocator, RootNodeType> {
 
     public:
         using key_type        = KeyType;
         using mapped_type     = MappedType;
         using value_type      = std::pair<key_type, mapped_type>;
 
-        using node_type       = typename _RootNodeType::node_type;
+        using node_type       = typename RootNodeType::node_type;
 
         using node_pointer    = node_type*;
 
         using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
-        using root_node_type  = _RootNodeType;
+        using root_node_type  = RootNodeType;
 
         using allocator_type  = Allocator;
 
@@ -1666,13 +1776,17 @@ export namespace mylib {
 
         using const_reference = const value_type&;
 
-        using base_type       = base_key_binary_tree<std::pair<KeyType, MappedType>, Allocator, _RootNodeType>;
+        using base_type       = mylib::base_key_binary_tree<std::pair<KeyType, MappedType>, Allocator, RootNodeType>;
 
         constexpr base_pair_binary_tree() : base_type{} {}
 
-        constexpr base_pair_binary_tree(const base_pair_binary_tree& other) : base_type{ other } {}
+        constexpr base_pair_binary_tree(const base_pair_binary_tree& other) : 
+            base_type{ other } 
+        {}
 
-        constexpr base_pair_binary_tree(base_pair_binary_tree&& other) : base_type{ std::move(other) } {}
+        constexpr base_pair_binary_tree(base_pair_binary_tree&& other) : 
+            base_type{ std::move(other) } 
+        {}
 
         constexpr base_pair_binary_tree& operator=(const base_pair_binary_tree& other) {
             return base_type::operator =(other);
@@ -1683,17 +1797,20 @@ export namespace mylib {
         }
     };
 
+    template<typename KeyType, typename MappedType, typename Compare, typename Allocator, typename RootNodeType>
+    class base_pair_binary_search_tree;
+
     template<
         typename KeyType                                   ,
         typename Compare       = std::less       <KeyType>,
         typename Allocator     = std::allocator  <KeyType>,
-        typename _RootNodeType  = key_binary_search_tree_root_node<KeyType, Compare, Allocator>
+        typename RootNodeType  = key_binary_search_tree_root_node<KeyType, Compare, Allocator>
     >
     class base_key_binary_search_tree :
-        public base_key_binary_tree<KeyType, Allocator, _RootNodeType> {
+        public mylib::base_key_binary_tree<KeyType, Allocator, RootNodeType> {
 
     public:
-        using base_type       = base_key_binary_tree<KeyType, Allocator, _RootNodeType>;
+        using base_type       = mylib::base_key_binary_tree<KeyType, Allocator, RootNodeType>;
 
         using key_type        = KeyType;
         using value_type      = key_type;
@@ -1703,11 +1820,11 @@ export namespace mylib {
 
         using size_type       = typename std::allocator_traits<Allocator>::size_type;
 
-        using node_type       = typename _RootNodeType::node_type;
+        using node_type       = typename RootNodeType::node_type;
 
         using node_pointer    = node_type*;
         
-        using root_node_type  = _RootNodeType;
+        using root_node_type  = RootNodeType;
         
         using allocator_type  = Allocator;
 
@@ -1717,11 +1834,16 @@ export namespace mylib {
 
         using base_type::rootNode;
 
-        constexpr base_key_binary_search_tree() noexcept : base_type{} {}
+        constexpr base_key_binary_search_tree() noexcept : base_type{} 
+        {}
 
-        constexpr base_key_binary_search_tree(const base_key_binary_search_tree& other) noexcept : base_type{ other } {}
+        constexpr base_key_binary_search_tree(const base_key_binary_search_tree& other) noexcept : 
+            base_type{ other } 
+        {}
 
-        constexpr base_key_binary_search_tree(base_key_binary_search_tree&& other) noexcept : base_type{ std::move(other) } {}
+        constexpr base_key_binary_search_tree(base_key_binary_search_tree&& other) noexcept : 
+            base_type{ std::move(other) } 
+        {}
 
         constexpr base_key_binary_search_tree(std::initializer_list<KeyType> _InitializerList) noexcept : base_type{} {
             for (const auto& value : _InitializerList) {
@@ -1814,8 +1936,13 @@ export namespace mylib {
         }
 
     private:
-        template<typename KeyType, typename MappedType, typename Compare, typename Allocator, typename _RootNodeType>
-        friend class base_pair_binary_search_tree;
+        template<
+            typename KeyType, 
+            typename MappedType, 
+            typename Compare, 
+            typename Allocator, 
+            typename RootNodeType
+        > friend class mylib::base_pair_binary_search_tree;
 
     public:
         // char type specific draw_tree reload
@@ -1828,26 +1955,29 @@ export namespace mylib {
         typename MappedType                                ,
         typename Compare       = std::less       <KeyType>,
         typename Allocator     = std::allocator  <KeyType>,
-        typename _RootNodeType  = pair_binary_search_tree_root_node<KeyType, MappedType, Compare, Allocator>
+        typename RootNodeType  = pair_binary_search_tree_root_node<KeyType, MappedType, Compare, Allocator>
     >
     class base_pair_binary_search_tree : 
-        public base_key_binary_search_tree<std::pair<KeyType, MappedType>, Compare, Allocator, _RootNodeType> {
+        public mylib::base_key_binary_search_tree<
+            std::pair<KeyType, MappedType>, Compare, Allocator, RootNodeType
+        > 
+    {
         
     public:
         using key_type          = KeyType;
         using mapped_type       = MappedType;
         using value_type        = std::pair<key_type, mapped_type>;
 
-        using node_type         = typename _RootNodeType::node_type;
+        using node_type         = typename RootNodeType::node_type;
 
         using node_pointer      = node_type*;
         
         using key_compare       = Compare;
-        using value_compare     = typename _RootNodeType::value_compare;
+        using value_compare     = typename RootNodeType::value_compare;
 
         using size_type         = typename std::allocator_traits<Allocator>::size_type;
 
-        using root_node_type    = _RootNodeType;
+        using root_node_type    = RootNodeType;
 
         using allocator_type    = Allocator;
 
@@ -1855,15 +1985,28 @@ export namespace mylib {
 
         using const_reference   = const value_type&;
         
-        using base_type         = base_key_binary_search_tree<std::pair<KeyType, MappedType>, Compare, Allocator, _RootNodeType>;
+        using base_type         = 
+            mylib::base_key_binary_search_tree<
+                std::pair<KeyType, MappedType>, 
+                Compare, 
+                Allocator,
+                RootNodeType
+            >;
         
-        constexpr base_pair_binary_search_tree() : base_type{} {}
+        constexpr base_pair_binary_search_tree() : base_type{} 
+        {}
 
-        constexpr base_pair_binary_search_tree(const base_pair_binary_search_tree& other) : base_type{ other } {}
+        constexpr base_pair_binary_search_tree(const base_pair_binary_search_tree& other) : 
+            base_type{ other } 
+        {}
 
-        constexpr base_pair_binary_search_tree(base_pair_binary_search_tree&& other) : base_type{ std::move(other) } {}
+        constexpr base_pair_binary_search_tree(base_pair_binary_search_tree&& other) : 
+            base_type{ std::move(other) } 
+        {}
 
-        constexpr base_pair_binary_search_tree(std::initializer_list<std::pair<KeyType, MappedType>> _InitializerList) noexcept {
+        constexpr base_pair_binary_search_tree(
+            std::initializer_list<std::pair<KeyType, MappedType>> _InitializerList
+        ) noexcept {
             for (auto& value : _InitializerList) {
                 this->insert_unique(value);
             }

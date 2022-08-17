@@ -13,7 +13,7 @@
 #define mylib_pp_not_equal(left, right) \
     mylib_pp_not_equal_impl(left, right)
 
-#define mylib_pp_equal(left, right) mylib_pp_not(mylib_pp_not_equal(left, right))
+#define mylib_pp_equal(left, right) mylib_pp_logical_not(mylib_pp_not_equal(left, right))
 
 #define mylib_pp_check_mylib_pp_nil                        1
 

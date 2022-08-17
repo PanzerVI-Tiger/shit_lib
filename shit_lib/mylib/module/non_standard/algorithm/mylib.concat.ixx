@@ -9,7 +9,7 @@ import mylib.templates_utility;
 
 
 export namespace mylib {
-    
+
     /*
      *  concat can connect tuple, array, and string
      *
@@ -24,15 +24,15 @@ export namespace mylib {
 
     template<typename Type>
     struct is_concatable :
-        bool_constant<is_concatable_v<Type>>
-    {};
+        bool_constant<mylib::is_concatable_v<Type>> {
+    };
 
     template<typename Type>
-    concept concatable = is_concatable_v<Type>;
-    
+    concept concatable = mylib::is_concatable_v<Type>;
+
     template<typename Type>
     struct concatable_traits {
-        
+
     };
 
     template<typename... Types>
@@ -41,8 +41,11 @@ export namespace mylib {
     };
 
     template<typename... Types>
-    using concat_result_t = typename concat_result<Types...>::type;
-    
+    using concat_result_t = typename mylib::concat_result<Types...>::type;
+
+}
+
+namespace mylib::detail {
     template<
         typename  CharType,
         typename  CharTraits,
@@ -50,7 +53,7 @@ export namespace mylib {
         size_t... stringSizes
     > constexpr void concat_implement(
         CharType* buff,
-        const stack_string<stringSize,  CharType, CharTraits>&    first,
+        const stack_string<stringSize, CharType, CharTraits>& first,
         const stack_string<stringSizes, CharType, CharTraits>&... strings
     ) noexcept {
 
@@ -58,11 +61,14 @@ export namespace mylib {
         buff += first.size();
 
         if constexpr (sizeof...(stringSizes) != 0) {
-            concat_implement(buff, strings...);
+            mylib::detail::concat_implement(buff, strings...);
         } else {
             *buff = CharType{};
         }
     }
+}
+
+export namespace mylib {
 
     template<
         typename  CharType,
@@ -77,13 +83,13 @@ export namespace mylib {
                 return x;
             }(strings...);
         } else {
-            stack_string<
-                plus_v<stringSizes...>,
+            mylib::stack_string<
+                mylib::plus_v<stringSizes...>,
                 CharType,
                 CharTraits
             > result{};
 
-            concat_implement(result.data(), strings...);
+            mylib::detail::concat_implement(result.data(), strings...);
             
             return result;
         }
@@ -97,6 +103,6 @@ export namespace mylib {
         const stack_string<rightSize, CharType, CharTraits>& right
         ) noexcept {
 
-        return concat(left, right);
+        return mylib::concat(left, right);
     }
 }

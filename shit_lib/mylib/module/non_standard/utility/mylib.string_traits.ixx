@@ -24,7 +24,7 @@ export namespace mylib {
 
     template<typename Type>
     struct is_string : 
-        bool_constant<is_string_v<Type>>
+        bool_constant<mylib::is_string_v<Type>>
     {};
     
     template<

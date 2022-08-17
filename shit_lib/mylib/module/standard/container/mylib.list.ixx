@@ -24,7 +24,7 @@ export namespace mylib {
 
     template<typename ElementType>
     struct head_node {
-        using node_type    = list_node<ElementType>;
+        using node_type    = mylib::list_node<ElementType>;
         using node_pointer = node_type*;
 
         constexpr head_node(node_pointer prior, node_pointer next) noexcept :
@@ -42,27 +42,32 @@ export namespace mylib {
 
     template<typename ElementType>
     struct list_node : 
-        head_node<ElementType> 
+        mylib::head_node<ElementType>
     {
-        using head_node<ElementType>::next;
-        using head_node<ElementType>::prior;
+        using mylib::head_node<ElementType>::next;
+        using mylib::head_node<ElementType>::prior;
 
         constexpr list_node(list_node&& other) noexcept :
-            head_node<ElementType>{ other.prior, other.next }, data{ std::move(other.data) } {
-            
+            mylib::head_node<ElementType>{ other.prior, other.next }, 
+            data{ std::move(other.data) } 
+        {            
             other.next  = nullptr;
             other.prior = nullptr;
         }
         
         constexpr list_node(const list_node&) noexcept = delete;
         
-        constexpr list_node() noexcept : data{}, prior{ nullptr }, next{ nullptr } {}
+        constexpr list_node() noexcept : 
+            data{}, prior{ nullptr }, next{ nullptr } 
+        {}
         
         constexpr list_node(const ElementType& data, list_node* prior, list_node* next) noexcept :
-            data{ data }, head_node<ElementType>{ prior, next } {}
+            data{ data }, head_node<ElementType>{ prior, next } 
+        {}
 
         constexpr list_node(ElementType&& data, list_node* prior, list_node* next) noexcept :
-            data{ std::move(data) }, head_node<ElementType>{ prior, next } {}
+            data{ std::move(data) }, head_node<ElementType>{ prior, next } 
+        {}
 
         list_node& operator =(const list_node&) noexcept = delete;
         
@@ -188,8 +193,8 @@ export namespace mylib {
 
     template<typename ListType>
     struct list_iterator : 
-        list_const_iterator<ListType> {
-        
+        mylib::list_const_iterator<ListType>
+    {        
         using value_type        = typename ListType::value_type;
         
         using difference_type   = typename ListType::difference_type;
@@ -199,11 +204,11 @@ export namespace mylib {
 
         using pointer           = typename ListType::pointer;
         
-        using base_type         = list_const_iterator<ListType>;
+        using base_type         = mylib::list_const_iterator<ListType>;
         
         using iterator_category = mylib::bidirectional_iterator_tag;
         
-        using list_const_iterator<ListType>::node;
+        using mylib::list_const_iterator<ListType>::node;
 
         constexpr reference operator *() const noexcept {
             return const_cast<reference>(node->data);
@@ -318,15 +323,15 @@ export namespace mylib {
         using pointer                = typename std::allocator_traits<Allocator>::pointer;
         using const_pointer          = typename std::allocator_traits<Allocator>::const_pointer;
 
-        using iterator               = list_iterator<list<value_type, Allocator>>;
+        using iterator               = mylib::list_iterator<list<value_type, Allocator>>;
         using reverse_iterator       = typename std::reverse_iterator<iterator>;
-        using const_iterator         = list_const_iterator<list<value_type, Allocator>>;
+        using const_iterator         = mylib::list_const_iterator<list<value_type, Allocator>>;
         using const_reverse_iterator = typename std::reverse_iterator<const_iterator>;
 
-        using node_type              = list_node<value_type>;
+        using node_type              = mylib::list_node<value_type>;
         using node_pointer           = node_type*;
         using const_node_pointer     = const node_type*;
-        using head_node_type         = head_node<value_type>;
+        using head_node_type         = mylib::head_node<value_type>;
 
     public:
         constexpr list() noexcept = default;

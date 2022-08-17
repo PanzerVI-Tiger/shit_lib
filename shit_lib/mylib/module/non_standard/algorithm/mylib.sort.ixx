@@ -41,7 +41,7 @@ export namespace mylib::inline sorts {
     constexpr void bubble_sort(
         BidirectionalIterator first, BidirectionalIterator last
     ) noexcept {
-        bubble_sort(first, last, std::less{});
+        mylib::bubble_sort(first, last, std::less{});
     }
 
     template<typename ForwardIterator, typename Predicate>
@@ -58,7 +58,7 @@ export namespace mylib::inline sorts {
     constexpr void selection_sort(
         ForwardIterator first, ForwardIterator last
     ) noexcept {
-        selection_sort(first, last, std::less{});
+        mylib::selection_sort(first, last, std::less{});
     }
 
     template<typename BidirectionalIterator, typename Predicate>
@@ -86,7 +86,7 @@ export namespace mylib::inline sorts {
     constexpr void insertion_sort(
         BidirectionalIterator first, BidirectionalIterator last
     ) noexcept {
-        insertion_sort(first, last, std::less{});
+        mylib::insertion_sort(first, last, std::less{});
     }
 
     template<typename RandomAccessIterator, typename Predicate>
@@ -120,7 +120,7 @@ export namespace mylib::inline sorts {
         RandomAccessIterator first, RandomAccessIterator last
     ) noexcept {
         
-        shell_sort(first, last, std::less{});
+        mylib::shell_sort(first, last, std::less{});
     }
     
     template<typename RandomAccessIterator, typename Predicate>
@@ -139,7 +139,7 @@ export namespace mylib::inline sorts {
         using move_iter2 = std::move_iterator<decltype(auxiliarySpace.begin())>;
 
         for (size_t i = 0; i < size; i += 16) {
-            insertion_sort(first + i, first + std::min(i + 16, size), pred);
+            mylib::insertion_sort(first + i, first + std::min(i + 16, size), pred);
         }
 
         /*
@@ -187,6 +187,6 @@ export namespace mylib::inline sorts {
     constexpr void merge_sort(
         RandomAccessIterator first, RandomAccessIterator last
     ) noexcept {
-        merge_sort(first, last, std::less{});
+        mylib::merge_sort(first, last, std::less{});
     }
 }

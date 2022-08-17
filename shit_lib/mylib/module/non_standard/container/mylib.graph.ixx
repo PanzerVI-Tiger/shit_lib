@@ -54,12 +54,12 @@ export namespace mylib {
             value_type* newVertexes    = new value_type[newVertexesMax];
             bool*       newEdgesMatrix = new bool[newEdgesMax] {};
             
-            memcpy(newVertexes, vertexes, vertexesSize * sizeof(value_type));
+            std::memcpy(newVertexes, vertexes, vertexesSize * sizeof(value_type));
             for (size_type i = 0, limit = vertexesMax * sizeof(bool);
                 i < edgesMax;
                 ++i, i += vertexesMax
                 ) {
-                memcpy(newEdgesMatrix, edgesMatrix + i, limit);
+                std::memcpy(newEdgesMatrix, edgesMatrix + i, limit);
             }
 
             delete[] vertexes;
@@ -73,11 +73,12 @@ export namespace mylib {
 
     public:
         constexpr am_graph() noexcept : edgesMax{ 0 }, edgesSize{ 0 },
-            vertexesSize{ 0 }, vertexes{ nullptr }, edgesMatrix{ nullptr } {}
+            vertexesSize{ 0 }, vertexes{ nullptr }, edgesMatrix{ nullptr } 
+        {}
 
         constexpr am_graph(std::initializer_list<ElementType> initialValueList) noexcept :
-                vertexesSize{ initialValueList.size() }, edgesSize{0} {
-
+                vertexesSize{ initialValueList.size() }, edgesSize{0} 
+        {
             // TODO: use taylor expansion to calculate the max number of edges
             vertexesMax       = std::ceil(std::log(vertexesSize) / std::log(1.5));
             edgesMax          = vertexesMax * vertexesMax;
@@ -316,7 +317,7 @@ export namespace mylib {
     template<
         typename ElementType, 
         typename Allocator = std::allocator<ElementType>, 
-        typename BaseGraph = al_graph<ElementType, Allocator>
+        typename BaseGraph = mylib::al_graph<ElementType, Allocator>
     >
     class graph {
     public:
@@ -339,12 +340,17 @@ export namespace mylib {
 
         constexpr graph() : base{} {}
 
-        constexpr graph(const BaseGraph& baseGraph) : base{ baseGraph } {}
+        constexpr graph(const BaseGraph& baseGraph) : 
+            base{ baseGraph } 
+        {}
 
-        constexpr graph(BaseGraph&& baseGraph) : base{ std::move(baseGraph) } {}
+        constexpr graph(BaseGraph&& baseGraph) : 
+            base{ std::move(baseGraph) } 
+        {}
 
         constexpr graph(std::initializer_list<ElementType> initialValueList) noexcept :
-            base{ initialValueList } {}
+            base{ initialValueList } 
+        {}
 
         constexpr void insert_edge(size_type first, size_type second) noexcept {
             base.insert_edge(first, second);
@@ -416,8 +422,8 @@ export namespace mylib {
         }
 
         constexpr void dfs(size_type source, std::function<void(value_type&)> unaryFunc) noexcept {
-            const size_type        vertexesSize = vertexes_size();
-            bool*                  marked       = new bool[vertexesSize] {};
+            const size_type vertexesSize = vertexes_size();
+            bool*           marked       = new bool[vertexesSize] {};
 
             [marked, this, unaryFunc](this const auto& self, size_type s) constexpr -> void {
                 unaryFunc((*this)[s]);
@@ -434,8 +440,8 @@ export namespace mylib {
         }
 
         constexpr void dfs(size_type source, std::function<void(value_type&)> unaryFunc) const noexcept {
-            const size_type        vertexesSize = vertexes_size();
-            bool*                  marked       = new bool[vertexesSize] {};
+            const size_type vertexesSize = vertexes_size();
+            bool*           marked       = new bool[vertexesSize] {};
 
             [marked, this, unaryFunc](this const auto& self, size_type s) constexpr -> void {
                 unaryFunc((*this)[s]);
@@ -452,10 +458,10 @@ export namespace mylib {
         }
 
         constexpr std::vector<size_type> bfs(size_type source) const noexcept {
-            const size_type        vertexesSize = vertexes_size();
-            bool*                  marked       = new bool[vertexesSize]{};
-            std::vector<size_type> result;
-            queue<size_type>       next;
+            const size_type         vertexesSize = vertexes_size();
+            bool*                   marked       = new bool[vertexesSize]{};
+            std::vector<size_type>  result;
+            mylib::queue<size_type> next;
             next.push(source);
             
             while (!next.empty()) {
@@ -478,9 +484,9 @@ export namespace mylib {
         }
 
         constexpr void bfs(size_type source, std::function<void(value_type&)> unaryFunc) noexcept {
-            const size_type        vertexesSize = vertexes_size();
-            bool*                  marked       = new bool[vertexesSize] {};
-            queue<size_type>       next;
+            const size_type         vertexesSize = vertexes_size();
+            bool*                   marked       = new bool[vertexesSize] {};
+            mylib::queue<size_type> next;
             next.push(source);
 
             while (!next.empty()) {
@@ -500,10 +506,13 @@ export namespace mylib {
             delete[] marked;
         }
 
-        constexpr void bfs(size_type source, std::function<void(value_type&)> unaryFunc) const noexcept {
-            const size_type        vertexesSize = vertexes_size();
-            bool*                  marked       = new bool[vertexesSize] {};
-            queue<size_type>       next;
+        constexpr void bfs(
+            size_type source, std::function<void(value_type&)> unaryFunc
+        ) const noexcept {
+
+            const size_type         vertexesSize = vertexes_size();
+            bool*                   marked       = new bool[vertexesSize] {};
+            mylib::queue<size_type> next;
             next.push(source);
 
             while (!next.empty()) {
@@ -523,7 +532,9 @@ export namespace mylib {
             delete[] marked;
         }
 
-        base_key_binary_tree<ElementType> minimum_spanning_tree(size_type source) const noexcept {
+        mylib::base_key_binary_tree<ElementType> 
+        minimum_spanning_tree(size_type source) const noexcept 
+        {
              
         }
         

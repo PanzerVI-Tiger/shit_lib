@@ -59,7 +59,7 @@ export namespace mylib {
         };
 
         template<CharType... chars>
-        constexpr stack_string(char_sequence<CharType, chars...>) noexcept :
+        constexpr stack_string(mylib::char_sequence<CharType, chars...>) noexcept :
             stringSize{ std::min(maxStringSize - 1, sizeof...(chars)) }, charArray{ chars... }
         {};
         
@@ -69,7 +69,7 @@ export namespace mylib {
             traits_type::copy(charArray, str, stringSize);
         };
 
-        constexpr stack_string(basic_string_literal<CharType> str) noexcept :
+        constexpr stack_string(mylib::basic_string_literal<CharType> str) noexcept :
             stringSize{ std::min(str.size(), maxStringSize) }, charArray{} 
         {
             traits_type::copy(charArray, str.data(), stringSize);
@@ -191,7 +191,7 @@ export namespace mylib {
     inline namespace literals {
         inline namespace stack_string_literals {
             
-            template<stack_string literal>
+            template<mylib::stack_string literal>
             constexpr auto operator ""_ss() noexcept {
                 return literal;
             }

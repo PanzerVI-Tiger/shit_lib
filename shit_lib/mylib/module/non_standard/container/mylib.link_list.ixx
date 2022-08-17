@@ -38,10 +38,12 @@ export namespace mylib::inline link_list {
         using const_pointer = const value_type*;
         
         constexpr compressive_pointer(const_pointer pointer) noexcept : 
-            compressedPointer{ reinterpret_cast<size_t>(pointer) } {}
+            compressedPointer{ reinterpret_cast<size_t>(pointer) } 
+        {}
         
         constexpr compressive_pointer(const_pointer prior, const_pointer next) noexcept :
-            compressedPointer{ reinterpret_cast<size_t>(prior) ^ reinterpret_cast<size_t>(next) } {}
+            compressedPointer{ reinterpret_cast<size_t>(prior) ^ reinterpret_cast<size_t>(next) } 
+        {}
 
         constexpr compressive_pointer& operator =(pointer pointer) noexcept {
             compressedPointer = reinterpret_cast<size_t>(pointer);
@@ -76,7 +78,7 @@ export namespace mylib::inline link_list {
     
     template<typename ElementType>
     struct compresive_list_head_node {
-        using node_type          = compresive_list_node<ElementType>;
+        using node_type          = mylib::compresive_list_node<ElementType>;
         using node_pointer       = node_type*;
         using const_node_pointer = const node_type*;
 
@@ -96,16 +98,19 @@ export namespace mylib::inline link_list {
             return compressedPointer.to_pointer();
         }
         
-        compressive_pointer<node_type> compressedPointer{};
+        mylib::compressive_pointer<node_type> compressedPointer{};
     };
         
     template<typename ElementType>
-    struct compresive_list_node : public compresive_list_head_node<ElementType> {
+    struct compresive_list_node : 
+        mylib::compresive_list_head_node<ElementType>
+    {
+
         using node_type          = compresive_list_node;
         using node_pointer       = node_type*;
         using const_node_pointer = const node_type*;
 
-        using base_type          = compresive_list_head_node<ElementType>;
+        using base_type          = mylib::compresive_list_head_node<ElementType>;
 
         constexpr compresive_list_node() noexcept = default;
         
@@ -115,14 +120,15 @@ export namespace mylib::inline link_list {
             const ElementType&  data, const_node_pointer prior  = nullptr, 
             const_node_pointer  next = nullptr
         ) noexcept: 
-            data{ data }, base_type{ compressive_pointer<node_type>{ prior, next } } 
+            data     { data }, 
+            base_type{ mylib::compressive_pointer<node_type>{ prior, next } }
         {}
         
         constexpr compresive_list_node(
             ElementType&& data, const_node_pointer prior, 
             const_node_pointer next
         ) noexcept : 
-            data{ std::move(data) }, 
+            data     { std::move(data) }, 
             base_type{ compressive_pointer<node_type>{ prior, next } } 
         {}
 
@@ -135,26 +141,26 @@ export namespace mylib::inline link_list {
 
     
 
-    template<typename _CompressiveListType>
+    template<typename CompressiveListType>
     struct compressive_list_const_iterator {
-        using value_type         = typename _CompressiveListType::value_type;
+        using value_type         = typename CompressiveListType::value_type;
 
-        using difference_type    = typename _CompressiveListType::difference_type;
+        using difference_type    = typename CompressiveListType::difference_type;
 
-        using reference          = typename _CompressiveListType::reference;
-        using const_reference    = typename _CompressiveListType::const_reference;
+        using reference          = typename CompressiveListType::reference;
+        using const_reference    = typename CompressiveListType::const_reference;
 
-        using pointer            = typename _CompressiveListType::pointer;
-        using const_pointer      = typename _CompressiveListType::const_pointer;
+        using pointer            = typename CompressiveListType::pointer;
+        using const_pointer      = typename CompressiveListType::const_pointer;
 
-        using node_pointer       = typename _CompressiveListType::node_pointer;
-        using const_node_pointer = typename _CompressiveListType::const_node_pointer;
+        using node_pointer       = typename CompressiveListType::node_pointer;
+        using const_node_pointer = typename CompressiveListType::const_node_pointer;
 
-        using container_type     = _CompressiveListType;
+        using container_type     = CompressiveListType;
 
-        using mylib_tag          = mylib_iterator_tag;
+        using mylib_tag          = mylib::mylib_iterator_tag;
 
-        using iterator_category  = bidirectional_iterator_tag;
+        using iterator_category  = mylib::bidirectional_iterator_tag;
 
         constexpr compressive_list_const_iterator(
             const_node_pointer prior = nullptr, const_node_pointer current = nullptr
@@ -229,26 +235,27 @@ export namespace mylib::inline link_list {
         const_node_pointer pCurrent;
     };
 
-        template<typename _CompressiveListType>
+        template<typename CompressiveListType>
     struct compressive_list_iterator :
-        public compressive_list_const_iterator<_CompressiveListType> {
+        mylib::compressive_list_const_iterator<CompressiveListType> 
+    {
         
-        using value_type         = typename _CompressiveListType::value_type;
+        using value_type         = typename CompressiveListType::value_type;
 
-        using difference_type    = typename _CompressiveListType::difference_type;
+        using difference_type    = typename CompressiveListType::difference_type;
 
-        using reference          = typename _CompressiveListType::reference;
-        using const_reference    = typename _CompressiveListType::const_reference;
+        using reference          = typename CompressiveListType::reference;
+        using const_reference    = typename CompressiveListType::const_reference;
 
-        using pointer            = typename _CompressiveListType::pointer;
-        using const_pointer      = typename _CompressiveListType::const_pointer;
+        using pointer            = typename CompressiveListType::pointer;
+        using const_pointer      = typename CompressiveListType::const_pointer;
 
-        using node_pointer       = typename _CompressiveListType::node_pointer;
-        using const_node_pointer = typename _CompressiveListType::const_node_pointer;
+        using node_pointer       = typename CompressiveListType::node_pointer;
+        using const_node_pointer = typename CompressiveListType::const_node_pointer;
         
-        using base_type          = compressive_list_const_iterator<_CompressiveListType>;
+        using base_type          = compressive_list_const_iterator<CompressiveListType>;
 
-        using container_type     = _CompressiveListType;
+        using container_type     = CompressiveListType;
 
         using mylib_tag          = mylib_iterator_tag;
         
@@ -318,19 +325,19 @@ export namespace mylib::inline link_list {
         using pointer                 = value_type*;
         using const_pointer           = const value_type*;
         
-        using head_node               = compresive_list_head_node<value_type>;
+        using head_node               = mylib::compresive_list_head_node<value_type>;
         using head_node_pointer       = head_node*;
         using const_head_node_pointer = const head_node*;
-        using node_type               = compresive_list_node<ElementType>;
+        using node_type               = mylib::compresive_list_node<ElementType>;
         using node_pointer            = node_type*;
         using const_node_pointer      = const node_type*;
         
-        using iterator                = compressive_list_iterator<compressive_list>;
-        using const_iterator          = compressive_list_const_iterator<compressive_list>;
+        using iterator                = mylib::compressive_list_iterator<compressive_list>;
+        using const_iterator          = mylib::compressive_list_const_iterator<compressive_list>;
         using reverse_iterator        = std::reverse_iterator<iterator>;
         using const_reverse_iterator  = std::reverse_iterator<const_iterator>;
         
-        using mylib_tag               = mylib_container_tag;
+        using mylib_tag               = mylib::mylib_container_tag;
         
         constexpr compressive_list()  = default;
 

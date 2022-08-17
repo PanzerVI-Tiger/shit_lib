@@ -323,6 +323,15 @@
     <ClCompile Include="mylib\module\non_standard\exception\mylib.assert.ixx">
       <Filter>mylib\module\non_standard\exception</Filter>
     </ClCompile>
+    <ClCompile Include="mylib.iterator_check.ixx">
+      <Filter>mylib\module\non_standard\exception</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.iterator_traits.ixx">
+      <Filter>mylib\module\non_standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib.new_binary_tree.ixx">
+      <Filter>mylib\module\non_standard\conatiner\tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="source\asm.asm">

@@ -50,6 +50,7 @@ export import mylib.stream_output;    // ouput some container to stream
 
 //         exception
 export import mylib.assert;
+export import mylib.iterator_check;
 
 //           string
 export import mylib.stack_string;
@@ -61,6 +62,7 @@ export import mylib.eval;             // calculate C's or scheme's style express
 export import mylib.timer;
 export import mylib.aggregate;
 export import mylib.string_traits;
+export import mylib.iterator_traits;
 export import mylib.container_traits; // traits of mylib container and iterator
 export import mylib.templates_utility;
 

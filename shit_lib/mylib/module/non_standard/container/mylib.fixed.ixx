@@ -6,7 +6,9 @@ import mylib.type_traits;
 export namespace mylib {
 
     template<typename ElementType>
-        requires (is_integral_v<ElementType> && (!is_same_v<ElementType, long long>))
+        requires (
+            mylib::is_integral_v<ElementType> && 
+          (!mylib::is_same_v<ElementType, long long>))
     struct fixed {
         union {
             struct {

@@ -47,7 +47,7 @@ export namespace mylib {
         inline namespace char_sequence_literals {
             
             // char sequence
-            template<basic_string_literal literal>
+            template<mylib::basic_string_literal literal>
             constexpr auto operator ""_cs() noexcept {
                 return[]<size_t... indices>(std::index_sequence<indices...>) constexpr noexcept {
                     return
