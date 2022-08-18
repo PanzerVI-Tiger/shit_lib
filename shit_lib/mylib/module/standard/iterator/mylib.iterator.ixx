@@ -59,5 +59,11 @@ export namespace mylib {
         std::contiguous_iterator_tag 
     {};
 
-    
+    // not standard
+    template<typename Iterator>
+    struct iterator_base {
+
+
+
+    };
 }

@@ -5,15 +5,16 @@
 #include "macro_base.h"
 
 // not equal
-#define mylib_pp_not_equal_impl(left, right)                        \
-    mylib_pp_cat_n(                                                 \
-        2,                                                          \
-        mylib_pp_check_,                                             \
+#define mylib_pp_not_equal_impl(left, right)                                            \
+    mylib_pp_cat_n(                                                                     \
+        2,                                                                              \
+        mylib_pp_check_,                                                                \
         mylib_pp_not_equal ## left(1, mylib_pp_not_equal ## right))
-#define mylib_pp_not_equal(left, right) \
+#define mylib_pp_not_equal(left, right)                                                 \
     mylib_pp_not_equal_impl(left, right)
 
-#define mylib_pp_equal(left, right) mylib_pp_logical_not(mylib_pp_not_equal(left, right))
+#define mylib_pp_equal(left, right)                                                     \
+    mylib_pp_logical_not(mylib_pp_not_equal(left, right))
 
 #define mylib_pp_check_mylib_pp_nil                        1
 
