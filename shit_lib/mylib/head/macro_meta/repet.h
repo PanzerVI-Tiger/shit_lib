@@ -19,7 +19,7 @@
 #define mylib_pp_repeat_each_n(count, callable, getSeparator, ...)                      \
     mylib_pp_repeat_each_impl(count, callable, getSeparator, __VA_ARGS__)
 #define mylib_pp_repeat_each(callable, getSeparator, ...)                               \
-    mylib_pp_repeat_each_n(                                                         \
+    mylib_pp_repeat_each_n(                                                             \
         mylib_pp_variadic_size(__VA_ARGS__), callable, getSeparator, __VA_ARGS__        \
     )
 

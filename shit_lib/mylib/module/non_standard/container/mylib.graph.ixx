@@ -202,9 +202,9 @@ export namespace mylib {
 
     template<
         typename ElementType, 
-        typename Allocator                       = std::allocator<ElementType>, 
+        typename Allocator               = std::allocator<ElementType>, 
         template<typename ElementType> 
-            class AdjacencyEdgeContainerTemplate = std::vector
+            class AdjacencyEdgeContainer = std::vector
     >
     class al_graph {
     public:
@@ -225,7 +225,7 @@ export namespace mylib {
         struct node {
             size_type                                  index;
             ElementType                               value;
-            AdjacencyEdgeContainerTemplate<size_type> adjacency_node;
+            AdjacencyEdgeContainer<size_type> adjacency_node;
         };
 
         constexpr al_graph() noexcept : edgesSize{}, adjacency_list {} {}

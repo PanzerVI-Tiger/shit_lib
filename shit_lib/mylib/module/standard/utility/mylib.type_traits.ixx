@@ -1118,6 +1118,20 @@ export namespace mylib {
         mylib::bool_constant<mylib::is_base_of_v<BaseClass, DerivedClass>>
     {};
 
+    template<
+        typename Type, 
+        template<typename...>
+        typename Template
+    > inline constexpr bool is_specialization_v
+        = false;
+
+    template<
+        template<typename...>
+        typename    Template,
+        typename... Types
+    > inline constexpr bool is_specialization_v<Template<Types...>, Template> 
+        = true;
+
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
 
     // C++17

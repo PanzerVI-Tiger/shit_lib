@@ -8,14 +8,14 @@ module;
 //#include <boost/stacktrace.hpp>
 //#include <stacktrace>
 //#include <iostream>
+#include "preprocessor.h"
+#include <boost/preprocessor.hpp>
 
 export module mylib.main;
 
 #include "cpp/cxxstd.h"
-#include "preprocessor.h"
-#include <boost/preprocessor.hpp>
 
-//import mylib;
+import mylib;
 //import mylib.new_binary_tree;
 
 // ((sum), i) => (sum + 1)
@@ -51,11 +51,18 @@ export module mylib.main;
         0                                                                               \
     )
 
+struct X {
+    friend void f();
+};
+
 
 export int main() noexcept
 {
     constexpr char s[] = mylib_pp_cat_ttoa(mul(2, 2));
-
+    
+    std::is_object_v<int()>;
 
     return 0;
 }
+
+void f() {}

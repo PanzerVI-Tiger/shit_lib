@@ -5,7 +5,7 @@ module;
 #include <iostream>
 #include <stacktrace>
 #include <source_location>
-
+#include <concepts>
 #endif
 
 export module mylib.assert;
@@ -63,31 +63,31 @@ export namespace mylib {
 
     mylib::abortor (assert)(
         bool                 expression,
-        const char*          description           = "",
-        std::source_location loactionInformation   = std::source_location::current(),
-        std::stacktrace      stacktraceInformation = std::stacktrace::current()
+        const char*          description    = "",
+        std::source_location loactionInfo   = std::source_location::current(),
+        std::stacktrace      stacktraceInfo = std::stacktrace::current()
     ) noexcept {
         
         if (!expression) {
             std::cerr
-                << "Assertion failed: " << description                         << "\n"
-                << "  at file:  "       << loactionInformation.file_name()     << "\n"
-                << "  line:     "       << loactionInformation.line()          << "\n"
-                << "  column:   "       << loactionInformation.column()        << "\n"
-                << "  function: "       << loactionInformation.function_name() << "\n\n"
+                << "Assertion failed: " << description                  << "\n"
+                << "  at file:  "       << loactionInfo.file_name()     << "\n"
+                << "  line:     "       << loactionInfo.line()          << "\n"
+                << "  column:   "       << loactionInfo.column()        << "\n"
+                << "  function: "       << loactionInfo.function_name() << "\n\n"
                 << "stacktrace:\n"
-                << stacktraceInformation;
+                << stacktraceInfo;
 
             return { true };
-        } else {
-            return { false };
         }
+        
+        return { false };
     }
 
 #   else
-    
+        
     mylib::abortor (assert)(
-        bool                 expression, 
+        bool                 expression,
         const char*          description         = "",
         std::source_location sourceLoacationInfo = {},
         std::stacktrace      stacktraceInfo      = {}

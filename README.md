@@ -1,13 +1,21 @@
 # shit_lib
 ## introduction
+## 介绍
 This worst STL implementation is just for handing in homework.  
-It's base on C++2b, use module organize, and default disable exception.  
+这个最糟糕的STL实现只是用来交作业的。  
   
+This is my personal project to implement a simplified STL and some other facilities,  
+and it based on C++2b, useing module organize, and default disabled exception.  
+我在这个个人项目实现STL和其他的一些设施，  
+本项目基于C++2b标准，使用模块组织，并默认禁用异常。  
+
 ## environment
+## 环境
 visual studio 17.4.0(2022) preview 1.0  
 std: c++latest(C++2b\C++23)  
   
 ## structure
+## 结构
 ```
 mylib
 |
@@ -151,13 +159,18 @@ mylib
 ```  
   
 ## conditional compilation macro
+## 条件编译宏
 `MYLIB_ASSERT`   : to open mylib's assert    (default: close)  
 `MYLIB_UNIITEST` : to open mylib's unittest  (default: close)  
 `MYLIB_EXCEPTION`: to open mylib's exception (default: close)  
   
+`MYLIB_ASSERT`   : 启用mylib的断言     (默认关闭)  
+`MYLIB_UNIITEST` : 启用mylib的联合测试 (默认关闭)  
+`MYLIB_EXCEPTION`: 启用mylib的异常     (默认关闭)  
 ## unittest
+## 联合测试
 If you want to use unittest to test mylib, please predefined macro `MYLIB_UNITTEST`.  
-There are two test method: by static_assert and by print example.  
+There are two test method in mylib: by static_assert and by print example.  
 The former will automatic test all module, will report error when test failed.  
 The latter shall call print test function to print test example,  
 all print test function is in namespace `myib::unittest`,  
@@ -165,3 +178,11 @@ and naming style is `module_name` + `_print_test`.
 Such as module vector's is `mylib::unittest::vector_print_test`.  
 If you want to run all print test, you can call `mylib::unittest::print_test`.  
   
+如果想使用联合测试来测试mylib，请预定义`MYLIB_UNITTEST`宏。  
+mylib有两种测试方法: 通过static_assert和打印样例,  
+前者将自动测试所有的模块, 测试失败时将报错,  
+后者需调用打印测试函数来打印所有测试样例,  
+这些测试函数在命名空间`myib::unittest`内,  
+函数的命名风格是`module_name` + `_print_test`。  
+例如vector模块的测试函数是`mylib::unittest::vector_print_test`  
+如果想运行所有的打印测试可以调用函数`mylib::unittest::print_test`  
