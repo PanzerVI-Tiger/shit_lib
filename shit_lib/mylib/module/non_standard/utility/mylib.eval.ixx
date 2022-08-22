@@ -36,7 +36,7 @@ export namespace mylib {
         const std::string& expression
     ) noexcept {
         
-        stack<long double> valueStack{};
+        //mylib::stack<long double> valueStack{};
         
         return {};
     }

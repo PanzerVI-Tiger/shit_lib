@@ -97,27 +97,27 @@ export namespace mylib {
             
             // string literal
             constexpr mylib::string_literal    operator""_sl(const char* str, size_t size) noexcept {
-                return mylib::string_literal{ str, size };
+                return { str, size };
             }
 
             // string literal
             constexpr mylib::wstring_literal   operator""_sl(const wchar_t* str, size_t size) noexcept {
-                return mylib::wstring_literal{ str, size };
+                return { str, size };
             }
 
             // string literal
             constexpr mylib::u8string_literal  operator""_sl(const char8_t* str, size_t size) noexcept {
-                return mylib::u8string_literal{ str, size };
+                return { str, size };
             }
 
             // string literal
             constexpr mylib::u16string_literal operator""_sl(const char16_t* str, size_t size) noexcept {
-                return mylib::u16string_literal{ str, size };
+                return { str, size };
             }
 
             // string literal
             constexpr mylib::u32string_literal operator""_sl(const char32_t* str, size_t size) noexcept {
-                return mylib::u32string_literal{ str, size };
+                return { str, size };
             }
         }
     }

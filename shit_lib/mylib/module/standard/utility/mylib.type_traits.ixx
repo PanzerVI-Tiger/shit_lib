@@ -506,15 +506,6 @@ export namespace mylib {
         mylib::bool_constant<mylib::is_const_v<Type>> {
     };
 
-#   if defined(__clang__)
-
-    // C++17
-    // __is_function is clang only
-    template<typename Type>
-    inline constexpr bool is_function_v = __is_function(Type);
-
-#   elif 1 
-
     // C++17
     template<typename Type>
     inline constexpr bool is_lvalue_reference_v = false;
@@ -558,13 +549,22 @@ export namespace mylib {
         bool_constant<mylib::is_reference_v<Type>> {
     };
 
+#   ifdef __clang__
+
+    // C++17
+    // __is_function is clang only
+    template<typename Type>
+    inline constexpr bool is_function_v = __is_function(Type);
+
+#   elif 1 
+
     // C++17
     // only function types and reference types can't be const qualified
     template<typename Type>
     inline constexpr bool is_function_v =
         !mylib::is_const_v<const Type> && !mylib::is_reference_v<Type>;
 
-    // never use
+    // never used
 #   elif 0
 
     // C++17
@@ -1242,7 +1242,7 @@ export namespace mylib {
     namespace unittest {
         
         template<typename Void = void>
-        constexpr bool assert_test_type_traits() noexcept {
+        constexpr bool type_traits_assert_test() noexcept {
             // test integral_constant
             constexpr mylib::integral_constant<int,       114514>          integralConstant1;
             constexpr mylib::integral_constant<long long, 1145141919810LL> integralConstant2;
@@ -1375,7 +1375,7 @@ export namespace mylib {
             return true;
         }
         
-        static_assert(mylib::unittest::assert_test_type_traits(), "type_traits have bug!");
+        static_assert(mylib::unittest::type_traits_assert_test(), "type_traits have bug!");
     }
 
 #   endif

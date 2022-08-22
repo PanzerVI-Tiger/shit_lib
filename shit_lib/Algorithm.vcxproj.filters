@@ -94,6 +94,15 @@
     <Filter Include="mylib\module\non_standard\exception">
       <UniqueIdentifier>{febb4b27-ee41-4207-a594-61272042beac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\source">
+      <UniqueIdentifier>{29a3850c-832f-4342-9d5b-832c04c27c0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\source\c">
+      <UniqueIdentifier>{2e832e97-fd9c-4d9d-a136-fa6e18415d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\source\cpp">
+      <UniqueIdentifier>{453aec24-5c35-445f-b0b5-5edfddb7ad52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mylib\head\cpp\cxxstd.h">
@@ -323,10 +332,10 @@
     <ClCompile Include="mylib\module\non_standard\exception\mylib.assert.ixx">
       <Filter>mylib\module\non_standard\exception</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.iterator_check.ixx">
+    <ClCompile Include="mylib\module\non_standard\exception\mylib.iterator_check.ixx">
       <Filter>mylib\module\non_standard\exception</Filter>
     </ClCompile>
-    <ClCompile Include="mylib.new_binary_tree.ixx">
+    <ClCompile Include="mylib\module\non_standard\container\tree\mylib.new_binary_tree.ixx">
       <Filter>mylib\module\non_standard\conatiner\tree</Filter>
     </ClCompile>
   </ItemGroup>

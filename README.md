@@ -5,8 +5,8 @@ This worst STL implementation is just for handing in homework.
 这个最糟糕的STL实现只是用来交作业的。  
   
 This is my personal project to implement a simplified STL and some other facilities,  
-and it based on C++2b, useing module organize, and default disabled exception.  
-我在这个个人项目实现STL和其他的一些设施，  
+and it based on C++2b, using module organize, and default disabled exception.  
+此个人项目用来实现STL与一些其他的设施，  
 本项目基于C++2b标准，使用模块组织，并默认禁用异常。  
 
 ## environment
@@ -47,6 +47,7 @@ mylib
 |  |  |
 |  |  |- non_standard
 |  |  |  |- macro
+|  |  |  |  |- mylib_assert.h
 |  |  |  |
 |  |  |  |- mylib_sort.h
 |  |  |

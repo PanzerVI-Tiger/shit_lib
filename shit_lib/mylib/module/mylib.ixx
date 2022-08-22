@@ -64,9 +64,3 @@ export import mylib.aggregate;
 export import mylib.string_traits;
 export import mylib.container_traits; // traits of mylib container and iterator
 export import mylib.templates_utility;
-
-
-export {
-    // test assmebly code
-    extern "C" void test_asm();
-}

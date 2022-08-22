@@ -2,7 +2,7 @@ module;
 
 //#pragma optimize("", off)
 
-//#include <Windows.h>
+#include <Windows.h>
 //#include <fast_io.h>
 //#include <iostream>
 //#include <boost/stacktrace.hpp>
@@ -10,6 +10,7 @@ module;
 //#include <iostream>
 #include "preprocessor.h"
 #include <boost/preprocessor.hpp>
+
 
 export module mylib.main;
 
@@ -51,18 +52,20 @@ import mylib;
         0                                                                               \
     )
 
-struct X {
-    friend void f();
-};
+template<typename Type>
+concept not_invocable =
+    !std::invocable<Type>;
 
+#define var not_invocable auto
 
 export int main() noexcept
 {
-    constexpr char s[] = mylib_pp_cat_ttoa(mul(2, 2));
-    
-    std::is_object_v<int()>;
+    using mylib::operator <<;
+    using namespace mylib::literals;
+
+    var i = 10;
+    var l1 = []{};
+
 
     return 0;
 }
-
-void f() {}

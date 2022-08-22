@@ -103,9 +103,9 @@ export namespace mylib::inline sorts {
 
         while (distance >= 1) {
             for (size_t i = distance; i < buffSize; ++i) {
-                auto current{ std::move(first[i]) };
-                auto temp = i;
-                auto j    = i;
+                auto   current{ std::move(first[i]) };
+                size_t temp = i;
+                size_t j    = i;
                 for (; j >= distance && pred(current, first[j -= distance]); temp = j) {
                     first[temp] = std::move(first[j]);
                 }
@@ -145,7 +145,11 @@ export namespace mylib::inline sorts {
         /*
         for (size_t i = 16; i < size; i <<= 1) {
             for (size_t j = 0; j + i < size; j += i + i) {
-                mylib::inplace_merge(first + j, first + j + i, first + std::min(j + i + i, size));
+                mylib::inplace_merge(
+                    first + j, 
+                    first + j + i, 
+                    first + std::min(j + i + i, size)
+                );
             }
         }
         */

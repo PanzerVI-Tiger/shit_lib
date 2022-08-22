@@ -63,7 +63,7 @@ export namespace mylib {
     template<typename Iterator>
     struct iterator_base {
 
-
+        // wait for support for `deducing this` in module
 
     };
 }
