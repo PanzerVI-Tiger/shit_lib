@@ -2,10 +2,10 @@ module;
 
 #ifdef __INTELLISENSE__
 
+#include <concepts>
 #include <iostream>
 #include <stacktrace>
 #include <source_location>
-#include <concepts>
 #endif
 
 export module mylib.assert;
@@ -45,13 +45,12 @@ export namespace mylib {
         constexpr abortor(const abortor&) = delete;
 
         constexpr ~abortor() noexcept {
-            if (!std::is_constant_evaluated()) {
-                if (isAbort) {
-                    abort();
-                }
+            if (isAbort) {
+                abort();
             }
         }
-    
+        
+        // evaluation at compile time has no effect in generally
         [[noreturn]]
         constexpr static void abort() noexcept
         {}

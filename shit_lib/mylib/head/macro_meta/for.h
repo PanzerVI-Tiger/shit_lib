@@ -600,7 +600,7 @@
     e54), e55), e56), e57), e58), e59), e60), e61), e62), e63)
 
 #define mylib_pp_for0(var, pred, inc)                                                   \
-    mylib_pp_if(pred(var)) (var) (var)                                                  
+    var                                                  
 #define mylib_pp_for1(var, pred, inc)                                                   \
     mylib_pp_if(pred(var)) (mylib_pp_for0(inc(var), pred, inc)) (var)                   
 #define mylib_pp_for2(var, pred, inc)                                                   \

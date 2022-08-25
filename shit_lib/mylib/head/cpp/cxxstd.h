@@ -143,6 +143,7 @@
 #else
 
 import std.core;
+import std.filesystem;
 
 #endif
 

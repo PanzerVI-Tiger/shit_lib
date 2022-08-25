@@ -17,6 +17,9 @@ export import mylib.iterator;
 //           memory
 export import mylib.memory;
 
+//          exception
+export import mylib.exception;
+
 //           string
 export import mylib.string;
 

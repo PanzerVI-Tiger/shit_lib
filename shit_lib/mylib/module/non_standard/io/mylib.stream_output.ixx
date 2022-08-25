@@ -51,13 +51,19 @@ export namespace mylib {
     }
 
     template<typename First, typename Second>
-    std::ostream& operator <<(std::ostream& os, const std::pair<First, Second>& pairObject) noexcept {
+    std::ostream& operator <<(
+        std::ostream& os, const std::pair<First, Second>& pairObject
+    ) noexcept {
+
         os << '(' << pairObject.first << ', ' << pairObject.second << ')';
         return os;
     }
     
     template<typename... Types>
-    std::ostream& operator <<(std::ostream& os, const std::tuple<Types...>& tupleObject) noexcept {
+    std::ostream& operator <<(
+        std::ostream& os, const std::tuple<Types...>& tupleObject
+    ) noexcept {
+
         os << '(';
         std::apply(
             [](const auto&... args) {
@@ -72,7 +78,10 @@ export namespace mylib {
     }
 
     template<typename KeyType, typename Compare, typename Allocator>
-    std::ostream& operator <<(std::ostream& os, const std::set<KeyType, Compare, Allocator>& setObject) noexcept {
+    std::ostream& operator <<(
+        std::ostream& os, const std::set<KeyType, Compare, Allocator>& setObject
+    ) noexcept {
+
         os << '{';
         bool isStart = true;
         for (const auto& i : setObject) {
@@ -102,7 +111,10 @@ export namespace mylib {
     }
 
     template<typename... Types>
-    std::ostream& operator <<(std::ostream& os, const std::variant<Types...>& variantObject) noexcept {
+    std::ostream& operator <<(
+        std::ostream& os, const std::variant<Types...>& variantObject
+    ) noexcept {
+
         os << "{ ";
         std::visit(
             [&os]<typename Type>(const Type& arg) noexcept {
@@ -116,7 +128,10 @@ export namespace mylib {
     }
 
     template<typename Type>
-    std::ostream& operator <<(std::ostream& os, const std::optional<Type>& optionalObject) noexcept {
+    std::ostream& operator <<(
+        std::ostream& os, const std::optional<Type>& optionalObject
+    ) noexcept {
+
         if (optionalObject) {
             os << "{ Type: " << typeid(Type).name() << ", value: " << *optionalObject << " }";
         } else {

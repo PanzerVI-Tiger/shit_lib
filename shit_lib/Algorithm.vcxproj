@@ -87,6 +87,7 @@
     <ClCompile Include="mylib\module\standard\container\mylib.queue.ixx" />
     <ClCompile Include="mylib\module\standard\container\mylib.stack.ixx" />
     <ClCompile Include="mylib\module\standard\container\mylib.vector.ixx" />
+    <ClCompile Include="mylib\module\standard\exception\mylib.exception.ixx" />
     <ClCompile Include="mylib\module\standard\iterator\mylib.iterator.ixx" />
     <ClCompile Include="mylib\module\standard\memory\mylib.memory.ixx" />
     <ClCompile Include="mylib\module\standard\numeric\mylib.numeric.ixx" />

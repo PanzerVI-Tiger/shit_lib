@@ -37,7 +37,7 @@ export namespace mylib {
     template<bool boolValue>
     using bool_constant = mylib::integral_constant<bool, boolValue>;
 
-    using true_type = mylib::bool_constant<true>;
+    using true_type  = mylib::bool_constant<true>;
     using false_type = mylib::bool_constant<false>;
 
     // is ^^ better than vv? 
@@ -51,7 +51,7 @@ export namespace mylib {
     // C++17
     template<typename BoolConstant>
     struct negation :
-        mylib::bool_constant<!bool(BoolConstant::value)> {
+        mylib::bool_constant<!static_cast<bool>(BoolConstant::value)> {
     };
 
     // C++17
@@ -88,7 +88,7 @@ namespace mylib::detail {
         // handle false case, then try to next
         using type =
             typename conjunction_impl<
-                NextConstant::value,
+                static_cast<bool>(NextConstant::value),
                 NextConstant,
                 BoolConstants...
             >::type;
@@ -101,16 +101,15 @@ export namespace mylib {
     template<typename... BoolConstants>
     struct conjunction :
         false_type // if BoolConstants is empty, false_type
-    {
-    };
+    {};
 
     // C++17
     template<typename BoolConstant1, typename... BoolConstants>
     struct conjunction<BoolConstant1, BoolConstants...> :
         mylib::detail::conjunction_impl<
             BoolConstant1::value, BoolConstant1, BoolConstants...
-        > {
-    };
+        > 
+    {};
 
     // C++17
     template<typename... BoolConstants>
@@ -131,7 +130,7 @@ namespace mylib::detail {
         // handle false case, then try to next
         using type =
             typename disjunction_impl<
-                NextConstant::value,
+                static_cast<bool>(NextConstant::value),
                 NextConstant,
                 BoolConstants...
             >::type;
@@ -144,16 +143,15 @@ export namespace mylib {
     template<typename... BoolConstants>
     struct disjunction :
         false_type // if BoolConstants is empty, false_type
-    {
-    };
+    {};
 
     // C++17
     template<typename BoolConstant1, typename... BoolConstants>
     struct disjunction<BoolConstant1, BoolConstants...> :
         mylib::detail::disjunction_impl<
         BoolConstant1::value, BoolConstant1, BoolConstants...
-        > {
-    };
+        > 
+    {};
 
     // C++17
     template<typename... BoolConstants>
@@ -414,19 +412,19 @@ export namespace mylib {
     inline constexpr bool is_integral_v =
         is_any_of_v<
         remove_cv_t<Type>,
-        bool,
-        char, signed char, unsigned char,
-        char8_t, char16_t, char32_t,
-        short, unsigned short,
-        int, unsigned int,
-        long, unsigned long,
-        long long, unsigned long long
+            bool,
+            char,      signed char, unsigned char,
+            char8_t,   char16_t,    char32_t,
+            short,     unsigned     short,
+            int,       unsigned int,
+            long,      unsigned long,
+            long long, unsigned long long
         >;
 
     template<typename Type>
     struct is_integral :
-        mylib::bool_constant<mylib::is_integral_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_integral_v<Type>> 
+    {};
 
     // C++17
     template<typename Type>
@@ -435,8 +433,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_floating_point :
-        mylib::bool_constant<mylib::is_floating_point_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_floating_point_v<Type>>
+    {};
 
     // not standard
     template<typename Type>
@@ -446,8 +444,8 @@ export namespace mylib {
     // not standard
     template<typename Type>
     struct is_character :
-        mylib::bool_constant<mylib::is_character_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_character_v<Type>> 
+    {};
 
     // C++17
     template<typename Type>
@@ -463,8 +461,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_array :
-        mylib::bool_constant<mylib::is_array_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_array_v<Type>>
+    {};
 
     // C++17
     template<typename Type>
@@ -472,8 +470,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_enum :
-        mylib::bool_constant<mylib::is_enum_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_enum_v<Type>>
+    {};
 
     // C++17
     template<typename Type>
@@ -481,8 +479,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_union :
-        mylib::bool_constant<mylib::is_union_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_union_v<Type>>
+    {};
 
     // C++17
     template<typename Type>
@@ -490,8 +488,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_class :
-        mylib::bool_constant<mylib::is_class_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_class_v<Type>>
+    {};
 
     // C++17
     template<typename Type>
@@ -503,8 +501,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_const :
-        mylib::bool_constant<mylib::is_const_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_const_v<Type>>
+    {};
 
     // C++17
     template<typename Type>
@@ -516,8 +514,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_lvalue_reference :
-        mylib::bool_constant<mylib::is_lvalue_reference_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_lvalue_reference_v<Type>>
+    {};
 
     // C++17
     template<typename Type>
@@ -529,8 +527,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_rvalue_reference :
-        mylib::bool_constant<mylib::is_rvalue_reference_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_rvalue_reference_v<Type>>
+    {};
 
     // C++17
     template<typename Type>
@@ -546,8 +544,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_reference :
-        bool_constant<mylib::is_reference_v<Type>> {
-    };
+        bool_constant<mylib::is_reference_v<Type>>
+    {};
 
 #   ifdef __clang__
 
@@ -575,204 +573,204 @@ export namespace mylib {
     // Result (Params...[, ...]) [const] [volatile] [& | &&] [noexcept] => 2 * 2 * 2 * 3 * 2 = 48
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...)> =
+    inline constexpr bool is_function_v<Result (Params...)> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const> =
+    inline constexpr bool is_function_v<Result (Params...) const> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) volatile> =
+    inline constexpr bool is_function_v<Result (Params...) volatile> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const volatile> =
+    inline constexpr bool is_function_v<Result (Params...) const volatile> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...)&> =
+    inline constexpr bool is_function_v<Result (Params...) &> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const&> =
+    inline constexpr bool is_function_v<Result (Params...) const&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) volatile&> =
+    inline constexpr bool is_function_v<Result (Params...) volatile&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const volatile&> =
+    inline constexpr bool is_function_v<Result (Params...) const volatile&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...)&&> =
+    inline constexpr bool is_function_v<Result (Params...) &&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const&&> =
+    inline constexpr bool is_function_v<Result (Params...) const&&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) volatile&&> =
+    inline constexpr bool is_function_v<Result (Params...) volatile&&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const volatile&&> =
+    inline constexpr bool is_function_v<Result (Params...) const volatile&&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...)> =
+    inline constexpr bool is_function_v<Result (Params..., ...)> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) volatile> =
+    inline constexpr bool is_function_v<Result (Params..., ...) volatile> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const volatile> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const volatile> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...)&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) &> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) volatile&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) volatile&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const volatile&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const volatile&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...)&&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) &&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const&&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const&&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) volatile&&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) volatile&&> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const volatile&&> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const volatile&&> =
         true;
 
     // noexcept, after C++17
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) const noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) volatile noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) volatile noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const volatile noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) const volatile noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) & noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) & noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const& noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) const& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) volatile& noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) volatile& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const volatile& noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) const volatile& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) && noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) && noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const&& noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) const&& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) volatile&& noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) volatile&& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params...) const volatile&& noexcept> =
+    inline constexpr bool is_function_v<Result (Params...) const volatile&& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) volatile noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) volatile noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const volatile noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const volatile noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) & noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) & noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const& noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) volatile& noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) volatile& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const volatile& noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const volatile& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) && noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) && noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const&& noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const&& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) volatile&& noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) volatile&& noexcept> =
         true;
 
     template<typename Result, typename... Params>
-    inline constexpr bool is_function_v<Result(Params..., ...) const volatile&& noexcept> =
+    inline constexpr bool is_function_v<Result (Params..., ...) const volatile&& noexcept> =
         true;
 
 #   endif
 
     template<typename Type>
     struct is_function :
-        bool_constant<mylib::is_function_v<Type>> {
-    };
+        bool_constant<mylib::is_function_v<Type>>
+    {};
 }
 
 namespace mylib::detail {
@@ -793,8 +791,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_pointer :
-        mylib::bool_constant<mylib::is_pointer_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_pointer_v<Type>>
+    {};
 
 #   ifdef __clang__
 
@@ -830,8 +828,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_member_pointer :
-        mylib::bool_constant<mylib::is_member_pointer_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_member_pointer_v<Type>>
+    {};
 
 #   ifdef __clang__
 
@@ -904,8 +902,8 @@ export namespace mylib {
 
     template<typename Type>
     struct is_member_function_pointer :
-        mylib::bool_constant<mylib::is_member_function_pointer_v<Type>> {
-    };
+        mylib::bool_constant<mylib::is_member_function_pointer_v<Type>>
+    {};
 
     // always true
 #   ifdef __cpp_concepts
@@ -1244,8 +1242,9 @@ export namespace mylib {
         template<typename Void = void>
         constexpr bool type_traits_assert_test() noexcept {
             // test integral_constant
-            constexpr mylib::integral_constant<int,       114514>          integralConstant1;
-            constexpr mylib::integral_constant<long long, 1145141919810LL> integralConstant2;
+            constexpr mylib::integral_constant<int, 114514> integralConstant1;
+            constexpr 
+            mylib::integral_constant<long long, 1145141919810LL> integralConstant2;
 
             // test value
             static_assert(integralConstant1.value == 114514);

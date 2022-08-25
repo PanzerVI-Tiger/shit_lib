@@ -12,6 +12,15 @@ import std.core;
 
 #endif
 
+namespace mylib {
+
+    // used only when you need to check, if not the vector's iterator will be raw pointer
+    template<typename Vector>
+    struct vector_const_iterator {
+
+    };
+}
+
 export namespace mylib {
 
     template<typename ElementType, typename Allocator = std::allocator<ElementType>>

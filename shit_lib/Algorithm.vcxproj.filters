@@ -103,6 +103,9 @@
     <Filter Include="mylib\source\cpp">
       <UniqueIdentifier>{453aec24-5c35-445f-b0b5-5edfddb7ad52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\module\standard\exception">
+      <UniqueIdentifier>{b5854612-4cc2-4a47-9fed-1eaee5495a72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mylib\head\cpp\cxxstd.h">
@@ -337,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="mylib\module\non_standard\container\tree\mylib.new_binary_tree.ixx">
       <Filter>mylib\module\non_standard\conatiner\tree</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\standard\exception\mylib.exception.ixx">
+      <Filter>mylib\module\standard\exception</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

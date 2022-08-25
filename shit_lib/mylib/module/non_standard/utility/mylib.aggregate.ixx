@@ -41,92 +41,118 @@ export namespace mylib {
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 0> :
-        bool_constant<requires{ Type{}; }>
+        bool_constant<requires { Type{}; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 1> :
-        bool_constant<requires{ Type{ {} }; }>
+        bool_constant<requires { Type{ {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 2> :
-        bool_constant<requires{ Type{ {}, {} }; }>
+        bool_constant<requires { Type{ {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 3> :
-        bool_constant<requires{ Type{ {}, {}, {} }; }>
+        bool_constant<requires { Type{ {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 4> :
-        bool_constant<requires{ Type{ {}, {}, {}, {} }; }>
+        bool_constant<requires { Type{ {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 5> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {} }; }>
+        bool_constant<requires { Type{ {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 6> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<requires { Type{ {}, {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 7> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<requires { Type{ {}, {}, {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 8> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<requires { Type{ {}, {}, {}, {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 9> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<requires { Type{ {}, {}, {}, {}, {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 10> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<requires { Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 11> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<requires { Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }>
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 12> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<
+            requires { 
+                Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} };
+            }
+        >
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 13> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<
+            requires { 
+                Type{ 
+                    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} };
+                }
+        >
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 14> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<
+            requires {
+                Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} };
+            }
+        > 
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 15> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<
+            requires {
+                Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} };
+            }
+        > 
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 16> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<
+            requires{
+                Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} };
+            }
+        > 
     {};
 
     template<typename Type>
     struct can_n_arguments_construct<Type, 17> :
-        bool_constant<requires{ Type{ {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {} }; }> 
+        bool_constant<
+            requires{
+                Type{
+                    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+                };
+            }>
     {};
     
     template<typename Type, size_t argumentsSize>
@@ -212,7 +238,9 @@ export namespace mylib {
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 5>) {
             auto [a, b, c, d, e] = object;
-            std::tuple<decltype(a), decltype(b), decltype(c), decltype(d), decltype(e)> result;
+            std::tuple<
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e)
+            > result;
             assignment(std::get<0>(result), a);
             assignment(std::get<1>(result), b);
             assignment(std::get<2>(result), c);
@@ -222,7 +250,8 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 6>) {
             auto [a, b, c, d, e, f] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f)
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
+                decltype(f)
             > result;
             assignment(std::get<0>(result), a);
             assignment(std::get<1>(result), b);
@@ -234,7 +263,7 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 7>) {
             auto [a, b, c, d, e, f, g] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), 
+                decltype(a), decltype(b), decltype(c), decltype(d),
                 decltype(e), decltype(f), decltype(g)
             > result;
             assignment(std::get<0>(result), a);
@@ -248,7 +277,7 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 8>) {
             auto [a, b, c, d, e, f, g, h] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), 
+                decltype(a), decltype(b), decltype(c), decltype(d),
                 decltype(e), decltype(f), decltype(g), decltype(h)
             > result;
             assignment(std::get<0>(result), a);
@@ -263,7 +292,7 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 9>) {
             auto [a, b, c, d, e, f, g, h, i] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
                 decltype(f), decltype(g), decltype(h), decltype(i)
             > result;
             assignment(std::get<0>(result), a);
@@ -279,7 +308,7 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 10>) {
             auto [a, b, c, d, e, f, g, h, i, j] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
                 decltype(f), decltype(g), decltype(h), decltype(i), decltype(j)
             > result;
             assignment(std::get<0>(result), a);
@@ -296,57 +325,59 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 11>) {
             auto [a, b, c, d, e, f, g, h, i, j, k] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f), 
-                decltype(g), decltype(h), decltype(i), decltype(j), decltype(k)
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
+                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j),
+                decltype(k)
             > result;
-            assignment(std::get<0>(result), a);
-            assignment(std::get<1>(result), b);
-            assignment(std::get<2>(result), c);
-            assignment(std::get<3>(result), d);
-            assignment(std::get<4>(result), e);
-            assignment(std::get<5>(result), f);
-            assignment(std::get<6>(result), g);
-            assignment(std::get<7>(result), h);
-            assignment(std::get<8>(result), i);
-            assignment(std::get<9>(result), j);
+            assignment(std::get<0>(result),  a);
+            assignment(std::get<1>(result),  b);
+            assignment(std::get<2>(result),  c);
+            assignment(std::get<3>(result),  d);
+            assignment(std::get<4>(result),  e);
+            assignment(std::get<5>(result),  f);
+            assignment(std::get<6>(result),  g);
+            assignment(std::get<7>(result),  h);
+            assignment(std::get<8>(result),  i);
+            assignment(std::get<9>(result),  j);
             assignment(std::get<10>(result), k);
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 12>) {
             auto [a, b, c, d, e, f, g, h, i, j, k, l] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f), 
-                decltype(g), decltype(h), decltype(i), decltype(j), decltype(k), decltype(l)
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
+                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j),
+                decltype(k), decltype(l)
             > result;
-            assignment(std::get<0>(result), a);
-            assignment(std::get<1>(result), b);
-            assignment(std::get<2>(result), c);
-            assignment(std::get<3>(result), d);
-            assignment(std::get<4>(result), e);
-            assignment(std::get<5>(result), f);
-            assignment(std::get<6>(result), g);
-            assignment(std::get<7>(result), h);
-            assignment(std::get<8>(result), i);
-            assignment(std::get<9>(result), j);
+            assignment(std::get<0>(result),  a);
+            assignment(std::get<1>(result),  b);
+            assignment(std::get<2>(result),  c);
+            assignment(std::get<3>(result),  d);
+            assignment(std::get<4>(result),  e);
+            assignment(std::get<5>(result),  f);
+            assignment(std::get<6>(result),  g);
+            assignment(std::get<7>(result),  h);
+            assignment(std::get<8>(result),  i);
+            assignment(std::get<9>(result),  j);
             assignment(std::get<10>(result), k);
             assignment(std::get<11>(result), l);
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 13>) {
             auto [a, b, c, d, e, f, g, h, i, j, k, l, m] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
-                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j), 
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
+                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j),
                 decltype(k), decltype(l), decltype(m)
             > result;
-            assignment(std::get<0>(result), a);
-            assignment(std::get<1>(result), b);
-            assignment(std::get<2>(result), c);
-            assignment(std::get<3>(result), d);
-            assignment(std::get<4>(result), e);
-            assignment(std::get<5>(result), f);
-            assignment(std::get<6>(result), g);
-            assignment(std::get<7>(result), h);
-            assignment(std::get<8>(result), i);
-            assignment(std::get<9>(result), j);
+            assignment(std::get<0>(result),  a);
+            assignment(std::get<1>(result),  b);
+            assignment(std::get<2>(result),  c);
+            assignment(std::get<3>(result),  d);
+            assignment(std::get<4>(result),  e);
+            assignment(std::get<5>(result),  f);
+            assignment(std::get<6>(result),  g);
+            assignment(std::get<7>(result),  h);
+            assignment(std::get<8>(result),  i);
+            assignment(std::get<9>(result),  j);
             assignment(std::get<10>(result), k);
             assignment(std::get<11>(result), l);
             assignment(std::get<12>(result), m);
@@ -354,20 +385,20 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 14>) {
             auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
-                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j), 
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
+                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j),
                 decltype(k), decltype(l), decltype(m), decltype(n)
             > result;
-            assignment(std::get<0>(result), a);
-            assignment(std::get<1>(result), b);
-            assignment(std::get<2>(result), c);
-            assignment(std::get<3>(result), d);
-            assignment(std::get<4>(result), e);
-            assignment(std::get<5>(result), f);
-            assignment(std::get<6>(result), g);
-            assignment(std::get<7>(result), h);
-            assignment(std::get<8>(result), i);
-            assignment(std::get<9>(result), j);
+            assignment(std::get<0>(result),  a);
+            assignment(std::get<1>(result),  b);
+            assignment(std::get<2>(result),  c);
+            assignment(std::get<3>(result),  d);
+            assignment(std::get<4>(result),  e);
+            assignment(std::get<5>(result),  f);
+            assignment(std::get<6>(result),  g);
+            assignment(std::get<7>(result),  h);
+            assignment(std::get<8>(result),  i);
+            assignment(std::get<9>(result),  j);
             assignment(std::get<10>(result), k);
             assignment(std::get<11>(result), l);
             assignment(std::get<12>(result), m);
@@ -376,20 +407,20 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 15>) {
             auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), 
-                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j), 
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
+                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j),
                 decltype(k), decltype(l), decltype(m), decltype(n), decltype(o)
             > result;
-            assignment(std::get<0>(result), a);
-            assignment(std::get<1>(result), b);
-            assignment(std::get<2>(result), c);
-            assignment(std::get<3>(result), d);
-            assignment(std::get<4>(result), e);
-            assignment(std::get<5>(result), f);
-            assignment(std::get<6>(result), g);
-            assignment(std::get<7>(result), h);
-            assignment(std::get<8>(result), i);
-            assignment(std::get<9>(result), j);
+            assignment(std::get<0>(result),  a);
+            assignment(std::get<1>(result),  b);
+            assignment(std::get<2>(result),  c);
+            assignment(std::get<3>(result),  d);
+            assignment(std::get<4>(result),  e);
+            assignment(std::get<5>(result),  f);
+            assignment(std::get<6>(result),  g);
+            assignment(std::get<7>(result),  h);
+            assignment(std::get<8>(result),  i);
+            assignment(std::get<9>(result),  j);
             assignment(std::get<10>(result), k);
             assignment(std::get<11>(result), l);
             assignment(std::get<12>(result), m);
@@ -399,20 +430,21 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 16>) {
             auto [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = object;
             std::tuple<
-                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e), decltype(f), 
-                decltype(g), decltype(h), decltype(i), decltype(j), decltype(k), decltype(l), 
-                decltype(m), decltype(n), decltype(o), decltype(p)
+                decltype(a), decltype(b), decltype(c), decltype(d), decltype(e),
+                decltype(f), decltype(g), decltype(h), decltype(i), decltype(j),
+                decltype(k), decltype(l), decltype(m), decltype(n), decltype(o),
+                decltype(p)
             > result;
-            assignment(std::get<0>(result), a);
-            assignment(std::get<1>(result), b);
-            assignment(std::get<2>(result), c);
-            assignment(std::get<3>(result), d);
-            assignment(std::get<4>(result), e);
-            assignment(std::get<5>(result), f);
-            assignment(std::get<6>(result), g);
-            assignment(std::get<7>(result), h);
-            assignment(std::get<8>(result), i);
-            assignment(std::get<9>(result), j);
+            assignment(std::get<0>(result),  a);
+            assignment(std::get<1>(result),  b);
+            assignment(std::get<2>(result),  c);
+            assignment(std::get<3>(result),  d);
+            assignment(std::get<4>(result),  e);
+            assignment(std::get<5>(result),  f);
+            assignment(std::get<6>(result),  g);
+            assignment(std::get<7>(result),  h);
+            assignment(std::get<8>(result),  i);
+            assignment(std::get<9>(result),  j);
             assignment(std::get<10>(result), k);
             assignment(std::get<11>(result), l);
             assignment(std::get<12>(result), m);
@@ -444,7 +476,9 @@ export namespace mylib {
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 4>) {
             auto& [a, b, c, d] = object;
-            std::tuple<decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&> result{ a, b, c, d };
+            std::tuple<
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&
+            > result{ a, b, c, d };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 5>) {
             auto& [a, b, c, d, e] = object;
@@ -455,13 +489,14 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 6>) {
             auto& [a, b, c, d, e, f] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
+                decltype(f)&
             > result{ a, b, c, d, e, f };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 7>) {
             auto& [a, b, c, d, e, f, g] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, 
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&,
                 decltype(e)&, decltype(f)&, decltype(g)&
             > result{ a, b, c, d, e, f, g };
             return result;
@@ -475,60 +510,63 @@ export namespace mylib {
         } else if constexpr (mylib::have_n_member_objects<Type, 9>) {
             auto& [a, b, c, d, e, f, g, h, i] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
                 decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&
             > result{ a, b, c, d, e, f, g, h, i };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 10>) {
             auto& [a, b, c, d, e, f, g, h, i, j] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
                 decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&
             > result{ a, b, c, d, e, f, g, h, i, j };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 11>) {
             auto& [a, b, c, d, e, f, g, h, i, j, k] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&, 
-                decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, decltype(k)&
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
+                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&,
+                decltype(k)&
             > result{ a, b, c, d, e, f, g, h, i, j, k };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 12>) {
             auto& [a, b, c, d, e, f, g, h, i, j, k, l] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&, 
-                decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, decltype(k)&, decltype(l)&
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
+                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&,
+                decltype(k)&, decltype(l)&
             > result{ a, b, c, d, e, f, g, h, i, j, k, l };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 13>) {
             auto& [a, b, c, d, e, f, g, h, i, j, k, l, m] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
-                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, 
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
+                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&,
                 decltype(k)&, decltype(l)&, decltype(m)&
             > result{ a, b, c, d, e, f, g, h, i, j, k, l, m };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 14>) {
             auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
-                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, 
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
+                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&,
                 decltype(k)&, decltype(l)&, decltype(m)&, decltype(n)&
             > result{ a, b, c, d, e, f, g, h, i, j, k, l, m, n };
             return result;
         } else if constexpr (mylib::have_n_member_objects<Type, 15>) {
             auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, 
-                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, 
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
+                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&,
                 decltype(k)&, decltype(l)&, decltype(m)&, decltype(n)&, decltype(o)&
             > result{ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o };
         } else if constexpr (mylib::have_n_member_objects<Type, 16>) {
             auto& [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p] = object;
             std::tuple<
-                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&, decltype(f)&, 
-                decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&, decltype(k)&, decltype(l)&, 
-                decltype(m)&, decltype(n)&, decltype(o)&, decltype(p)&
+                decltype(a)&, decltype(b)&, decltype(c)&, decltype(d)&, decltype(e)&,
+                decltype(f)&, decltype(g)&, decltype(h)&, decltype(i)&, decltype(j)&,
+                decltype(k)&, decltype(l)&, decltype(m)&, decltype(n)&, decltype(o)&,
+                decltype(p)&
             > result{ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p };
         } else {
             static_assert(mylib::always_false<Type>, "can't handle so many members!");
@@ -570,7 +608,8 @@ export namespace mylib {
                 std::tuple<Types...>
             ) constexpr noexcept {
                 bool isStart = true;
-                (..., (name += (isStart ? isStart = false, ""s : ", "s) + typeid(Types).name()));
+               (..., (name += (isStart ? isStart = false, ""s : ", "s) + 
+                typeid(Types).name()));
             }(member_objects({}));
 
             return name;
@@ -603,7 +642,8 @@ export namespace mylib {
     };
 
     template<size_t count, typename Type>
-    using make_n_same_type_tuple_t = typename mylib::make_n_same_type_tuple<count, Type>::type;
+    using make_n_same_type_tuple_t =
+        typename mylib::make_n_same_type_tuple<count, Type>::type;
     
     template<typename Type, size_t arraySize>
     struct aggregate_traits<Type[arraySize]> {
@@ -636,8 +676,13 @@ export namespace mylib {
 
         static constexpr auto member_objects_ref(Type (&object)[arraySize]) noexcept {
             return
-                [&object]<size_t... indices> (std::index_sequence<indices...>) constexpr noexcept {
-                    return mylib::make_n_same_type_tuple_t<arraySize, Type&>{ object[indices]... };
+                [&object]<size_t... indices> (
+                    std::index_sequence<indices...>
+                ) constexpr noexcept {
+                    return
+                        mylib::make_n_same_type_tuple_t<
+                            arraySize, Type&
+                        >{ object[indices]... };
                 }(std::make_index_sequence<arraySize>{});
         }
 
@@ -661,10 +706,10 @@ export namespace mylib {
 #       ifndef __INTELLISENSE__
         
         return 
-            std::string{ typeid(Type).name() }                                            + " {\n"
-            "    size: "                    + to_string(traits::size())                   + ",\n"
-            "    member objects' types: <"  + traits::types_string()                      + ">,\n"
-            "    member objects: "          + to_string(traits::member_objects(object))   + "\n"
+            std::string{ typeid(Type).name() }                                          + " {\n"
+            "    size: "                    + to_string(traits::size())                 + ",\n"
+            "    member objects' types: <"  + traits::types_string()                    + ">,\n"
+            "    member objects: "          + to_string(traits::member_objects(object)) + "\n"
             "}";
 #       endif
     }
