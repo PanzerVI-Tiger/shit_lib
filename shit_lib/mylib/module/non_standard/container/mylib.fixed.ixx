@@ -1,6 +1,47 @@
+#include <bit>
+#include <climits>
+#include <type_traits>
+
 export module mylib.fixed;
 
 import mylib.type_traits;
+
+
+namespace mylib::detail {
+    template<
+        typename ElementType, 
+        bool     isBigEndian = std::endian::native == std::endian::big
+    > struct fixed_underlying;
+
+    template<typename ElementType>
+    struct fixed_common {
+        using value_type = ElementType;
+
+        constexpr ElementType& value() noexcept {
+            return std::bit_cast<ElementType&>(*this);
+        }
+
+        constexpr const ElementType& value() const noexcept {
+            return std::bit_cast<const ElementType&>(*this);
+        }
+    };
+
+    template<typename ElementType>
+    struct fixed_underlying<ElementType, true> :
+        fixed_common<fixed_underlying<ElementType, true>> 
+    {
+        ElementType                       integer  : sizeof(ElementType) * CHAR_BIT / 2;
+        std::make_unsigned_t<ElementType> decimals : sizeof(ElementType) * CHAR_BIT / 2;
+    };
+
+    template<typename ElementType>
+    struct fixed_underlying<ElementType, false> :
+        fixed_common<fixed_underlying<ElementType, false>>  
+    {
+        ElementType                       decimals : sizeof(ElementType) * CHAR_BIT / 2;
+        std::make_unsigned_t<ElementType> integer  : sizeof(ElementType) * CHAR_BIT / 2;
+    };
+}
 
 
 export namespace mylib {

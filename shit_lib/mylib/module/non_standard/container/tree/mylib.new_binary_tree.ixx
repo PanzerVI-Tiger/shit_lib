@@ -6,7 +6,7 @@ export namespace mylib::inline test {
     template<typename TreeNode>
     struct binary_tree_node_base {
 
-        // wait for support for `deducing this` in module
+        // TODO: wait for support for `deducing this` in module
 
         //auto left(this auto& self) noexcept {
         //    return self.leftNode;

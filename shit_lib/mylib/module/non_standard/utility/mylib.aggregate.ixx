@@ -27,7 +27,7 @@ export namespace mylib {
     // maybe will be used??
     struct cast_any {
         template<typename Type>
-        operator Type& () const {
+        constexpr operator Type& () const noexcept {
             mylib::remove_reference_t<Type> result{};
 
             return result;
@@ -580,7 +580,7 @@ export namespace mylib {
 
     template<size_t index, typename Type, size_t arraySize>
     constexpr decltype(auto) get(Type (&object)[arraySize]) noexcept {
-        return arraySize[index];
+        return object[index];
     }
 
     template<typename Type>

@@ -36,8 +36,8 @@ export namespace mylib {
             
         constexpr head_node& operator =(const head_node&) noexcept = delete;
 
-        node_pointer next { nullptr };
-        node_pointer prior{ nullptr };
+        node_pointer next {};
+        node_pointer prior{};
     };
 
     template<typename ElementType>
@@ -444,7 +444,7 @@ export namespace mylib {
             headNode.prior->prior->next = &headNode;
             auto temp                   = headNode.prior;
             headNode.prior              = headNode.prior->prior;
-            delete temp;
+            ::delete temp;
         }
 
         constexpr void pop_front() noexcept {
@@ -452,7 +452,7 @@ export namespace mylib {
             headNode.next->next->prior = &headNode;
             auto temp                  = headNode.next;
             headNode.next              = headNode.next->next;
-            delete temp;
+            ::delete temp;
         }
 
         constexpr const value_type& back() const noexcept {

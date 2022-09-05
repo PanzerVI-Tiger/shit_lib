@@ -1,12 +1,17 @@
 module;
 
-//#pragma optimize("", off)
+#pragma optimize("", off)
 
 //#include <Windows.h>
+#include <typeinfo>
 
-#include "preprocessor.h"
-#include <boost/preprocessor.hpp>
+//#include "preprocessor.h"
+//#include <boost/sort/sort.hpp>
+//#include <boost/preprocessor.hpp>
+//#include <boost/type_traits.hpp>
 //#include <fast_io.h>
+//#include <Windows.h>
+//#include <experimental/generator>
 
 export module mylib.main;
 
@@ -16,13 +21,13 @@ import mylib;
 import mylib.new_binary_tree;
 
 
+using mylib::operator <<;
+using namespace std::literals;
+using namespace mylib::literals;
+
+
 export int main() noexcept
 {
-    //using mylib::operator <<;
-    //using namespace mylib::literals;
-
-    std::string x = std::filesystem::path{ L"³Ô·¹ÁËÃ»ÌúÖ­" }.string();
-    std::cout << x;
-
+    
     return 0;
 }

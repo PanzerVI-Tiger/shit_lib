@@ -5,14 +5,14 @@ This worst STL implementation is just for handing in homework.
 这个最糟糕的STL实现只是用来交作业的。  
   
 This is my personal project to implement a simplified STL and some other facilities,  
-and it is based on C++2b, using module organize, and default disabled exception.  
+and it is based on C\+\+2b, using module organize, and default disabled exception.  
 此个人项目用以实现STL与一些其他的设施，  
-本项目基于C++2b标准，使用模块组织，并默认禁用异常。  
+本项目基于C\+\+2b标准，使用模块组织，并默认禁用异常。  
 
 ## environment
 ## 环境
 visual studio 17.4.0(2022) preview 1.0  
-std: c++latest(C++2b\C++23)  
+std: C\+\+latest(C\+\+2b\C\+\+23)  
   
 ## structure
 ## 结构

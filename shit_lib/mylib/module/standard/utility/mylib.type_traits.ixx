@@ -380,7 +380,8 @@ export namespace mylib {
 
     // not standard
     template<typename Type, typename... Types>
-    inline constexpr bool is_any_of_v = mylib::disjunction_t<is_same<Type, Types>...>::value;
+    inline constexpr bool is_any_of_v =
+        mylib::disjunction_t<is_same<Type, Types>...>::value;
 
     // not standard
     template<typename Type, typename... Types>
@@ -399,7 +400,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_null_pointer_v = mylib::is_same_v<remove_cv_t<Type>, std::nullptr_t>;
+    inline constexpr bool is_null_pointer_v =
+        mylib::is_same_v<remove_cv_t<Type>, std::nullptr_t>;
 
     // C++14
     template<typename Type>
@@ -787,7 +789,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_pointer_v = mylib::detail::is_pointer_v_impl<mylib::remove_cv_t<Type>>;
+    inline constexpr bool is_pointer_v =
+        mylib::detail::is_pointer_v_impl<mylib::remove_cv_t<Type>>;
 
     template<typename Type>
     struct is_pointer :
@@ -1107,7 +1110,7 @@ export namespace mylib {
             mylib::detail::test_is_base_of<
                 BaseClass, DerivedClass
             >(0)
-        )::value;                   // check 
+        )::value;                          // check 
     
 #   endif
 
@@ -1202,8 +1205,8 @@ namespace detail {
     template<typename From, typename To>
     constexpr auto test_is_nothrow_convertible_v(int) noexcept ->
         mylib::bool_constant<
-        noexcept(
-            static_cast<To(*)(To) noexcept>(nullptr)(mylib::declval<From>())
+            noexcept(
+                static_cast<To(*)(To) noexcept>(nullptr)(mylib::declval<From>())
             )
         >
     {}

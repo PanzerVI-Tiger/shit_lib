@@ -411,7 +411,7 @@ export namespace mylib {
         using base_type::valueData;
         
         class value_compare {
-            public:
+        public:
             constexpr value_compare() noexcept = default;
 
             constexpr value_compare(const value_compare&) noexcept = default;

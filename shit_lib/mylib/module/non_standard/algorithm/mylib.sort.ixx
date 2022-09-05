@@ -72,9 +72,9 @@ export namespace mylib::inline sorts {
 
         auto i = first;
         for (++i; i != last; ++i) {
-            auto current{ std::move(*i) };
-            auto temp = i;
-            auto j    = i;
+            auto current = std::move(*i);
+            auto temp    = i;
+            auto j       = i;
             for (; j != first && pred(current, *--j); temp = j) {
                 *temp = std::move(*j);
             }
