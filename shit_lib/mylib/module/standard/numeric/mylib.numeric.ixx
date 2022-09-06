@@ -4,6 +4,7 @@ module;
 
 #ifdef __INTELLISENSE__
 
+#include <ranges>
 #include <utility>
 #include <iterator>
 
@@ -30,6 +31,29 @@ export namespace mylib {
         for (; first != last; ++first, ++value) {
             *first = value;
         }
+    }
+
+    // non-standard
+    template<std::ranges::range Range, typename ValueType>
+    constexpr void iota(Range& r, ValueType value) noexcept {
+        []<std::ranges::range Range>(
+            this auto self, Range& sub, ValueType& value
+        ) constexpr noexcept -> void {
+
+            for (auto& i : sub) {
+                using SubRange = std::ranges::range_value_t<Range>;
+
+                if constexpr (
+                    std::ranges::range<SubRange>            &&
+                   !std::is_convertible_v<SubRange, ValueType>
+                ) {
+                    self(i, value);
+                } else {
+                    i = value;
+                    ++value;
+                }
+            }
+        }(r, value);
     }
 
     template<typename InputIterator, typename ValueType, typename BinaryFunction>

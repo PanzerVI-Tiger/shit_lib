@@ -161,13 +161,18 @@ mylib
   
 ## conditional compilation macro
 ## 条件编译宏
-`MYLIB_ASSERT`   : to open mylib's assert    (default: close)  
-`MYLIB_UNIITEST` : to open mylib's unittest  (default: close)  
-`MYLIB_EXCEPTION`: to open mylib's exception (default: close)  
+`MYLIB_ASSERT`   : to open mylib's assert.    (default: close)  
+`MYLIB_UNIITEST` : to open mylib's unittest.  (default: close)  
+`MYLIB_EXCEPTION`: to open mylib's exception. (default: close)  
+`MYLIB_STANDARD` : to open mylib's standard mode, equal to defined `MYLIB_EXCEPTION`,  
+	and will undefine `MYLIB_ASSERT`.         (default: close)
   
-`MYLIB_ASSERT`   : 启用mylib的断言     (默认关闭)  
-`MYLIB_UNIITEST` : 启用mylib的联合测试 (默认关闭)  
-`MYLIB_EXCEPTION`: 启用mylib的异常     (默认关闭)  
+`MYLIB_ASSERT`   : 启用mylib的断言     （默认关闭）  
+`MYLIB_UNIITEST` : 启用mylib的联合测试 （默认关闭）  
+`MYLIB_EXCEPTION`: 启用mylib的异常     （默认关闭）  
+`MYLIB_STANDARD` : 启用mylib的标准模式，等于定义`MYLIB_EXCEPTION`宏， 
+	同时会取消`MYLIB_ASSERT`宏的定义    （默认关闭） 
+
 ## unittest
 ## 联合测试
 If you want to use unittest to test mylib, please predefined macro `MYLIB_UNITTEST`.  

@@ -3,7 +3,6 @@ module;
 #pragma optimize("", off)
 
 //#include <Windows.h>
-#include <typeinfo>
 
 //#include "preprocessor.h"
 //#include <boost/sort/sort.hpp>
@@ -28,6 +27,14 @@ using namespace mylib::literals;
 
 export int main() noexcept
 {
-    
+    std::vector<int> v;
+    int arr[10];
+    std::ranges::iota(arr, 0);
+
+    std::ranges::copy(arr, std::back_inserter(v));
+
+    std::cout << v;
+
     return 0;
 }
+                                                                                                                                                                                                                                                                                                                                                        // unused

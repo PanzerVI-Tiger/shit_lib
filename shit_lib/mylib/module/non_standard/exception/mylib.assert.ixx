@@ -32,20 +32,20 @@ export namespace mylib {
 #   endif
     
     struct abortor {
-        constexpr abortor(bool _isAbort = false) :
-            isAbort(_isAbort)
+        constexpr abortor(bool isAbort = false) :
+            is_abort(isAbort)
         {}
 
         constexpr abortor(abortor&& other) :
-            isAbort(other.isAbort)
+            is_abort(other.is_abort)
         {
-            other.isAbort = false;
+            other.is_abort = false;
         }
 
         constexpr abortor(const abortor&) = delete;
 
         constexpr ~abortor() noexcept {
-            if (isAbort) {
+            if (is_abort) {
                 abort();
             }
         }
@@ -55,7 +55,7 @@ export namespace mylib {
         constexpr static void abort() noexcept
         {}
         
-        bool isAbort;
+        bool is_abort;
     };
     
 #   if !defined(__INTELLISENSE__) && defined(MYLIB_ASSERT)

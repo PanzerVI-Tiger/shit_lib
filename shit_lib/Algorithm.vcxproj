@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -97,13 +97,7 @@
     <ClCompile Include="mylib\module\standard\utility\mylib.tuple.ixx" />
     <ClCompile Include="mylib\module\standard\utility\mylib.type_traits.ixx" />
     <ClCompile Include="mylib\module\standard\utility\mylib.utility.ixx" />
-    <ClCompile Include="source\f.ixx" />
     <ClCompile Include="source\test_main.ixx" />
-    <ClCompile Include="source\tt.cpp" />
-    <ClCompile Include="source\源.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="source\asm.asm" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="mylib\head\macro_meta\repet.h" />
@@ -267,6 +261,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <AdditionalIncludeDirectories>E:\EdgeDownload\boost_1_78_0\boost;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories);$(SolutionDir)shit_lib\mylib\head</AdditionalIncludeDirectories>
       <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

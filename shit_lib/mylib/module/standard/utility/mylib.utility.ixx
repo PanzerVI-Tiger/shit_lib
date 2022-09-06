@@ -29,7 +29,7 @@ export namespace mylib {
         }
     */
 
-    // not standard
+    // non-standard
     template<typename Type>
         requires std::is_assignable_v<Type&, Type&> // to prevent ambiguity with array overload
     void assignment(Type& destination, const Type& source) noexcept
@@ -37,7 +37,7 @@ export namespace mylib {
         destination = source;
     }
 
-    // not standard
+    // non-standard
     template<typename Type, size_t size>
     void assignment(Type(&destination)[size], const Type(&source)[size]) noexcept
     {

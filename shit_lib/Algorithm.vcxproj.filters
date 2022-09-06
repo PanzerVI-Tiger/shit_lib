@@ -317,16 +317,7 @@
     <ClCompile Include="mylib\module\mylib.ixx">
       <Filter>mylib\module</Filter>
     </ClCompile>
-    <ClCompile Include="source\f.ixx">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="source\test_main.ixx">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\tt.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\源.c">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="mylib\module\non_standard\string\mylib.char_sequence.ixx">
@@ -344,11 +335,6 @@
     <ClCompile Include="mylib\module\standard\exception\mylib.exception.ixx">
       <Filter>mylib\module\standard\exception</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <MASM Include="source\asm.asm">
-      <Filter>source</Filter>
-    </MASM>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mylib\head\macro_meta\repet.h">
