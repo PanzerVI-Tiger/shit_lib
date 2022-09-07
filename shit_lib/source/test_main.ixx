@@ -24,16 +24,27 @@ using mylib::operator <<;
 using namespace std::literals;
 using namespace mylib::literals;
 
+namespace mylib::ranges::inline views {
+    
+    template<std::ranges::range Range, typename ValueType>
+    class flatten_map_view :
+        public std::ranges::view_interface<
+            flatten_map_view<Range, ValueType>
+        >
+    {
+        
+    };
+    
+}
+
 
 export int main() noexcept
 {
-    std::vector<int> v;
-    int arr[10];
-    std::ranges::iota(arr, 0);
-
-    std::ranges::copy(arr, std::back_inserter(v));
-
-    std::cout << v;
+    int a[10][10];
+    
+    mylib::iota(a, 0);
+    
+    std::cout << a;
 
     return 0;
 }

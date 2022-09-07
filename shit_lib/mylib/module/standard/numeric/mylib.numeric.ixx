@@ -19,7 +19,7 @@ import std.core;
 #endif
 
 import mylib.functional;
-
+import mylib.type_traits;
 
 export namespace mylib {
     
@@ -35,20 +35,27 @@ export namespace mylib {
 
     // non-standard
     template<std::ranges::range Range, typename ValueType>
+        requires 
+            requires (ValueType& v) { ++v; }
     constexpr void iota(Range& r, ValueType value) noexcept {
-        []<std::ranges::range Range>(
+        []<typename Range>(
             this auto self, Range& sub, ValueType& value
         ) constexpr noexcept -> void {
 
             for (auto& i : sub) {
                 using SubRange = std::ranges::range_value_t<Range>;
 
+                constexpr bool isAssignable = std::is_assignable_v<SubRange&, ValueType>;
+                
                 if constexpr (
-                    std::ranges::range<SubRange>            &&
-                   !std::is_convertible_v<SubRange, ValueType>
+                    std::ranges::range<SubRange> && !isAssignable
                 ) {
                     self(i, value);
                 } else {
+                    static_assert(
+                        isAssignable,
+                        "The ValueType should to be able to assign to the Range's final value type"
+                    );
                     i = value;
                     ++value;
                 }
