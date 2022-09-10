@@ -20,7 +20,7 @@ export namespace mylib {
     template<typename Type, Type typeValue>
     struct integral_constant {
         using value_type = Type;
-        using type = integral_constant;
+        using type       = integral_constant;
 
         // C++11
         constexpr operator value_type() const noexcept {
@@ -176,11 +176,11 @@ export namespace mylib {
     using void_t = void;
 
     // non-standard
-    template<typename>
+    template<typename...>
     inline constexpr bool always_true = true;
 
     // non-standard
-    template<typename>
+    template<typename...>
     inline constexpr bool always_false = false;
 
     // C++11
@@ -1855,6 +1855,8 @@ export namespace mylib {
 
 #   endif
 
+
+    
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
     // C++17

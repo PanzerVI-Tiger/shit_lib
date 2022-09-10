@@ -1,6 +1,6 @@
 module;
 
-#include "cpp\non_standard\macro\mylib_assert.h"
+#include "cpp/non_standard/macro/mylib_assert.h"
 
 #ifdef __INTELLISENSE__
 
@@ -34,15 +34,13 @@ export namespace mylib {
     }
 
     // non-standard
-    template<std::ranges::range Range, typename ValueType>
-        requires 
-            requires (ValueType& v) { ++v; }
+    template<std::weakly_incrementable ValueType, std::ranges::range Range>
     constexpr void iota(Range& r, ValueType value) noexcept {
         []<typename Range>(
-            this auto self, Range& sub, ValueType& value
+            this auto self, Range& r, ValueType& value
         ) constexpr noexcept -> void {
 
-            for (auto& i : sub) {
+            for (auto& i : r) {
                 using SubRange = std::ranges::range_value_t<Range>;
 
                 constexpr bool isAssignable = std::is_assignable_v<SubRange&, ValueType>;
@@ -54,7 +52,7 @@ export namespace mylib {
                 } else {
                     static_assert(
                         isAssignable,
-                        "The ValueType should to be able to assign to the Range's final value type"
+                        "The ValueType should assignable to the Range's final value type"
                     );
                     i = value;
                     ++value;
