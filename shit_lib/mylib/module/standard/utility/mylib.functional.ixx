@@ -1,5 +1,8 @@
 export module mylib.functional;
 
+import mylib.utility;
+import mylib.type_traits;
+
 
 export namespace mylib {
     
@@ -292,4 +295,94 @@ export namespace mylib {
             return ~left;
         }
     };
+
+    template<typename Type = void>
+    class curried_function_result
+    {
+    public:
+        constexpr curried_function_result(Type&& type) noexcept :
+            result{ mylib::forward<Type>(type) }
+        {}
+
+        constexpr curried_function_result operator ()() const& noexcept {
+            return *this;
+        }
+
+        constexpr curried_function_result operator ()() && noexcept {
+            return mylib::move(*this);
+        }
+
+        constexpr operator const Type&() const noexcept {
+            return result;
+        }
+
+        constexpr operator Type&&() noexcept {
+            return mylib::forward<Type>(result);
+        }
+
+        constexpr const Type& value() const noexcept {
+            return result;
+        }
+
+        constexpr Type&& value() noexcept {
+            return mylib::forward<Type>(result);
+        }
+
+    private:
+        Type result;
+    };
+
+    template<>
+    class curried_function_result<void>
+    {
+    public:
+        constexpr curried_function_result operator ()() const noexcept {
+            return *this;
+        }
+
+        constexpr operator void() const noexcept
+        {}
+
+        constexpr void value() const noexcept
+        {}
+    };
+
+    template<typename Result, typename... Params>
+    class curried_function
+    {
+    public:
+        constexpr curried_function(Result(*_func)(Params...)) noexcept :
+            func{ _func }
+        {}
+
+        template<typename... Params1>
+            requires mylib::is_convertible_prefix_of_pack<Params1...>::template value<Params...>
+        constexpr auto operator ()(Params1... args1) const noexcept(sizeof...(Params1) != 0) {
+            if constexpr (sizeof...(Params1) == sizeof...(Params)) {
+                if constexpr (mylib::is_same_v<mylib::remove_cv_t<Result>, void>) {
+                    func(mylib::forward<decltype(args1)>(args1)...);
+                    return mylib::curried_function_result<>{};
+                } else {
+                    return
+                        mylib::curried_function_result{
+                            func(mylib::forward<decltype(args1)>(args1)...)
+                        };
+                }
+            } else {
+                return
+                [this, args1...](auto... args2) {
+                    return (*this)(args1..., mylib::forward<decltype(args2)>(args2)...);
+                };
+            }
+        }
+    
+    private:
+        Result(*func)(Params...);
+    };
+
+    template<typename Callable>
+    constexpr auto currying(Callable callable) noexcept
+    {
+        return mylib::curried_function{ +callable };
+    }
 }

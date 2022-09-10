@@ -29,19 +29,40 @@ export namespace mylib {
         }
     */
 
-    // non-standard
     template<typename Type>
-        requires std::is_assignable_v<Type&, Type&> // to prevent ambiguity with array overload
-    void assignment(Type& destination, const Type& source) noexcept
+    constexpr mylib::remove_reference_t<Type>&& move(
+        Type&& value
+    ) noexcept {
+        return static_cast<mylib::remove_reference_t<Type>&&>(value);
+    }
+
+    template<typename Type>
+    constexpr Type&& forward(mylib::remove_reference_t<Type>&& value) noexcept {
+        static_assert(
+            !mylib::is_lvalue_reference_v<Type>,
+            "error forward call, can't forward a rvalue as lvalue!"
+        );
+        return static_cast<Type&&>(value);
+    }
+
+    template<typename Type>
+    constexpr Type&& forward(mylib::remove_reference_t<Type>& value) noexcept {
+        return static_cast<Type&&>(value);
+    }
+
+    // non-standard
+    template<typename Type1, typename Type2>
+        requires std::is_assignable_v<Type1&, const Type2&> // to prevent ambiguity with array overload
+    void assignment(Type1& destination, const Type2& source) noexcept
     {
         destination = source;
     }
 
     // non-standard
-    template<typename Type, size_t size>
-    void assignment(Type(&destination)[size], const Type(&source)[size]) noexcept
+    template<typename Type1, size_t size1, typename Type2, size_t size2>
+    void assignment(Type1(&destination)[size1], const Type2(&source)[size2]) noexcept
     {
-        for (size_t i = 0; i != size; ++i) {
+        for (size_t i = 0; i != size1 < size2 ? size1 : size2; ++i) {
             assignment(destination[i], source[i]);
         }
     }
