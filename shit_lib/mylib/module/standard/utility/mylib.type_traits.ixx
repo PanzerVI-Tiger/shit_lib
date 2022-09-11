@@ -51,6 +51,18 @@ export namespace mylib {
     // using true_type  = mylib::integral_constant<bool, true>;
     // using false_type = mylib::integral_constant<bool, false>;
 
+    // C++11
+    // from utility, but defined in type_traits
+    template<typename Type, Type... constants>
+    struct integer_sequence {
+        using value_type = Type;
+
+        // C++11
+        static constexpr size_t size() noexcept {
+            return sizeof...(constants);
+        }
+    };
+
     // C++17
     template<typename BoolConstant>
     struct negation :

@@ -52,7 +52,7 @@ export namespace mylib {
                 } else {
                     static_assert(
                         isAssignable,
-                        "The ValueType should assignable to the Range's final value type"
+                        "The ValueType should assignable to the Range's final value type!"
                     );
                     i = value;
                     ++value;

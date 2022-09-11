@@ -23,9 +23,9 @@ using mylib::operator <<;
 using namespace std::literals;
 using namespace mylib::literals;
 
-template<stdr::range Range>
+template<stdr::input_range View>
 class flatten_all_view :
-    public stdr::view_interface<flatten_all_view<Range>> 
+    public stdr::view_interface<flatten_all_view<View>> 
 {
     
 };
@@ -33,6 +33,11 @@ class flatten_all_view :
 export int main() noexcept
 {
     auto x = mylib::currying([](int a, int b, int c) { return a + b + c; });
-    std::cout << x(1, 2, 3)()();
+    //std::cout << x(1, 2, 3)()();
+    struct X {
+        void f()
+        {}
+    };
+
 }
                                                                                                                                                                                                                                                                                                                                                         // unused

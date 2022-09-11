@@ -106,6 +106,9 @@
     <Filter Include="mylib\module\standard\exception">
       <UniqueIdentifier>{b5854612-4cc2-4a47-9fed-1eaee5495a72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\module\test">
+      <UniqueIdentifier>{7f733437-19a0-4212-9178-dd9f53c6fa07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mylib\head\cpp\cxxstd.h">
