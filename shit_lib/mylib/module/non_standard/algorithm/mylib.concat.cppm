@@ -3,7 +3,7 @@ export module mylib.concat;
 
 import mylib.string;
 import mylib.type_traits;
-import mylib.stack_string;
+import mylib.static_string;
 import mylib.string_literal;
 import mylib.templates_utility;
 
@@ -16,7 +16,7 @@ export namespace mylib {
      *  concat's argument must concatable
      *  if arguments have tuple, return type is tuple
      *  if arguments have base_string or pointer to character, concat return type is base_string,
-     *  else return stack_string
+     *  else return static_string
      */
 
     template<typename Type>
@@ -53,8 +53,8 @@ namespace mylib::detail {
         size_t... stringSizes
     > constexpr void concat_implement(
         CharType* buff,
-        const stack_string<stringSize, CharType, CharTraits>& first,
-        const stack_string<stringSizes, CharType, CharTraits>&... strings
+        const static_string<stringSize, CharType, CharTraits>& first,
+        const static_string<stringSizes, CharType, CharTraits>&... strings
     ) noexcept {
 
         CharTraits::copy(buff, first.data(), first.size());
@@ -75,7 +75,7 @@ export namespace mylib {
         typename  CharTraits,
         size_t... stringSizes
     > constexpr auto concat(
-        const stack_string<stringSizes, CharType, CharTraits>&... strings
+        const static_string<stringSizes, CharType, CharTraits>&... strings
     ) noexcept {
 
         if constexpr (sizeof...(stringSizes) == 1) {
@@ -83,7 +83,7 @@ export namespace mylib {
                 return x;
             }(strings...);
         } else {
-            mylib::stack_string<
+            mylib::static_string<
                 mylib::plus_v<stringSizes...>,
                 CharType,
                 CharTraits
@@ -99,8 +99,8 @@ export namespace mylib {
         size_t   leftSize, size_t   rightSize,
         typename CharType, typename CharTraits
     > constexpr auto operator +(
-        const stack_string<leftSize,  CharType, CharTraits>& left,
-        const stack_string<rightSize, CharType, CharTraits>& right
+        const static_string<leftSize,  CharType, CharTraits>& left,
+        const static_string<rightSize, CharType, CharTraits>& right
         ) noexcept {
 
         return mylib::concat(left, right);

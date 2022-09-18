@@ -1,6 +1,6 @@
 #pragma once
 
-#include "macro_base.h"
+#include "macro_base.hpp"
 
 
 #define mylib_pp_bool(n)        mylib_pp_cat_n(2, mylib_pp_bool, n)

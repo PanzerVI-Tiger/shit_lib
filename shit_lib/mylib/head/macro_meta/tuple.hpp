@@ -1,11 +1,11 @@
 #pragma once
 
-#include "if.h"
-#include "inc.h"
-#include "for.h"
-#include "compare.h"
-#include "variadic.h"
-#include "macro_base.h"
+#include "if.hpp"
+#include "inc.hpp"
+#include "for.hpp"
+#include "compare.hpp"
+#include "variadic.hpp"
+#include "macro_base.hpp"
 
 #define mylib_pp_tuple_impl(...) (, __VA_ARGS__, )
 #define mylib_pp_tuple(...)      mylib_pp_tuple_impl(__VA_ARGS__)
@@ -17,7 +17,7 @@
     mylib_pp_forward tuple                                                              
                                                                                         
 #define mylib_pp_tuple_take(tuple, count)                                               \
-    (mylib_pp_variadic_take(count, mylib_pp_tuple_extend(tuple)))                       
+    (mylib_pp_variadic_take(count, mylib_pp_tuple_extend(tuple)))
                                                                                         
 #define mylib_pp_tuple_drop(tuple, count)                                               \
     (mylib_pp_variadic_drop(count, mylib_pp_tuple_extend(tuple)))

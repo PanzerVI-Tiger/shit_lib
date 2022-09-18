@@ -3,14 +3,12 @@
 
 
 #define mylib_pp_repeat_impl(count, x, s)                                               \
-    mylib_pp_repeat ## count(x, s)                                                      
-                                                                                        
+    mylib_pp_repeat ## count(x, s)                                                                                                                                           
 #define mylib_pp_repeat(count, x, s)                                                    \
     mylib_pp_repeat_impl(count, x, s)
 
 #define mylib_pp_repeat_call_impl(count, callable, getSeparator)                        \
     mylib_pp_repeat_call ## count(callable, getSeparator)
-
 #define mylib_pp_repeat_call(count, callable, getSeparator)                             \
     mylib_pp_repeat_call_impl(count, callable, getSeparator)
 

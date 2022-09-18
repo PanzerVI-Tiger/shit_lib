@@ -1,12 +1,12 @@
 #pragma once
 
-#include "dec.h"
-#include "inc.h"
-#include "repet.h"
-#include "tuple.h"
-#include "numeric.h"
-#include "compare.h"
-#include "variadic.h"
+#include "dec.hpp"
+#include "inc.hpp"
+#include "repet.hpp"
+#include "tuple.hpp"
+#include "numeric.hpp"
+#include "compare.hpp"
+#include "variadic.hpp"
 
 #define mylib_pp_plus(left, right)                                                      \
     mylib_pp_if(mylib_pp_logical_or(left, right))                                       \

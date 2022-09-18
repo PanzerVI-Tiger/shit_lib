@@ -1,7 +1,7 @@
 #pragma once
 
-#include "if.h"
-#include "variadic.h"
+#include "if.hpp"
+#include "variadic.hpp"
 
 #define mylib_pp_for_each_impl(count, var, inc, ...)                                    \
     mylib_pp_for_each ## count(var, inc, __VA_ARGS__)                                   

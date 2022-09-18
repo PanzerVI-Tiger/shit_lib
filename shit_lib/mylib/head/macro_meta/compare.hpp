@@ -1,8 +1,8 @@
 #pragma once
 
-#include "if.h"
-#include "bool.h"
-#include "macro_base.h"
+#include "if.hpp"
+#include "bool.hpp"
+#include "macro_base.hpp"
 
 // not equal
 #define mylib_pp_not_equal_impl(left, right)                                            \

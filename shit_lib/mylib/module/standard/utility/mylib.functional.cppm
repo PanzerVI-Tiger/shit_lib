@@ -1,11 +1,36 @@
+module;
+
+#ifdef __INTELLISENSE__
+
+#include <concepts>
+#include <functional>
+
+#endif
+
 export module mylib.functional;
+
+#ifndef __INTELLISENSE__
+
+import std.core;
+
+#endif
 
 import mylib.utility;
 import mylib.type_traits;
 
 
 export namespace mylib {
-    
+
+    template<typename Function>
+    struct function_traits {
+
+    };
+
+    template<typename Invocation>
+    struct invocation_traits {
+
+    };
+
     template<typename FunctionType>
     class function {
         
@@ -296,93 +321,88 @@ export namespace mylib {
         }
     };
 
-    template<typename Type = void>
-    class curried_function_result
-    {
-    public:
-        constexpr curried_function_result(Type&& type) noexcept :
-            result{ mylib::forward<Type>(type) }
-        {}
-
-        constexpr curried_function_result operator ()() const& noexcept {
-            return *this;
-        }
-
-        constexpr curried_function_result operator ()() && noexcept {
-            return mylib::move(*this);
-        }
-
-        constexpr operator const Type&() const noexcept {
-            return result;
-        }
-
-        constexpr operator Type&&() noexcept {
-            return mylib::forward<Type>(result);
-        }
-
-        constexpr const Type& value() const noexcept {
-            return result;
-        }
-
-        constexpr Type&& value() noexcept {
-            return mylib::forward<Type>(result);
-        }
-
-    private:
-        Type result;
-    };
-
-    template<>
-    class curried_function_result<void>
-    {
-    public:
-        constexpr curried_function_result operator ()() const noexcept {
-            return *this;
-        }
-
-        constexpr operator void() const noexcept
-        {}
-
-        constexpr void value() const noexcept
-        {}
-    };
-
-    template<typename Result, typename... Params>
+    template<typename Invocation, typename... Arguments>
     class curried_function
     {
     public:
-        constexpr curried_function(Result(*_func)(Params...)) noexcept :
-            func{ _func }
+        template<typename, typename...>
+        friend class curried_function;
+        
+        using result_type =
+            mylib::conditional_t<
+                std::is_invocable_v<Invocation, Arguments...>,
+                std::invoke_result<Invocation, Arguments...>,
+                mylib::type_identity<void>
+            >::type;
+
+        static constexpr bool is_evalutable = std::is_invocable_v<Invocation, Arguments...>;
+        
+        constexpr curried_function(Invocation&& _func, Arguments&&... _arguments) noexcept :
+            func{ std::forward<Invocation>(_func) }, arguments{mylib::forward<Arguments>(_arguments)...}, is_invocated{}
         {}
 
-        template<typename... Params1>
-            requires mylib::is_convertible_prefix_of_pack<Params1...>::template value<Params...>
-        constexpr auto operator ()(Params1... args1) const noexcept(sizeof...(Params1) != 0) {
-            if constexpr (sizeof...(Params1) == sizeof...(Params)) {
-                if constexpr (mylib::is_same_v<mylib::remove_cv_t<Result>, void>) {
-                    func(mylib::forward<decltype(args1)>(args1)...);
-                    return mylib::curried_function_result<>{};
-                } else {
-                    return
-                        mylib::curried_function_result{
-                            func(mylib::forward<decltype(args1)>(args1)...)
-                        };
+    private:
+        template<typename... Arguments1, typename... Arguments2>
+        constexpr curried_function(
+            bool isInvocated, const curried_function<Invocation, Arguments1...>& old, std::tuple<Arguments2...>&& arguments
+        ) noexcept :
+            func{ old.func }, arguments{ std::tuple_cat(old.arguments, std::move(arguments)) }, is_invocated{ isInvocated }
+        {}
+
+        template<typename... Arguments1, typename... Arguments2>
+        constexpr curried_function(
+            bool isInvocated, curried_function<Invocation, Arguments1...>&& old, std::tuple<Arguments2...>&& arguments
+        ) noexcept :
+            func{ std::move(old.func) }, arguments{ std::tuple_cat(std::move(old.arguments), std::move(arguments)) }, is_invocated{ isInvocated }
+        {}
+        
+    public:
+        constexpr ~curried_function() noexcept {
+            if constexpr (is_evalutable) {
+                if (is_invocated) {
+                    operator result_type();
                 }
-            } else {
-                return
-                [this, args1...](auto... args2) {
-                    return (*this)(args1..., mylib::forward<decltype(args2)>(args2)...);
-                };
             }
         }
-    
+        
+        template<typename... Arguments2>
+        constexpr auto operator ()(Arguments2&&... args) & noexcept {
+            is_invocated = false;
+            return
+                curried_function<Invocation, Arguments..., Arguments2...>{
+                    true, *this, std::make_tuple(std::forward<Arguments2>(args)...)
+                };
+        }
+
+        template<typename... Arguments2>
+        constexpr auto operator ()(Arguments2&&... args) && noexcept {
+            is_invocated = false;
+            return
+                curried_function<Invocation, Arguments..., Arguments2...>{
+                true, std::move(*this), std::make_tuple(std::move(args)...)
+            };
+        }
+        
+        constexpr operator result_type() noexcept
+        {
+            if (is_evalutable) {
+                is_invocated = false;
+                return std::apply(func, arguments);
+            }
+        }
+        
     private:
-        Result(*func)(Params...);
+        bool                     is_invocated;
+        Invocation               func;
+        std::tuple<Arguments...> arguments;
     };
 
-    template<typename Callable>
-    constexpr auto currying(Callable callable) noexcept
+    template<typename Invocation, typename... Arguments>
+    constexpr auto currying(Invocation&& callable, Arguments&&... args) noexcept
     {
-        return mylib::curried_function{ +callable };
+        return 
+            mylib::curried_function{
+                std::forward<Invocation>(callable), std::forward<Arguments>(args)...
+            };
     }
 }

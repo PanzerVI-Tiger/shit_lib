@@ -1,6 +1,6 @@
 #pragma once
 
-#include "macro_meta/variadic.h"
+#include "macro_meta/variadic.hpp"
 
 
 #define mylib_space()     

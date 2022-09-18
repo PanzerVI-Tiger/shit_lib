@@ -56,7 +56,7 @@ export import mylib.assert;
 export import mylib.iterator_check;
 
 //           string
-export import mylib.stack_string;
+export import mylib.static_string;
 export import mylib.char_sequence;
 export import mylib.string_literal;
 
@@ -66,4 +66,7 @@ export import mylib.timer;
 export import mylib.aggregate;
 export import mylib.string_traits;
 export import mylib.container_traits; // traits of mylib container and iterator
+
+
+export import mylib.type_list;
 export import mylib.templates_utility;

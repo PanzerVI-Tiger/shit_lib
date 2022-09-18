@@ -53,17 +53,17 @@ export namespace mylib {
     // non-standard
     template<typename Type1, typename Type2>
         requires std::is_assignable_v<Type1&, const Type2&> // to prevent ambiguity with array overload
-    void assignment(Type1& destination, const Type2& source) noexcept
+    void assign(Type1& destination, const Type2& source) noexcept
     {
         destination = source;
     }
 
     // non-standard
     template<typename Type1, size_t size1, typename Type2, size_t size2>
-    void assignment(Type1(&destination)[size1], const Type2(&source)[size2]) noexcept
+    void assign(Type1(&destination)[size1], const Type2(&source)[size2]) noexcept
     {
         for (size_t i = 0; i != size1 < size2 ? size1 : size2; ++i) {
-            assignment(destination[i], source[i]);
+            assign(destination[i], source[i]);
         }
     }
 }

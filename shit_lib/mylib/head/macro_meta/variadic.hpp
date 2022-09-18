@@ -6,25 +6,21 @@
 
 #define mylib_pp_variadic_take_impl(count, ...)                                         \
     mylib_pp_variadic_take ## count(__VA_ARGS__)
-
 #define mylib_pp_variadic_take(count, ...)                                              \
     mylib_pp_variadic_take_impl(count, __VA_ARGS__)
 
 #define mylib_pp_variadic_drop_impl(count, ...)                                         \
     mylib_pp_variadic_drop ## count(__VA_ARGS__)
-
 #define mylib_pp_variadic_drop(count, ...)                                              \
     mylib_pp_variadic_drop_impl(count, __VA_ARGS__)
 
 #define mylib_pp_variadic_get_impl(index, ...)                                          \
     mylib_pp_variadic_get ## index(__VA_ARGS__)
-
 #define mylib_pp_variadic_get(index, ...)                                               \
     mylib_pp_variadic_get_impl(index, __VA_ARGS__)
 
 #define mylib_pp_variadic_slice_impl(first, last, ...)                                  \
     mylib_pp_variadic_drop(first, mylib_pp_variadic_take(last, __VA_ARGS__))
-
 #define mylib_pp_variadic_slice(first, last, ...)                                       \
     mylib_pp_variadic_slice_impl(first, last, __VA_ARGS__)
 

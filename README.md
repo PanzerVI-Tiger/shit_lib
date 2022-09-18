@@ -47,116 +47,116 @@ mylib
 |  |  |
 |  |  |- non_standard # import corresponding module only
 |  |  |  |- macro
-|  |  |  |  |- mylib_assert.h
+|  |  |  |  |- mylib_assert.hpp
 |  |  |  |
-|  |  |  |- mylib_sort.h
+|  |  |  |- mylib_sort.hpp
 |  |  |
-|  |  |- cxxstd.h
+|  |  |- cxxstd.hpp
 |  |
 |  |- macro_meta
-|  |  |- macro_base.h
-|  |  |- arithmetic.h
-|  |  |- bool.h
-|  |  |- compare.h
-|  |  |- dec.h
-|  |  |- for.h
-|  |  |- if.h
-|  |  |- inc.h
+|  |  |- macro_base.hpp
+|  |  |- arithmetic.hpp
+|  |  |- bool.hpp
+|  |  |- compare.hpp
+|  |  |- dec.hpp
+|  |  |- for.hpp
+|  |  |- if.hpp
+|  |  |- inc.hpp
 |  |  |- numeric
-|  |  |- repet.h
-|  |  |- tuple.h
-|  |  |- variadic.h
+|  |  |- repet.hpp
+|  |  |- tuple.hpp
+|  |  |- variadic.hpp
 |  |  |- more macro_meta head
 |  |
-|  |- preprocessor.h
+|  |- preprocessor.hpp
 |  |- more head
 |
 |- module
 |  |- standard
 |  |  |- algorithm
-|  |  |  |- mylib.algorithm.ixx
+|  |  |  |- mylib.algorithm.cppm
 |  |  |  |- # TODO: more standard algorithm module
 |  |  |
 |  |  |- container
-|  |  |  |- mylib.deque.ixx
-|  |  |  |- mylib.list.ixx
-|  |  |  |- mylib.queue.ixx
-|  |  |  |- mylib.stack.ixx
-|  |  |  |- mylib.vector.ixx
+|  |  |  |- mylib.deque.cppm
+|  |  |  |- mylib.list.cppm
+|  |  |  |- mylib.queue.cppm
+|  |  |  |- mylib.stack.cppm
+|  |  |  |- mylib.vector.cppm
 |  |  |  |- # TODO: more standard container module
 |  |  |
 |  |  |- io
 |  |  |  |- # TODO: more standard io module
 |  |  |
 |  |  |- iterator
-|  |  |  |- mylib.iterator.ixx
+|  |  |  |- mylib.iterator.cppm
 |  |  |
 |  |  |- memory
-|  |  |  |- mylib.memory.ixx
+|  |  |  |- mylib.memory.cppm
 |  |  |  |- # TODO: more standard memory module
 |  |  |
 |  |  |- numeric
-|  |  |  |- mylib.numeric.ixx
+|  |  |  |- mylib.numeric.cppm
 |  |  |  |- # TODO: more standard numeric module
 |  |  |
 |  |  |- string
-|  |  |  |- mylib.string.ixx
+|  |  |  |- mylib.string.cppm
 |  |  |  |- # TODO: more standard string module
 |  |  |
 |  |  |- utility
-|  |  |  |- mylib.compare.ixx
-|  |  |  |- mylib.functional.ixx
-|  |  |  |- mylib.tuple.ixx
-|  |  |  |- mylib.type_traits.ixx
-|  |  |  |- mylib.utility.ixx
+|  |  |  |- mylib.compare.cppm
+|  |  |  |- mylib.functional.cppm
+|  |  |  |- mylib.tuple.cppm
+|  |  |  |- mylib.type_traits.cppm
+|  |  |  |- mylib.utility.cppm
 |  |  |  |- # TODO: more standard utility module
 |  |  |
 |  |  |- # TODO: more standard module
 |  |
 |  |- non_standard
 |     |- algorithm
-|     |  |- mylib.algorithm.ixx
-|     |  |- mylib.concat.ixx
+|     |  |- mylib.algorithm.cppm
+|     |  |- mylib.concat.cppm
 |     |  |- # TODO: more non_standard algorithm module
 |     |
 |     |- container
 |     |  |- tree
-|     |  |  |- mylib.binary_tree.ixx
-|     |  |  |- mylib.huffman_tree.ixx
-|     |  |  |- mylib.red_black_tree.ixx
+|     |  |  |- mylib.binary_tree.cppm
+|     |  |  |- mylib.hppuffman_tree.cppm
+|     |  |  |- mylib.red_black_tree.cppm
 |     |  |  |- # TODO: more non_standard tree module
 |     |  |
-|     |  |- mylib.fixed.ixx
-|     |  |- mylib.grade.ixx
-|     |  |- mylib.graph.ixx
-|     |  |- mylib.link_list.ixx
-|     |  |- mylib.matrix.ixx
+|     |  |- mylib.fixed.cppm
+|     |  |- mylib.grade.cppm
+|     |  |- mylib.graph.cppm
+|     |  |- mylib.link_list.cppm
+|     |  |- mylib.matrix.cppm
 |     |  |- # TODO: more non_standard container module
 |     |
 |     |- io
-|     |  |- mylib.stream_output.ixx
+|     |  |- mylib.stream_output.cppm
 |     |  |- # TODO: more non_standard io module
 |     |
 |     |- string
-|     |  |- mylib.stack_string.ixx
-|     |  |- mylib.char_sequence.ixx
-|     |  |- mylib.string_literal.ixx
+|     |  |- mylib.stack_string.cppm
+|     |  |- mylib.char_sequence.cppm
+|     |  |- mylib.string_literal.cppm
 |     |  |- # TODO: more non_standard string module
 |     |
 |     |- templates
-|     |  |- mylib.templates_utility.ixx
+|     |  |- mylib.templates_utility.cppm
 |     |  |- # TODO: more non_standard templates module
 |     |
 |     |- utility
-|        |- mylib.aggregate.ixx
-|        |- mylib.conatiner_traits.ixx
-|        |- mylib.eval.ixx
-|        |- mylib.pointer.ixx
-|        |- mylib.string_traits.ixx
-|        |- mylib.timer.ixx
+|        |- mylib.aggregate.cppm
+|        |- mylib.conatiner_traits.cppm
+|        |- mylib.eval.cppm
+|        |- mylib.pointer.cppm
+|        |- mylib.string_traits.cppm
+|        |- mylib.timer.cppm
 |        |- # TODO: more non_standard utility module
 |
-|- mylib.ixx # import all mylib module
+|- mylib.cppm # import all mylib module
 ```  
   
 ## conditional compilation macro

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "if.h"
-#include "dec.h"
-#include "repet.h"
-#include "compare.h"
-#include "macro_base.h"
+#include "if.hpp"
+#include "dec.hpp"
+#include "repet.hpp"
+#include "compare.hpp"
+#include "macro_base.hpp"
 
 
 #define mylib_pp_iota_impl(m, n)                                                        \

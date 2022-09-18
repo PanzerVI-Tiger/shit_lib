@@ -63,7 +63,7 @@ export namespace mylib {
         }
 
         template<std::integral auto... numbers2>
-        using integer_sequence =
+        using with =
             std::integer_sequence<
                 std::common_type_t<
                     numbers1_common_type, decltype(numbers2)...
@@ -81,7 +81,7 @@ export namespace mylib {
         }
 
         template<std::integral auto... numbers2>
-        using integer_sequence =
+        using with =
             std::integer_sequence <
                 std::common_type_t<
                     numbers1_common_type, decltype(numbers2)...

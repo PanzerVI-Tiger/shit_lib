@@ -45,7 +45,6 @@ namespace mylib::detail {
     };
 }
 
-
 export namespace mylib {
 
     template<typename ElementType>

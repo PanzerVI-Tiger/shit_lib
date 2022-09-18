@@ -23,10 +23,11 @@ export namespace mylib {
     class end_timer {
     public:
         end_timer(std::function<void(long long _duration)> _callback) noexcept : callback{ _callback } {
+            FILETIME ftKernalTimeStart;
             FILETIME ftUserTimeStart;
             FILETIME ftDummy;
-            GetThreadTimes(GetCurrentThread(), &ftDummy, &ftDummy, &ftDummy, &ftUserTimeStart);
-            starTime = ftUserTimeStart;
+            GetThreadTimes(GetCurrentThread(), &ftDummy, &ftDummy, &ftKernalTimeStart, &ftUserTimeStart);
+            userStarTime = ftUserTimeStart;
         }
         
         end_timer() : end_timer(
@@ -39,19 +40,24 @@ export namespace mylib {
             tick();
         }
 
+        [[msvc::noinline]]
         void tick() noexcept {
+            FILETIME ftKernalTimeNow;
             FILETIME ftUserTimeNow;
             FILETIME ftDummy;
-            GetThreadTimes(GetCurrentThread(), &ftDummy, &ftDummy, &ftDummy, &ftUserTimeNow);
+            GetThreadTimes(GetCurrentThread(), &ftDummy, &ftDummy, &ftKernalTimeNow, &ftUserTimeNow);
             long long eplasedTimer{
-                 (static_cast<long long>(ftUserTimeNow.dwLowDateTime ) - starTime.dwLowDateTime ) +
-                ((static_cast<long long>(ftUserTimeNow.dwHighDateTime) - starTime.dwHighDateTime) << 32)
+                ((static_cast<long long>(ftUserTimeNow.  dwLowDateTime ) - userStarTime.  dwLowDateTime )  +
+                ((static_cast<long long>(ftUserTimeNow.  dwHighDateTime) - userStarTime.  dwHighDateTime) << 32)) +
+                ((static_cast<long long>(ftKernalTimeNow.dwLowDateTime)  - kernalStarTime.dwLowDateTime)   +
+                ((static_cast<long long>(ftKernalTimeNow.dwHighDateTime) - kernalStarTime.dwHighDateTime) << 32))
             };
             callback(eplasedTimer);
         }
 
     private:
-        FILETIME                                 starTime;
+        FILETIME                                 userStarTime;
+        FILETIME                                 kernalStarTime;
         std::function<void(long long _duration)> callback;
     };
 

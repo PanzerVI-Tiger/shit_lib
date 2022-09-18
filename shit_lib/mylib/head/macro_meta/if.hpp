@@ -1,7 +1,7 @@
 #pragma once
 
-#include "macro_meta/bool.h"
-#include "macro_meta/macro_base.h"
+#include "macro_meta/bool.hpp"
+#include "macro_meta/macro_base.hpp"
 
 #define mylib_pp_if_impl(cond) mylib_pp_cat_n(2, mylib_pp_if, cond)
 #define mylib_pp_if(value)     mylib_pp_if_impl(mylib_pp_bool(value))

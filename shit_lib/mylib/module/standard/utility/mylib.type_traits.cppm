@@ -1906,7 +1906,8 @@ namespace mylib::detail {
     // helper function template
     // a private, protected or ambigous base class will match this function template
     template<typename BaseClass, typename DerivedClass>
-    constexpr auto test_is_base_of(...) noexcept -> mylib::true_type
+    constexpr auto test_is_base_of(...) noexcept ->
+        mylib::true_type
     {}
 
     // helper function template
@@ -1918,9 +1919,9 @@ namespace mylib::detail {
             test_is_pointer_convertible<BaseClass>(
                 static_cast<DerivedClass*>(
                     nullptr
-                    )
                 )
             )
+        )
     {}
 }
 
@@ -2093,116 +2094,8 @@ export namespace mylib {
     struct is_scoped_enum :
         mylib::bool_constant<mylib::is_scoped_enum_v<Type>>
     {};
-
-    template<
-        template<typename, typename>
-        typename BinaryMetaFunction,
-        typename... Types1
-    > struct is_prefix_of_pack;
-
-    template<
-        template<typename, typename>
-        typename BinaryMetaFunction
-    > struct is_prefix_of_pack<BinaryMetaFunction> {
-
-        template<bool cond, typename... Types2>
-        struct helper {
-            static constexpr bool value = cond;
-
-        };
     
-        template<typename... Types2>
-        struct type {
-            static constexpr bool value = true;
-        };
-
-        template<typename... Types2>
-        static constexpr bool value = true;
-    
-    };
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Type1,
-        typename... Types1
-    > struct is_prefix_of_pack<BinaryMetaFunction, Type1, Types1...> {
-
-        template<bool cond, typename... Types2>
-        struct helper {
-            static constexpr bool value = false;            
-        };
-
-        template<typename Type2, typename... Types2>
-        struct helper<true, Type2, Types2...> {
-            static constexpr bool value =
-                is_convertible_prefix_of_pack<Types1...>::
-                    template helper<
-                        BinaryMetaFunction<Type1, Type2>::value,
-                        Types2...
-                    >::value;
-        };
-    
-        template<typename... Types2>
-        struct type {
-            static constexpr bool value =
-                mylib::conditional_t<
-                    (sizeof...(Types1) <= sizeof...(Types2)),
-                    helper<true, Types2...>,
-                    mylib::false_type
-                >::value;
-        };
-    
-        template<typename... Types2>
-        static constexpr bool value = type<Types2...>::value;
-    };
-
-    template<typename... Types>
-    using is_same_prefix_of_pack =
-        mylib::is_prefix_of_pack<mylib::is_same, Types...>;
-
-    template<typename... Types>
-    using is_convertible_prefix_of_pack =
-        mylib::is_prefix_of_pack<mylib::is_convertible, Types...>;
-
-    template<size_t count, typename... Types>
-    struct take_pack;
-
-    template<size_t count, typename Type, typename... Types1>
-    struct take_pack<count, Type, Types1...> {
-
-        template<typename... Types2>
-        using helper = take_pack<count - 1, Types1...>::template helper<Types2..., Type>;
-
-        using type   = helper<>;
-    };
-
-    template<typename... Types>
-    struct take_pack<0, Types...> {
-        template<typename... Types2>
-        using helper = std::tuple<Types2...>;
-
-        using type = helper<>;
-    };
-
-    template<size_t count, typename... Types>
-    using take_pack_t = typename mylib::take_pack<count, Types...>::type;
-
-    template<size_t count, typename... Types>
-    struct drop_pack;
-
-    template<size_t count, typename Type, typename... Types>
-    struct drop_pack<count, Type, Types...> {
-        using type = drop_pack<count - 1, Types...>::type;
-    };
-
-    template<typename... Types>
-    struct drop_pack<0, Types...> {
-        using type = std::tuple<Types...>;
-    };
-
-    template<size_t count, typename... Types>
-    using drop_pack_t = mylib::drop_pack<count, Types...>::type;
+    // following are all non-standard
 }
 
 #ifdef MYLIB_UNITTEST
