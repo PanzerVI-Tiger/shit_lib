@@ -1,2 +1,0 @@
-
-    main = print 0

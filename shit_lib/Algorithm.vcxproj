@@ -29,7 +29,7 @@
     <ClInclude Include="mylib\head\macro_meta\inc.hpp" />
     <ClInclude Include="mylib\head\macro_meta\numeric.hpp" />
     <ClInclude Include="mylib\head\macro_meta\tuple.hpp" />
-    <ClInclude Include="mylib\head\preprocessor.hpp" />
+    <ClInclude Include="mylib\head\macro_meta.hpp" />
     <ClInclude Include="mylib\head\macro_meta\bool.hpp" />
     <ClInclude Include="mylib\head\macro_meta\if.hpp" />
     <ClInclude Include="mylib\head\macro_meta\macro_base.hpp" />

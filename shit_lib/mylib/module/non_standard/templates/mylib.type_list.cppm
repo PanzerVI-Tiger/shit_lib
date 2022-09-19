@@ -53,8 +53,9 @@ export namespace mylib {
     
     // non-standard
     template<typename... Types>
-    struct front_pack
-    {};
+    struct front_pack {
+        struct type; // avoid some error
+    };
 
     // non-standard
     template<typename Type, typename... Types>
@@ -64,19 +65,19 @@ export namespace mylib {
 
     // non-standard
     template<typename... Types>
-    using front_pack_t = typename mylib::front_pack<Types...>;
+    using front_pack_t = typename mylib::front_pack<Types...>::type;
     
     template<typename... Types>
     struct back_pack {
         template<typename typeList>
         struct helper
         {
-            using type = mylib::type_list<>;
+            struct type;
         };
 
         template<typename Type>
         struct helper<mylib::type_list<Type>> {
-            using type = mylib::type_list<Type>;
+            using type = Type;
         };
 
         using type =
@@ -102,6 +103,14 @@ export namespace mylib {
     template<typename... Types>
     using tail_pack_t = mylib::drop_pack_t<1, Types...>;
 
+    template<size_t index, typename... Types>
+    struct at_pack {
+        using type = mylib::drop_pack_t<index, Types...>::template front<>;
+    };
+
+    template<size_t index, typename... Types>
+    using at_pack_t = typename mylib::at_pack<index, Types...>::type;
+    
     template<
         template<typename, typename>
         typename    BinaryMetaPredicate,
@@ -359,13 +368,20 @@ export namespace mylib {
         typename... Types
     > using fold_first_pack_t =
         typename fold_first_pack<BinaryMetaFunction, Types...>::type;
-        
+    
+    template<
+        template<typename, typename>
+        typename    BinaryMetaFunction,
+        typename... Types
+    > struct fold_right_first_pack
+    {};
+    
     template<
         template<typename, typename>
         typename    BinaryMetaFunction,
         typename    Type,
         typename... Types
-    > struct fold_right_first_pack {
+    > struct fold_right_first_pack<BinaryMetaFunction, Type, Types...> {
         using type =
             typename BinaryMetaFunction<
                 Type,
@@ -504,8 +520,12 @@ export namespace mylib::detail {
         typename... Types
     > struct sort_pack_impl<BinaryMetaPredicate, mylib::type_list<Type, Types...>> {
         using list     = mylib::type_list<Types...>;
-        using pred     = mylib::detail::sort_filter_pred<BinaryMetaPredicate, Type>;
-        using not_pred = mylib::detail::not_meta_func<pred::temp>;
+        template<typename Type1>
+        using pred     =
+            mylib::detail::sort_filter_pred<
+                BinaryMetaPredicate, Type
+            >::template temp<Type1>;
+        using not_pred = mylib::detail::not_meta_func<pred>;
         
         using left_part =
             typename sort_pack_impl<
@@ -518,7 +538,7 @@ export namespace mylib::detail {
             typename sort_pack_impl<
                 BinaryMetaPredicate,
                 typename list
-              ::template filter<pred::temp>
+              ::template filter<pred>
             >::type
           ::template push_front<Type>;
         
@@ -580,6 +600,9 @@ export namespace mylib {
         template<bool = true>
         using tail         = mylib::tail_pack_t<Types...>;
 
+        template<size_t index>
+        using at           = mylib::at_pack_t<index, Types...>;
+        
         template<
             template<typename>
             typename UnaryMetaFunction
@@ -633,12 +656,12 @@ export namespace mylib {
         > using fold_right =
             mylib::fold_right_pack_t<BinaryMetaFunction, Initial, Types...>;
 
-        /*template<
+        template<
             template<typename, typename>
             typename BinaryMetaFunction
         > requires (sizeof...(Types) != 0)
         using fold_right_first =
-            mylib::fold_right_first_pack_t<BinaryMetaFunction, Types...>;*/
+            mylib::fold_right_first_pack_t<BinaryMetaFunction, Types...>;
         
 #       ifndef __INTELLISENSE__
         
@@ -669,5 +692,9 @@ export namespace mylib {
             typename BinaryMetaPredicate
         > using sort =
             typename mylib::detail::sort_pack_impl<BinaryMetaPredicate, type_list>::type;
+
+        static constexpr size_t size() noexcept {
+            return sizeof...(Types);
+        }
     };
 }

@@ -56,3 +56,7 @@
     mylib_pp_tuple_cat_n_impl(count, __VA_ARGS__)
 #define mylib_pp_tuple_cat(...)                                                         \
     mylib_pp_tuple_cat_n(mylib_pp_variadic_size(__VA_ARGS__), __VA_ARGS__)
+
+#define mylib_pp_tuple_apply_impl(tuple, callable) callable tuple
+#define mylib_pp_tuple_apply(tuple, callable)                                           \
+    mylib_pp_tuple_apply_impl(tuple, callable)
