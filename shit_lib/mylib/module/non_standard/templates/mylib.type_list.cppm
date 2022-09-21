@@ -9,53 +9,8 @@ export namespace mylib {
     struct type_list;
     
     // non-standard
-    template<size_t count, typename... Types>
-    struct take_pack
-    {
-        template<typename... Types2>
-        using helper = mylib::type_list<Types2...>;
-
-        using type = helper<>;
-    };
-
-    // non-standard
-    template<size_t count, typename Type, typename... Types1>
-        requires (count != 0)
-    struct take_pack<count, Type, Types1...> {
-
-        template<typename... Types2>
-        using helper = take_pack<count - 1, Types1...>::template helper<Types2..., Type>;
-
-        using type   = helper<>;
-    };
-
-    // non-standard
-    template<size_t count, typename... Types>
-    using take_pack_t = typename mylib::take_pack<count, Types...>::type;
-
-    // non-standard
-    template<size_t count, typename... Types>
-    struct drop_pack
-    {
-        using type = mylib::type_list<Types...>;
-    };
-
-    // non-standard
-    template<size_t count, typename Type, typename... Types>
-        requires (count != 0)
-    struct drop_pack<count, Type, Types...> {
-        using type = drop_pack<count - 1, Types...>::type;
-    };
-
-    // non-standard
-    template<size_t count, typename... Types>
-    using drop_pack_t = mylib::drop_pack<count, Types...>::type;
-    
-    // non-standard
     template<typename... Types>
-    struct front_pack {
-        struct type; // avoid some error
-    };
+    struct front_pack;
 
     // non-standard
     template<typename Type, typename... Types>
@@ -68,44 +23,32 @@ export namespace mylib {
     using front_pack_t = typename mylib::front_pack<Types...>::type;
     
     template<typename... Types>
-    struct back_pack {
-        template<typename typeList>
-        struct helper
-        {
-            struct type;
-        };
-
-        template<typename Type>
-        struct helper<mylib::type_list<Type>> {
-            using type = Type;
-        };
-
-        using type =
-            typename helper<mylib::drop_pack_t<sizeof...(Types) - 1, Types...>>::type;
+    struct back_pack; // empty pack match this
+    
+    template<typename Type, typename... Types>
+    struct back_pack<Type, Types...> {
+        using type = typename mylib::back_pack<Types...>::type;
+    };
+    
+    template<typename Type>
+    struct back_pack<Type> {
+        using type = Type;
     };
 
     template<typename... Types>
     using back_pack_t = typename mylib::back_pack<Types...>::type;
     
-    template<typename... Types>
-    struct head_pack {
-        using type = mylib::take_pack_t<sizeof...(Types) - 1, Types...>;
-    };
-
-    template<typename... Types>
-    using head_pack_t = mylib::take_pack_t<sizeof...(Types) - 1, Types...>;
-
-    template<typename... Types>
-    struct tail_pack {
-        using type = mylib::drop_pack_t<1, Types...>;
-    };
-
-    template<typename... Types>
-    using tail_pack_t = mylib::drop_pack_t<1, Types...>;
-
     template<size_t index, typename... Types>
-    struct at_pack {
-        using type = mylib::drop_pack_t<index, Types...>::template front<>;
+    struct at_pack;
+
+    template<size_t index, typename Type, typename... Types>
+    struct at_pack<index, Type, Types...> {
+        using type = at_pack<index - 1, Types...>;
+    };
+
+    template<typename Type, typename... Types>
+    struct at_pack<0, Type, Types...> {
+        using type = Type;
     };
 
     template<size_t index, typename... Types>
@@ -373,8 +316,7 @@ export namespace mylib {
         template<typename, typename>
         typename    BinaryMetaFunction,
         typename... Types
-    > struct fold_right_first_pack
-    {};
+    > struct fold_right_first_pack;
     
     template<
         template<typename, typename>
@@ -430,23 +372,6 @@ export namespace mylib {
     > using fold_right_pack_t =
         typename mylib::fold_right_pack<BinaryMetaFunction, Initial, Types...>::type;
     
-    template<
-        template<typename, typename>
-        typename    BinaryMetaPredicate,
-        typename... Types
-    > struct sort_pack {
-        using type = mylib::type_list<>;
-    };
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaPredicate,
-        typename    Type,
-        typename... Types
-    > struct sort_pack<BinaryMetaPredicate, Type, Types...> {
-        
-    };
-    
     template<typename... Types>
     struct type_list_cat {
         using type = type_list<Types...>;
@@ -462,8 +387,7 @@ export namespace mylib {
     using type_list_cat_t = typename mylib::type_list_cat<Types...>::type;
 
     template<typename Type>
-    struct to_type_list
-    {};
+    struct to_type_list;
 
     template<typename Type, Type... values>
     struct to_type_list<mylib::integer_sequence<Type, values...>> {
@@ -483,6 +407,41 @@ export namespace mylib {
 }
 
 export namespace mylib::detail {
+
+    template<size_t count, typename TypeList, typename... Types>
+    struct type_list_take_impl {
+        using type = TypeList;
+    };
+
+    template<size_t count, typename Type, typename... Types0, typename... Types1>
+        requires (count != 0)
+    struct type_list_take_impl<count, mylib::type_list<Types1...>, Type, Types0...> {
+        using type =
+            typename type_list_take_impl<
+                count - 1,
+                mylib::type_list<Types1..., Type>,
+                Types0...
+            >::type;
+    };
+
+    template<size_t count, typename... Types>
+    struct type_list_drop_impl {
+        using type = type_list<Types...>;
+    };
+
+    template<size_t count, typename Type, typename... Types>
+        requires (count != 0)
+    struct type_list_drop_impl<count, Type, Types...> {
+        using type = typename type_list_drop_impl<count - 1, Types...>::type;
+    };
+    
+    template<typename... Types>
+    struct type_list_pop_front_impl;
+
+    template<typename Type, typename... Types>
+    struct type_list_pop_front_impl<Type, Types...> {
+        using type = mylib::type_list<Types...>;
+    };
 
     template<
         template<typename...>
@@ -548,24 +507,20 @@ export namespace mylib::detail {
                 right_part
             >;
     };
-}
 
-export namespace mylib {
-    
     template<typename... Types>
-    struct type_list {
-        using type         = type_list;
-
+    struct type_list_base {
+        
         template<typename... Types1>
         using append_front =
             type_list_cat_t<
-                mylib::to_type_list<Types1>..., type_list
+                mylib::to_type_list<Types1>..., type_list<Types...>
             >;
         
         template<typename... Types1>
         using append_back  =
             mylib::type_list_cat_t<
-                type_list, mylib::to_type_list_t<Types1>...
+                type_list<Types...>, mylib::to_type_list_t<Types1>...
             >;
 
         template<typename... Types1>
@@ -574,35 +529,6 @@ export namespace mylib {
         template<typename... Types1>
         using push_back    = type_list<Types..., Types1...>;
 
-        template<bool = true>
-            requires (sizeof...(Types) != 0)
-        using pop_front    = mylib::drop_pack_t<1, Types...>;
-
-        template<bool = true>
-            requires (sizeof...(Types) != 0)
-        using pop_back     = mylib::take_pack_t<sizeof...(Types) - 1, Types...>;
-
-        template<size_t count>
-        using take         = mylib::take_pack_t<count, Types...>;
-        
-        template<size_t count>
-        using drop         = mylib::drop_pack_t<count, Types...>;
-
-        template<bool = true>
-        using front        = mylib::front_pack_t<Types...>;
-
-        template<bool = true>
-        using back         = mylib::back_pack_t<Types...>;
-
-        template<bool = true>
-        using head         = mylib::head_pack_t<Types...>;
-
-        template<bool = true>
-        using tail         = mylib::tail_pack_t<Types...>;
-
-        template<size_t index>
-        using at           = mylib::at_pack_t<index, Types...>;
-        
         template<
             template<typename>
             typename UnaryMetaFunction
@@ -612,13 +538,12 @@ export namespace mylib {
             template<typename...>
             typename Template
         > using to = Template<Types...>;
-
-    private:
         
+    private:
         struct to_integer_sequence_impl {
-            template<typename...>
+            template<typename... IntegralSequences>
             struct helper {
-                using type = void;
+                using type = mylib::integer_sequence<size_t>;
             };
 
             template<typename Type, Type... values>
@@ -634,35 +559,21 @@ export namespace mylib {
         template<bool = true>
             requires (!mylib::is_same_v<typename to_integer_sequence_impl::type, void>)
         using to_integer_sequence = typename to_integer_sequence_impl::type;
-        
+                
         template<
             template<typename, typename>
             typename BinaryMetaFunction,
             typename Initial
         > using fold_left =
             mylib::fold_left_pack_t<BinaryMetaFunction, Initial, Types...>;
-
-        template<
-            template<typename, typename>
-            typename BinaryMetaFunction
-        > requires (sizeof...(Types) != 0)
-        using fold_left_first =
-            mylib::fold_left_first_pack_t<BinaryMetaFunction, Types...>;
-            
+                    
         template<
             template<typename, typename>
             typename BinaryMetaFunction,
             typename Initial
         > using fold_right =
             mylib::fold_right_pack_t<BinaryMetaFunction, Initial, Types...>;
-
-        template<
-            template<typename, typename>
-            typename BinaryMetaFunction
-        > requires (sizeof...(Types) != 0)
-        using fold_right_first =
-            mylib::fold_right_first_pack_t<BinaryMetaFunction, Types...>;
-        
+                    
 #       ifndef __INTELLISENSE__
         
         template<bool = true>
@@ -674,7 +585,7 @@ export namespace mylib {
         using reverse = type_list<>;
 
 #       endif
-
+        
         template<
             template<typename>
             typename UnaryMetaPredicate
@@ -686,15 +597,78 @@ export namespace mylib {
                     type_list<>
                 >...
             >;
-
+        
         template<
             template<typename, typename>
             typename BinaryMetaPredicate
         > using sort =
-            typename mylib::detail::sort_pack_impl<BinaryMetaPredicate, type_list>::type;
+            typename mylib::detail::sort_pack_impl<
+                BinaryMetaPredicate, type_list<Types...>
+            >::type;
 
         static constexpr size_t size() noexcept {
             return sizeof...(Types);
         }
+    };
+}
+
+export namespace mylib {
+    
+    template<typename... Types>
+    struct type_list :
+        mylib::detail::type_list_base<Types...>
+    {
+        using type = type_list;
+
+        template<size_t count>
+        using take =
+            typename mylib::detail::type_list_take_impl<
+                count, mylib::type_list<>, Types...
+            >::type;
+
+        template<size_t count>
+        using drop =
+            typename mylib::detail::type_list_drop_impl<count, Types...>::type;
+
+        template<bool = true>
+        using pop_front =
+            typename mylib::detail::type_list_pop_front_impl<Types...>::type;
+
+        template<bool = true>
+        using pop_back = take<sizeof...(Types) - 1>;
+
+        template<bool = true>
+        using front = mylib::front_pack_t<Types...>;
+
+        template<bool = true>
+        using back = mylib::back_pack_t<Types...>;
+
+        template<bool = true>
+        using head = pop_back<>;
+
+        template<bool = true>
+        using tail = pop_front<>;
+
+        template<size_t index>
+        using at = mylib::at_pack_t<index, Types...>;
+
+        template<
+            template<typename, typename>
+            typename BinaryMetaFunction
+        > using fold_left_first =
+            mylib::fold_left_first_pack_t<BinaryMetaFunction, Types...>;
+
+        template<
+            template<typename, typename>
+            typename BinaryMetaFunction
+        > using fold_right_first =
+            mylib::fold_right_first_pack_t<BinaryMetaFunction, Types...>;
+    };
+
+    template<>
+    struct type_list<> :
+        mylib::detail::type_list_base<>
+    {
+        using type = type_list;
     };
 }

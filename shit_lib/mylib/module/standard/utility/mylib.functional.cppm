@@ -27,8 +27,6 @@ export namespace mylib {
     struct function_traits
     {};
 
-#   ifndef __INTELLISENSE__
-    
     // ref: 0: without     reference qualifier,
     //      1: with lvalue reference qualifier
     //      2: with rvalue reference qualifier
@@ -48,18 +46,18 @@ export namespace mylib {
             mylib_pp_if(isNoexcept)(noexcept)()                                         \
         >                                                                               \
         {                                                                               \
-            using function_type                                                         \
-                =   Result(                                                             \
-                        Params...                                                       \
-                        mylib_pp_if(isVararg)(...)()                                    \
-                    )                                                                   \
-                    mylib_pp_if(isConst)(const)()                                       \
-                    mylib_pp_if(isVolatile)(volatile)()                                 \
-                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
-                    (&)                                                                 \
-                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
-                    (&&)())                                                             \
-                    mylib_pp_if(isNoexcept)(noexcept)();                                \
+            using function_type =                                                       \
+                Result(                                                                 \
+                    Params...                                                           \
+                    mylib_pp_if(isVararg)(...)()                                        \
+                )                                                                       \
+                mylib_pp_if(isConst)(const)()                                           \
+                mylib_pp_if(isVolatile)(volatile)()                                     \
+                mylib_pp_if(mylib_pp_equal(ref, 1))                                     \
+                (&)                                                                     \
+                (mylib_pp_if(mylib_pp_equal(ref, 2))                                    \
+                (&&)())                                                                 \
+                mylib_pp_if(isNoexcept)(noexcept)();                                    \
                                                                                         \
             using argument_types = mylib::type_list<Params...>;                         \
                                                                                         \
@@ -118,44 +116,6 @@ export namespace mylib {
         (0, 0, 1, 2, 1), (1, 0, 1, 2, 1), (0, 1, 1, 2, 1), (1, 1, 1, 2, 1)
     );
 
-#   else
-
-    template<typename Function>
-        requires mylib::is_function_v<Function>
-    struct function_traits<Function> {
-        using function = Function;
-
-        static constexpr bool is_vararg()               noexcept {
-            return false;
-        }
-        
-        static constexpr bool is_const()                noexcept {
-            return false;
-        }
-        
-        static constexpr bool is_volatile()             noexcept {
-            return false;
-        }
-        
-        static constexpr bool has_lvalueref_qualifier() noexcept {
-            return false;
-        }
-        
-        static constexpr bool has_rvalueref_qualifier() noexcept {
-            return false;
-        }
-        
-        static constexpr bool has_reference_qualifier() noexcept {
-            return false;
-        }
-        
-        static constexpr bool is_noexcept()             noexcept {
-            return true;
-        }
-    };
-
-#   endif
-    
     template<typename MemberPointer>
     struct member_pointer_traits
     {};
@@ -199,7 +159,7 @@ export namespace mylib {
     struct invocation_traits<Function> :
         mylib::function_traits<Function>
     {
-        using type = Function;
+        using type                = Function;
         using invocation_category = mylib::function_tag;
     };
 
@@ -268,7 +228,9 @@ export namespace mylib {
     };
 
 #   endif
-            
+    
+    // vv will cause intellisense to crash vv
+    
     // for member function pointer
     template<typename MemberFunctionPointer>
         requires mylib::is_member_function_pointer_v<MemberFunctionPointer>
@@ -281,6 +243,9 @@ export namespace mylib {
         using invocation_category = mylib::member_function_pointer_tag;
     };
 
+    // vv will cause intellisense to crash vv
+    
+    // for member object pointer
     template<typename MemberObjectPointer>
         requires mylib::is_member_object_pointer_v<MemberObjectPointer>
     struct invocation_traits<MemberObjectPointer> {
@@ -333,6 +298,9 @@ export namespace mylib {
     template<typename FunctionType>
     class function {
         
+        struct {
+            const std::type_info& typeInfo;
+        } data;
     };
     
     template<typename Type = void>

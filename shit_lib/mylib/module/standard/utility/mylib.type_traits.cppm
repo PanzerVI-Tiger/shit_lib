@@ -925,8 +925,8 @@ export namespace mylib {
 
     // non-standard
     template<typename Type>
-    inline constexpr bool is_function_pointer_v
-        = mylib::is_pointer_v<Type> && mylib::is_function_v<mylib::remove_pointer_t<Type>>;
+    inline constexpr bool is_function_pointer_v =
+        mylib::is_pointer_v<Type> && mylib::is_function_v<mylib::remove_pointer_t<Type>>;
 
     // non-standard
     template<typename Type>
@@ -939,8 +939,7 @@ export namespace mylib {
     // C++17
     // __is_member_pointer is clang only
     template<typename Type>
-    inline constexpr bool is_member_pointer_v
-        = __is_member_pointer(Type);
+    inline constexpr bool is_member_pointer_v = __is_member_pointer(Type);
 
     // C++11
     // __is_member_pointer is clang only
@@ -1047,21 +1046,21 @@ namespace mylib::detail {
 
     // implementation
     template<typename Type>
-    inline constexpr bool is_member_function_pointer_v_impl
-        = false;
+    inline constexpr bool is_member_function_pointer_v_impl                      =
+        false;
 
     // implementation
     template<typename MemberType, typename Class>
-    inline constexpr bool is_member_function_pointer_v_impl<MemberType Class::*>
-        = is_function_v<MemberType>;
+    inline constexpr bool is_member_function_pointer_v_impl<MemberType Class::*> =
+        is_function_v<MemberType>;
 }
 
 export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_member_function_pointer_v
-        = mylib::detail::is_member_function_pointer_v_impl<mylib::remove_cv_t<Type>>;
+    inline constexpr bool is_member_function_pointer_v =
+        mylib::detail::is_member_function_pointer_v_impl<mylib::remove_cv_t<Type>>;
 
     
     // C++11
@@ -1366,7 +1365,7 @@ export namespace mylib {
     // C++17
     template<typename Type>
     inline constexpr bool is_polymorphic_v =
-        requires { dynamic_cast<const volatile void*>(static_cast<Type*>(nullptr)) };
+        requires(Type* object) { dynamic_cast<const volatile void*>(object) };
     
     // C++11
     template<typename Type>
@@ -1396,8 +1395,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_polymorphic_v
-        = decltype(mylib::detail::test_is_polymorphic<Type>(nullptr))::value;
+    inline constexpr bool is_polymorphic_v =
+        decltype(mylib::detail::test_is_polymorphic<Type>(nullptr))::value;
    
     // C++11
     template<typename Type>
@@ -1522,7 +1521,7 @@ export namespace mylib {
     // C++17
     template<typename Type, typename... Params>
     inline constexpr bool is_constructible_v =
-        requires{ Type(mylib::declval<Params>()... ); };
+        requires(Params... params) { Type(params... ); };
 
     // C++11
     template<typename Type, typename... Params>
@@ -1552,8 +1551,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type, typename... Params>
-    inline constexpr bool is_constructible_v
-        = decltype(mylib::detail::test_is_constructible<Type, Params...>(0))::value;
+    inline constexpr bool is_constructible_v =
+        decltype(mylib::detail::test_is_constructible<Type, Params...>(0))::value;
 
     // C++11
     template<typename Type, typename... Params>
@@ -1565,8 +1564,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type, typename... Params>
-    inline constexpr bool is_trivially_constructible_v
-        = __is_trivially_constructible(Type, Params...);
+    inline constexpr bool is_trivially_constructible_v =
+        __is_trivially_constructible(Type, Params...);
 
     // C++11
     template<typename Type, typename... Params>
@@ -1579,8 +1578,8 @@ export namespace mylib {
     // C++17
     // __is_nothrow_constructible is available in clang, gcc and msvc
     template<typename Type, typename... Params>
-    inline constexpr bool is_nothrow_constructible_v
-        = __is_nothrow_constructible(Type, Params...);
+    inline constexpr bool is_nothrow_constructible_v =
+        __is_nothrow_constructible(Type, Params...);
 
     // C++11
     // __is_nothrow_constructible is available in clang, gcc and msvc
@@ -1594,7 +1593,7 @@ export namespace mylib {
     // C++17
     template<typename Type, typename... Params>
     inline constexpr bool is_nothrow_constructible_v =
-        requires{ { Type(mylib::declval<Params>()...) } noexcept; };
+        requires(Params... params) { { Type(params...) } noexcept; };
 
     // C++11
     template<typename Type, typename... Params>
@@ -1624,8 +1623,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_nothrow_constructible_v
-        = decltype(mylib::detail::test_is_nothrow_constructible<Type>(0))::value;
+    inline constexpr bool is_nothrow_constructible_v =
+        decltype(mylib::detail::test_is_nothrow_constructible<Type>(0))::value;
 
     // C++11
     template<typename Type>
@@ -1640,8 +1639,8 @@ export namespace mylib {
     // C++17
     // __is_constructible is available in clang, gcc and msvc
     template<typename Type>
-    inline constexpr bool is_default_constructible_v
-        = __is_constructible(Type);
+    inline constexpr bool is_default_constructible_v =
+        __is_constructible(Type);
 
     // C++11
     // __is_constructible is available in clang, gcc and msvc
@@ -1652,8 +1651,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_triviallt_default_constructible_v
-        = __is_constructible(Type);
+    inline constexpr bool is_triviallt_default_constructible_v =
+        __is_constructible(Type);
 
     // C++11
     template<typename Type>
@@ -1664,8 +1663,8 @@ export namespace mylib {
     // C++17
     // __is_nothrow_constructible is available in clang, gcc and msvc
     template<typename Type>
-    inline constexpr bool is_nothrow_default_constructible_v
-        = __is_nothrow_constructible(Type);
+    inline constexpr bool is_nothrow_default_constructible_v =
+        __is_nothrow_constructible(Type);
 
     // C++11
     // __is_nothrow_constructible is available in clang, gcc and msvc
@@ -1678,8 +1677,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_default_constructible_v
-        = mylib::is_constructible_v<Type>;
+    inline constexpr bool is_default_constructible_v =
+        mylib::is_constructible_v<Type>;
 
     // C++11
     template<typename Type>
@@ -1689,8 +1688,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_triviallt_default_constructible_v
-        = mylib::is_trivially_constructible_v<Type>;
+    inline constexpr bool is_triviallt_default_constructible_v =
+        mylib::is_trivially_constructible_v<Type>;
 
     // C++11
     template<typename Type>
@@ -1700,8 +1699,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_nothrow_default_constructible_v
-        = mylib::is_nothrow_constructible_v<Type>;
+    inline constexpr bool is_nothrow_default_constructible_v =
+        mylib::is_nothrow_constructible_v<Type>;
 
     // C++11
     template<typename Type>
@@ -1716,8 +1715,8 @@ export namespace mylib {
     // C++17
     // __is_constructible is available in clang, gcc and msvc
     template<typename Type>
-    inline constexpr bool is_copy_constructible_v
-        = __is_constructible(Type, mylib::add_rvalue_reference_t<const Type>);
+    inline constexpr bool is_copy_constructible_v =
+        __is_constructible(Type, mylib::add_rvalue_reference_t<const Type>);
 
     // C++11
     // __is_constructible is available in clang, gcc and msvc
@@ -1730,8 +1729,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_trivially_copy_constructible_v
-        = __is_constructible(Type, mylib::add_rvalue_reference_t<const Type>);
+    inline constexpr bool is_trivially_copy_constructible_v =
+        __is_constructible(Type, mylib::add_rvalue_reference_t<const Type>);
 
     // C++11
     template<typename Type>
@@ -1744,8 +1743,8 @@ export namespace mylib {
     // C++17
     // __is_nothrow_constructible is available in clang, gcc and msvc
     template<typename Type>
-    inline constexpr bool is_nothrow_copy_constructible_v
-        = __is_nothrow_constructible(Type, mylib::add_rvalue_reference_t<const Type>);
+    inline constexpr bool is_nothrow_copy_constructible_v =
+        __is_nothrow_constructible(Type, mylib::add_rvalue_reference_t<const Type>);
 
     // C++11
     // __is_nothrow_constructible is available in clang, gcc and msvc
@@ -1760,8 +1759,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_copy_constructible_v
-        = mylib::is_constructible_v<Type, mylib::add_rvalue_reference_t<const Type>>;
+    inline constexpr bool is_copy_constructible_v =
+        mylib::is_constructible_v<Type, mylib::add_rvalue_reference_t<const Type>>;
 
     // C++11
     template<typename Type>
@@ -1771,8 +1770,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_trivially_copy_constructible_v
-        = mylib::is_trivially_constructible_v<
+    inline constexpr bool is_trivially_copy_constructible_v =
+        mylib::is_trivially_constructible_v<
             Type, mylib::add_rvalue_reference_t<const Type>
         >;
 
@@ -1784,8 +1783,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_nothrow_copy_constructible_v
-        = mylib::is_nothrow_constructible_v<
+    inline constexpr bool is_nothrow_copy_constructible_v =
+        mylib::is_nothrow_constructible_v<
             Type, mylib::add_rvalue_reference_t<const Type>
         >;
 
@@ -1802,8 +1801,8 @@ export namespace mylib {
     // C++17
     // __is_constructible is available in clang, gcc and msvc
     template<typename Type>
-    inline constexpr bool is_move_constructible_v
-        = __is_constructible(Type, mylib::add_rvalue_reference_t<Type>);
+    inline constexpr bool is_move_constructible_v =
+        __is_constructible(Type, mylib::add_rvalue_reference_t<Type>);
 
     // C++11
     // __is_constructible is available in clang, gcc and msvc
@@ -1816,8 +1815,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_trivially_move_constructible_v
-        = __is_constructible(Type, mylib::add_rvalue_reference_t<Type>);
+    inline constexpr bool is_trivially_move_constructible_v =
+        __is_constructible(Type, mylib::add_rvalue_reference_t<Type>);
 
     // C++11
     template<typename Type>
@@ -1830,8 +1829,8 @@ export namespace mylib {
     // C++17
     // __is_nothrow_constructible is available in clang, gcc and msvc
     template<typename Type>
-    inline constexpr bool is_nothrow_move_constructible_v
-        = __is_nothrow_constructible(Type, mylib::add_rvalue_reference_t<Type>);
+    inline constexpr bool is_nothrow_move_constructible_v =
+        __is_nothrow_constructible(Type, mylib::add_rvalue_reference_t<Type>);
 
     // C++11
     // __is_nothrow_constructible is available in clang, gcc and msvc
@@ -1846,8 +1845,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_move_constructible_v
-        = mylib::is_constructible_v<Type, mylib::add_rvalue_reference_t<Type>>;
+    inline constexpr bool is_move_constructible_v =
+        mylib::is_constructible_v<Type, mylib::add_rvalue_reference_t<Type>>;
 
     // C++11
     template<typename Type>
@@ -1857,8 +1856,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_trivially_move_constructible_v
-        = mylib::is_trivially_constructible_v<Type, mylib::add_rvalue_reference_t<Type>>;
+    inline constexpr bool is_trivially_move_constructible_v =
+        mylib::is_trivially_constructible_v<Type, mylib::add_rvalue_reference_t<Type>>;
 
     // C++11
     template<typename Type>
@@ -1868,8 +1867,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_nothrow_move_constructible_v
-        = mylib::is_nothrow_constructible_v<Type, mylib::add_rvalue_reference_t<Type>>;
+    inline constexpr bool is_nothrow_move_constructible_v =
+        mylib::is_nothrow_constructible_v<Type, mylib::add_rvalue_reference_t<Type>>;
 
     // C++11
     template<typename Type>
@@ -1879,7 +1878,61 @@ export namespace mylib {
 
 #   endif
 
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
 
+    template<typename To, typename From>
+    inline constexpr bool is_assignable_v = __is_assignable(To, From);
+
+    template<typename To, typename From>
+    struct is_assignable :
+        mylib::bool_constant<__is_assignable(To, From)>
+    {};
+
+#   elif defined(__cpp_concepts)
+
+    template<typename To, typename From>
+    inline constexpr bool is_assignable_v =
+        requires (To to, From from) {
+            to = from;
+        };
+
+    template<typename To, typename From>
+    struct is_assignable :
+        mylib::bool_constant<mylib::is_assignable_v<To, From>>
+    {};
+    
+#   else
+    
+}
+
+namespace mylib::detail {
+
+    template<typename To, typename From>
+    auto test_is_assignable(int) noexcept ->
+        decltype(mylib::declval<To>() = mylib::declval<From>(), mylib::true_type())
+    {}
+    
+    template<typename To, typename From>
+    auto test_is_assignable(...) noexcept ->
+        mylib::false_type
+    {}
+}
+
+export namespace mylib {
+
+    template<typename To, typename From>
+    inline constexpr bool is_assignable_v =
+        mylib::detail::test_is_assignable<To, From>(0);
+
+    template<typename To, typename From>
+    struct is_assignable :
+        mylib::bool_constant<mylib::is_assignable_v<To, From>>
+    {};
+    
+#   endif
+    
+    /*template<typename To, typename From>
+    inline */
     
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
@@ -1962,16 +2015,16 @@ export namespace mylib {
         typename Type, 
         template<typename...>
         typename Template
-    > inline constexpr bool is_specialization_v
-        = false;
+    > inline constexpr bool is_specialization_v                               =
+        false;
     
     // non-standard
     template<
         template<typename...>
         typename    Template,
         typename... Types
-    > inline constexpr bool is_specialization_v<Template<Types...>, Template> 
-        = true;
+    > inline constexpr bool is_specialization_v<Template<Types...>, Template> =
+        true;
 
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
 
@@ -1991,12 +2044,12 @@ export namespace mylib {
 
     // C++17
     template<typename From, typename To>
-    inline constexpr bool is_convertible_v
-        = requires {
-            static_cast<To(*)(To)>(nullptr)(mylib::declval<From>());
+    inline constexpr bool is_convertible_v =
+        requires(From from) {
+            static_cast<To(*)(To)>(nullptr)(from);
         }               ||
        (mylib::is_void_v<From> &&
-           mylib::is_void_v<To>);
+        mylib::is_void_v<To>);
 
     
     // C++11
@@ -2028,13 +2081,12 @@ export namespace mylib {
     
     // C++17
     template<typename From, typename To>
-    inline constexpr bool is_convertible_v
-        = 
-           (decltype(
-                detail::test_is_convertible_v<From, To>(0)
-           )::value)               ||
-           (mylib::is_void_v<From> &&
-            mylib::is_void_v<To>);
+    inline constexpr bool is_convertible_v = 
+       (decltype(
+            detail::test_is_convertible_v<From, To>(0)
+       )::value)               ||
+       (mylib::is_void_v<From> &&
+        mylib::is_void_v<To>);
     
     // C++11
     template<typename From, typename To>
@@ -2049,13 +2101,12 @@ export namespace mylib {
     
     // C++20
     template<typename From, typename To>
-    inline constexpr bool is_nothrow_convertible_v
-        =
-            requires {
-                { static_cast<To(*)(To) noexcept>(nullptr)(mylib::declval<From>()) } noexcept;
-            }                      ||
-           (mylib::is_void_v<From> &&
-            mylib::is_void_v<To>);
+    inline constexpr bool is_nothrow_convertible_v =
+        requires(To(*func)(To) noexcept, From from) {
+            { func(from) } noexcept;
+        }                      ||
+       (mylib::is_void_v<From> &&
+        mylib::is_void_v<To>);
         
 #   else
 
@@ -2082,13 +2133,12 @@ export namespace mylib {
 
     // C++20
     template<typename From, typename To>
-    inline constexpr bool is_nothrow_convertible_v
-        =
-           (decltype(
-               mylib::detail::test_is_nothrow_convertible_v<From, To>(0)
-           )::value)               ||
-           (mylib::is_void_v<From> &&
-            mylib::is_void_v<To>);
+    inline constexpr bool is_nothrow_convertible_v =
+       (decltype(
+           mylib::detail::test_is_nothrow_convertible_v<From, To>(0)
+       )::value)               ||
+       (mylib::is_void_v<From> &&
+        mylib::is_void_v<To>);
 
 #   endif
     
@@ -2100,8 +2150,8 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_scoped_enum_v
-        = mylib::is_enum_v<Type> && !mylib::is_convertible_v<Type, int>;
+    inline constexpr bool is_scoped_enum_v =
+        mylib::is_enum_v<Type> && !mylib::is_convertible_v<Type, int>;
 
     // C++11
     template<typename Type>

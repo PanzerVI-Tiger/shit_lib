@@ -18,14 +18,12 @@ import mylib.utility;
 import mylib.type_list;
 import mylib.type_traits;
 
-export namespace mylib {
+namespace mylib::detail {
     
     template<
         size_t   index,
         typename Type
-    > struct tuple_data
-    {
-    protected:
+    > struct tuple_data {
         using type = Type;
         
         constexpr tuple_data() noexcept
@@ -57,7 +55,6 @@ export namespace mylib {
     struct tuple_data<index, Type> :
         Type
     {
-    protected:
         using type = Type;
         
         constexpr tuple_data() noexcept
@@ -81,8 +78,7 @@ export namespace mylib {
     };
 
     template<typename IndexSequence, typename... Types>
-    struct tuple_impl
-    {};
+    struct tuple_impl;
 
     template<size_t... indices, typename... Types>
     struct tuple_impl<std::index_sequence<indices...>, Types...> :
@@ -109,14 +105,21 @@ export namespace mylib {
             return base_type<index>::get();
         }
     };
+}
 
+export namespace mylib {
+    
     template<typename... Types>
     struct tuple : 
-        protected tuple_impl<std::index_sequence_for<Types...>, Types...>
+        protected mylib::detail::tuple_impl<std::index_sequence_for<Types...>, Types...>
     {
-        using base_type = tuple_impl<std::index_sequence_for<Types...>, Types...>;
+        using base_type =
+            mylib::detail::tuple_impl<std::index_sequence_for<Types...>, Types...>;
 
         using base_type::base_type;
         using base_type::get;
+
+        constexpr tuple(const tuple&) noexcept = default;
+        constexpr tuple(tuple&&)      noexcept = default;
     };
 }
