@@ -15,7 +15,7 @@ import std.core;
 #endif
 
 import mylib.utility;
-import mylib.type_list;
+import mylib.type_pack;
 import mylib.type_traits;
 
 namespace mylib::detail {
@@ -86,7 +86,9 @@ namespace mylib::detail {
     {
         template<size_t index>
         using base_type = tuple_data<index, mylib::at_pack_t<index, Types...>>;
-    
+        
+        constexpr tuple_impl() noexcept = default;
+        
         constexpr tuple_impl(Types&&... data) noexcept :
             tuple_data<indices, Types>{ mylib::forward<Types>(data) }...
         {}

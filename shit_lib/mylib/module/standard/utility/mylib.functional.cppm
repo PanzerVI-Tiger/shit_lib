@@ -27,6 +27,9 @@ export namespace mylib {
     struct function_traits
     {};
 
+    // due to too complex, will crash intellisense
+#   ifndef __INTELLISENSE__n
+
     // ref: 0: without     reference qualifier,
     //      1: with lvalue reference qualifier
     //      2: with rvalue reference qualifier
@@ -61,10 +64,6 @@ export namespace mylib {
                                                                                         \
             using argument_types = mylib::type_list<Params...>;                         \
                                                                                         \
-            template<size_t index>                                                      \
-                requires (sizeof...(Params) != 0)                                       \
-            using argument_type = typename argument_types::template at<index>;          \
-                                                                                        \
             using result_type = Result;                                                 \
                                                                                         \
             static constexpr bool is_vararg()               noexcept {                  \
@@ -80,11 +79,11 @@ export namespace mylib {
             }                                                                           \
                                                                                         \
             static constexpr bool has_lvalueref_qualifier() noexcept {                  \
-                return mylib_pp_equal(ref, 1);                                          \
+                return ref == 1;                                                        \
             }                                                                           \
                                                                                         \
             static constexpr bool has_rvalueref_qualifier() noexcept {                  \
-                return mylib_pp_equal(ref, 2);                                          \
+                return ref == 2;                                                        \
             }                                                                           \
                                                                                         \
             static constexpr bool has_reference_qualifier() noexcept {                  \
@@ -116,6 +115,47 @@ export namespace mylib {
         (0, 0, 1, 2, 1), (1, 0, 1, 2, 1), (0, 1, 1, 2, 1), (1, 1, 1, 2, 1)
     );
 
+    #   else
+
+    template<typename Function>
+        requires mylib::is_function_v<Function>
+    struct function_traits<Function> {
+        using function = Function;
+
+        using argument_types = mylib::type_list<int>;
+        using result_type    = void;
+        
+        static constexpr bool is_vararg()               noexcept {
+            return false;
+        }
+
+        static constexpr bool is_const()                noexcept {
+            return false;
+        }
+
+        static constexpr bool is_volatile()             noexcept {
+            return false;
+        }
+
+        static constexpr bool has_lvalueref_qualifier() noexcept {
+            return false;
+        }
+
+        static constexpr bool has_rvalueref_qualifier() noexcept {
+            return false;
+        }
+
+        static constexpr bool has_reference_qualifier() noexcept {
+            return false;
+        }
+
+        static constexpr bool is_noexcept()             noexcept {
+            return true;
+        }
+    };
+
+#   endif
+    
     template<typename MemberPointer>
     struct member_pointer_traits
     {};
@@ -296,11 +336,12 @@ export namespace mylib {
     };
     
     template<typename FunctionType>
-    class function {
-        
-        struct {
-            const std::type_info& typeInfo;
-        } data;
+    class function;
+
+    template<typename Result, typename... Params>
+    class function<Result (Params...)> {
+        using result_type    = Result;
+        using argument_types = mylib::type_list<Params...>;
     };
     
     template<typename Type = void>

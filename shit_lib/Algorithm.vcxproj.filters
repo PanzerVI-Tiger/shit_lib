@@ -341,6 +341,15 @@
     <ClCompile Include="mylib\module\non_standard\templates\mylib.type_list.cppm">
       <Filter>mylib\module\non_standard\templates</Filter>
     </ClCompile>
+    <ClCompile Include="mylib\module\standard\utility\mylib.cstddef.cppm">
+      <Filter>mylib\module\standard\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.meta_functional.cppm">
+      <Filter>mylib\module\non_standard\templates</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.type_pack.cppm">
+      <Filter>mylib\module\non_standard\templates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mylib\head\macro_meta\repet.hpp">

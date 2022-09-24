@@ -1,199 +1,12 @@
 export module mylib.type_list;
 
+import mylib.type_pack;
 import mylib.type_traits;
-
 
 export namespace mylib {
     
     template<typename... Types>
     struct type_list;
-    
-    // non-standard
-    template<typename... Types>
-    struct front_pack;
-
-    // non-standard
-    template<typename Type, typename... Types>
-    struct front_pack<Type, Types...> {
-        using type = Type;
-    };
-
-    // non-standard
-    template<typename... Types>
-    using front_pack_t = typename mylib::front_pack<Types...>::type;
-    
-    template<typename... Types>
-    struct back_pack; // empty pack match this
-    
-    template<typename Type, typename... Types>
-    struct back_pack<Type, Types...> {
-        using type = typename mylib::back_pack<Types...>::type;
-    };
-    
-    template<typename Type>
-    struct back_pack<Type> {
-        using type = Type;
-    };
-
-    template<typename... Types>
-    using back_pack_t = typename mylib::back_pack<Types...>::type;
-    
-    template<size_t index, typename... Types>
-    struct at_pack;
-
-    template<size_t index, typename Type, typename... Types>
-    struct at_pack<index, Type, Types...> {
-        using type = at_pack<index - 1, Types...>;
-    };
-
-    template<typename Type, typename... Types>
-    struct at_pack<0, Type, Types...> {
-        using type = Type;
-    };
-
-    template<size_t index, typename... Types>
-    using at_pack_t = typename mylib::at_pack<index, Types...>::type;
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaPredicate,
-        typename... Types1
-    > struct is_match_by {
-        
-        template<typename... Types2>
-        static constexpr bool with_v = false;
-
-        template<typename... Types2>
-            requires (sizeof...(Types1) == sizeof...(Types2))
-        static constexpr bool with_v<Types2...> =
-            static_cast<bool>(
-                mylib::conjunction_t<BinaryMetaPredicate<Types1, Types2>...>{}
-            );
-
-        template<typename... Types2>
-        struct with :
-            mylib::bool_constant<with_v<Types2...>>
-        {};
-    };
-    
-    template<typename... Types1>
-    struct is_pack_same {             
-        template<typename... Types2>
-        static constexpr bool as_v =
-            mylib::is_same_v<mylib::type_list<Types1...>, mylib::type_list<Types2...>>;
-        
-        template<typename... Types2>
-        struct as :
-            mylib::bool_constant<as_v<Types2...>>
-        {};
-    };
-    
-    template<typename... Types1>
-    struct is_pack_convertible
-    {
-        template<typename... Types2>
-        static constexpr bool to_v =
-            static_cast<bool>(
-                mylib::conjunction_t<mylib::is_convertible<Types1, Types2>...>{}
-            );
-        
-        template<typename... Types2>
-        struct to :
-            mylib::bool_constant<to_v<Types2...>>
-        {};
-    };
-    
-    // non-standard
-    template<
-        template<typename, typename>
-        typename    BinaryMetaPredicate,
-        typename... Types1
-    > struct is_prefix_by;
-
-    // non-standard
-    template<
-        template<typename, typename>
-        typename BinaryMetaPredicate
-    > struct is_prefix_by<BinaryMetaPredicate> {
-
-        template<bool cond, typename... Types2>
-        struct helper :
-            mylib::bool_constant<cond>
-        {};
-    
-        template<typename... Types2>
-        struct of :
-            mylib::true_type
-        {};
-
-        template<typename... Types2>
-        static constexpr bool of_v = true;
-    };
-
-    // non-standard
-    template<
-        template<typename, typename>
-        typename    BinaryMetaPredicate,
-        typename    Type1,
-        typename... Types1
-    > struct is_prefix_by<BinaryMetaPredicate, Type1, Types1...> {
-    private:
-        
-        template<
-            template<typename, typename>
-            typename,
-            typename...
-        > friend struct is_prefix_by;
-        
-        template<bool cond, typename... Types2>
-        struct helper :
-            mylib::false_type
-        {};
-
-        template<typename Type2, typename... Types2>
-        struct helper<true, Type2, Types2...> :
-                mylib::bool_constant<
-                    is_prefix_by<BinaryMetaPredicate, Types1...>::
-                        template helper<
-                            static_cast<bool>(BinaryMetaPredicate<Type1, Type2>{}),
-                            Types2...
-                        >::value
-                >
-        {};
-    
-    public:
-        template<typename... Types2>
-        static constexpr bool of_v = false;
-
-        template<typename... Types2>
-            requires (sizeof...(Types1) <= sizeof...(Types2))
-        static constexpr bool of_v<Types2...> = helper<true, Types2...>::value;
-        
-        template<typename... Types2>
-        struct of :
-            mylib::bool_constant<of_v<Types2...>>
-        {};
-    };
-
-    // non-standard
-    template<typename... Types1>
-    struct is_prefix :
-        mylib::is_prefix_by<mylib::is_same, Types1...>
-    {};
-
-    // non-standard
-    template<typename... Types1>
-    struct is_convertible_prefix :
-        mylib::is_prefix_by<mylib::is_convertible, Types1...>
-    {};
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaPredicate,
-        typename... Types1
-    > struct is_suffix_by {
-        
-    }; 
 }
 
 namespace mylib::detail {
@@ -226,152 +39,6 @@ export namespace mylib {
     template<typename... Types>
     using reverse_pack_t = reverse_pack<Types...>;
 
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Initial,
-        typename... Types
-    > struct fold_left_pack {
-        using type = Initial;
-    };
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Initial,
-        typename    Type,
-        typename... Types
-    > struct fold_left_pack<BinaryMetaFunction, Initial, Type, Types...> {
-        using type =
-            typename fold_left_pack<
-                BinaryMetaFunction,
-                typename BinaryMetaFunction<Initial, Type>::type,
-                Types...
-            >::type;
-    };
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Initial,
-        typename... Types
-    > using fold_left_pack_t =
-        typename fold_left_pack<BinaryMetaFunction, Initial, Types...>::type;
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Type,
-        typename... Types
-    > struct fold_1eft_pack {
-        using type = fold_left_pack_t<BinaryMetaFunction, Type, Types...>;
-    };
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename... Types
-    > struct fold_left_first_pack {
-        using type = typename fold_1eft_pack<BinaryMetaFunction, Types...>::type;
-    };
-        
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename... Types
-    > using fold_left_first_pack_t =
-        typename fold_left_first_pack<BinaryMetaFunction, Types...>::type;
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Initial,
-        typename... Types
-    > using fold_pack =
-        typename fold_left_pack<BinaryMetaFunction, Initial, Types...>::type;
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Initial,
-        typename... Types
-    > using fold_pack_t =
-        typename fold_pack<BinaryMetaFunction, Initial, Types...>::type;
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename... Types
-    > using fold_first_pack =
-        typename fold_left_first_pack<BinaryMetaFunction, Types...>::type;
-
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename... Types
-    > using fold_first_pack_t =
-        typename fold_first_pack<BinaryMetaFunction, Types...>::type;
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename... Types
-    > struct fold_right_first_pack;
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Type,
-        typename... Types
-    > struct fold_right_first_pack<BinaryMetaFunction, Type, Types...> {
-        using type =
-            typename BinaryMetaFunction<
-                Type,
-                typename fold_right_first_pack<BinaryMetaFunction, Types...>::type
-            >::type;
-    };
-
-    template<
-        template<typename, typename>
-        typename BinaryMetaFunction,
-        typename Type
-    > struct fold_right_first_pack<BinaryMetaFunction, Type> {
-        using type = Type;
-    };
-    
-    template<
-        template<typename, typename>
-        typename BinaryMetaFunction,
-        typename Type1,
-        typename Type2
-    > struct fold_right_first_pack<BinaryMetaFunction, Type1, Type2> {
-        using type = typename BinaryMetaFunction<Type1, Type2>::type;
-    };
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename... Types
-    > using fold_right_first_pack_t =
-        typename fold_right_first_pack<BinaryMetaFunction, Types...>::type;
-    
-    template<
-        template<typename, typename>
-        typename    BinaryMetaFunction,
-        typename    Initial,
-        typename... Types
-    > struct fold_right_pack {
-        using type = mylib::fold_right_first_pack_t<BinaryMetaFunction, Types..., Initial>;
-    };
-
-    template<
-        template<typename, typename>
-    typename    BinaryMetaFunction,
-        typename    Initial,
-        typename... Types
-    > using fold_right_pack_t =
-        typename mylib::fold_right_pack<BinaryMetaFunction, Initial, Types...>::type;
-    
     template<typename... Types>
     struct type_list_cat {
         using type = type_list<Types...>;
@@ -393,15 +60,15 @@ export namespace mylib {
     struct to_type_list<mylib::integer_sequence<Type, values...>> {
         using type = mylib::type_list<mylib::integral_constant<Type, values>...>;
     };
-    
+
     template<
         template<typename...>
-        typename    Template,
+    typename    Template,
         typename... Types
     > struct to_type_list<Template<Types...>> {
-        using type = mylib::type_list<Types...>;
+        using type = mylib::type_list<Types...>::type;
     };
-    
+        
     template<typename Type>
     using to_type_list_t = typename mylib::to_type_list<Type>::type;
 }
@@ -443,6 +110,61 @@ export namespace mylib::detail {
         using type = mylib::type_list<Types...>;
     };
 
+    template<typename TypeList>
+    struct type_list_join_impl;
+
+    template<
+        template<typename...>
+        typename    Template,
+        typename... Types0,
+        typename... Types1
+    > struct type_list_join_impl<mylib::type_list<Template<Types0...>, Types1...>> {
+        using type =
+            mylib::type_list_cat_t<
+                mylib::type_list<Types0...>,
+                typename type_list_join_impl<mylib::type_list<Types1...>>::type
+            >;
+    };
+
+    template<typename Type, typename... Types>
+    struct type_list_join_impl<mylib::type_list<Type, Types...>> {
+        using type =
+            mylib::type_list_cat_t<
+                mylib::type_list<Type>,
+                typename type_list_join_impl<mylib::type_list<Types...>>::type
+            >;
+    };
+
+    template<>
+    struct type_list_join_impl<mylib::type_list<>> {
+        using type = mylib::type_list<>;
+    };
+    
+    template<typename... Types>
+    struct type_list_cartesian_product_helper {
+        template<typename Type>
+        struct meta_func {
+            using type = mylib::type_list<mylib::type_list<Type, Types>...>;
+        };
+    };
+
+    template<typename TypeList0, typename TypeList1>
+    struct type_list_cartesian_product;
+
+    template<typename... Types0, typename... Types1>
+    struct type_list_cartesian_product<
+        mylib::type_list<Types0...>, mylib::type_list<Types1...>
+    >
+    {
+        using type =
+            mylib::type_list<Types0...>
+          ::template transform<
+                mylib::detail::type_list_cartesian_product_helper<
+                    Types1...
+                >::template meta_func
+            >;
+    };
+    
     template<
         template<typename...>
         typename MetaPredicate
@@ -511,6 +233,34 @@ export namespace mylib::detail {
     template<typename... Types>
     struct type_list_base {
         
+        template<typename Target>
+        using index_of                    = mylib::index_of_in_pack<Target, Types...>;
+        
+        template<typename Target>
+        static constexpr bool index_of_v  = index_of<Target>;
+        
+        template<typename... Targets>
+        using contain =
+            mylib::conjunction_t<mylib::is_contain_in_pack<Targets, Types...>...>;
+
+        template<typename... Targets>
+        static constexpr bool contain_v   = contain<Targets...>::value;
+        
+        template<typename... Targets>
+        struct is_unique :
+            mylib::conjunction_t<
+                mylib::is_unique_in_pack<Targets, Types...>...
+            >
+        {};
+
+        template<>
+        struct is_unique<> :
+            mylib::is_pack_unique<Types...>
+        {};
+        
+        template<typename Target = mylib::nullarg>
+        static constexpr bool is_unique_v = is_unique<Target>::value;
+
         template<typename... Types1>
         using append_front =
             type_list_cat_t<
@@ -532,7 +282,7 @@ export namespace mylib::detail {
         template<
             template<typename>
             typename UnaryMetaFunction
-        > using transform = type_list<typename UnaryMetaFunction<Types>::type...>;
+        > using transform  = type_list<typename UnaryMetaFunction<Types>::type...>;
         
         template<
             template<typename...>
@@ -557,9 +307,20 @@ export namespace mylib::detail {
     public:
 
         template<bool = true>
-            requires (!mylib::is_same_v<typename to_integer_sequence_impl::type, void>)
         using to_integer_sequence = typename to_integer_sequence_impl::type;
-                
+        
+        template<bool = true>
+        using join                =
+            typename mylib::detail::type_list_join_impl<
+                mylib::type_list<Types...>
+            >::type;
+
+        template<typename TypeList>
+        using cartesian_product =
+            typename mylib::detail::type_list_cartesian_product<
+                mylib::type_list<Types...>, TypeList
+            >::type;
+
         template<
             template<typename, typename>
             typename BinaryMetaFunction,

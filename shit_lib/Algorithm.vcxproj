@@ -74,8 +74,10 @@
     <ClCompile Include="mylib\module\non_standard\string\mylib.char_sequence.cppm" />
     <ClCompile Include="mylib\module\non_standard\string\mylib.static_string.cppm" />
     <ClCompile Include="mylib\module\non_standard\string\mylib.string_literal.cppm" />
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.meta_functional.cppm" />
     <ClCompile Include="mylib\module\non_standard\templates\mylib.templates_utility.cppm" />
     <ClCompile Include="mylib\module\non_standard\templates\mylib.type_list.cppm" />
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.type_pack.cppm" />
     <ClCompile Include="mylib\module\non_standard\utility\mylib.aggregate.cppm" />
     <ClCompile Include="mylib\module\non_standard\utility\mylib.container_traits.cppm" />
     <ClCompile Include="mylib\module\non_standard\utility\mylib.eval.cppm" />
@@ -94,6 +96,7 @@
     <ClCompile Include="mylib\module\standard\numeric\mylib.numeric.cppm" />
     <ClCompile Include="mylib\module\standard\string\mylib.string.cppm" />
     <ClCompile Include="mylib\module\standard\utility\mylib.compare.cppm" />
+    <ClCompile Include="mylib\module\standard\utility\mylib.cstddef.cppm" />
     <ClCompile Include="mylib\module\standard\utility\mylib.functional.cppm" />
     <ClCompile Include="mylib\module\standard\utility\mylib.tuple.cppm" />
     <ClCompile Include="mylib\module\standard\utility\mylib.type_traits.cppm" />

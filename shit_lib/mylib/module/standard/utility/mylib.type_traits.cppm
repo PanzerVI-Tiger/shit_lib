@@ -116,7 +116,7 @@ export namespace mylib {
     // C++17
     template<typename... BoolConstants>
     struct conjunction :
-        mylib::false_type // if BoolConstants is empty, false_type
+        mylib::true_type // if BoolConstants is empty, true_type
     {};
 
     // C++17
@@ -530,12 +530,12 @@ export namespace mylib {
     };
 
     // always true
-#   ifdef __cpp_concepts
+#   if defined(__cpp_concepts) && !defined(_MSVC_LANG)
 
     // non-standard
     template<typename Type>
     inline constexpr bool is_class_type_v =
-        requires { static_cast<int Type::*>(nullptr); };
+        requires { mylib::declval<void (int Type::*)>()(nullptr); };
 
 #   else
 
@@ -1076,7 +1076,7 @@ export namespace mylib {
 
     // non-standard
     template<typename Type>
-    inline constexpr bool is_sizable_v = requires { sizeof(Type); };
+    inline constexpr bool is_complete_v = requires { sizeof(Type); };
 
 #   else
 
@@ -1085,12 +1085,12 @@ export namespace mylib {
 namespace mylib::detail {
 
     template<class T>
-    auto test_is_sizable(int) ->
+    auto test_is_complete(int) ->
         decltype(sizeof(T), mylib::true_type{})
     {}
 
     template<class>
-    auto test_is_sizable(...) ->
+    auto test_is_complete(...) ->
         mylib::false_type
     {}
 }
@@ -1098,16 +1098,21 @@ namespace mylib::detail {
 export namespace mylib {
 
     // non-standard
-    template<typename Type>
-    inline constexpr bool is_sizable_v =
-        decltype(detail::test_is_sizable<Type>(0))::value;
+    template<typename Type> 
+    inline constexpr bool is_complete_v =
+        decltype(detail::test_is_complete<Type>(0))::value;
     
 #   endif
 
     // non-standard
     template<typename Type>
-    struct is_sizable :
-        mylib::bool_constant<mylib::is_sizable_v<Type>>
+    struct is_complete :
+        mylib::bool_constant<mylib::is_complete_v<Type>>
+    {};
+
+    // non-standard
+    template<typename Type>
+    struct is_complete_
     {};
 
     // C++17
@@ -1139,6 +1144,12 @@ export namespace mylib {
         mylib::is_arithmetic_v<Type>  || mylib::is_enum_v<Type>           ||
         mylib::is_pointer_v<Type>     || mylib::is_member_pointer_v<Type> ||
         mylib::is_null_pointer_v<Type>;
+
+    // C++11
+    template<typename Type>
+    struct is_scalar_type :
+        mylib::bool_constant<mylib::is_scalar_type_v<Type>>
+    {};
 
     // always true
 #   if true
@@ -1309,7 +1320,7 @@ export namespace mylib {
     template<typename Type>
     [[deprecated(
         "The is_pod_v is deprecated in C++20, may will removed in later standard! "
-        "Consider use std::is_trivially_copyable_v and/or std::is_standard_layout_v to replace it"
+        "Consider use is_trivially_copyable_v and/or is_standard_layout_v to replace it"
     )]]
     inline constexpr bool is_pod_v = __is_pod(Type);
 
@@ -1319,7 +1330,7 @@ export namespace mylib {
     struct
     [[deprecated(
         "The is_pod is deprecated in C++20, may will removed in later standard! "
-        "Consider use std::is_trivially_copyable and/or std::is_standard_layout to replace it"
+        "Consider use mylib::is_trivially_copyable and/or is_standard_layout to replace it"
     )]]
     is_pod :
         mylib::bool_constant<__is_pod(Type)>
@@ -1365,7 +1376,7 @@ export namespace mylib {
     // C++17
     template<typename Type>
     inline constexpr bool is_polymorphic_v =
-        requires(Type* object) { dynamic_cast<const volatile void*>(object) };
+        requires { dynamic_cast<const volatile void*>(mylib::declval<Type*>()) };
     
     // C++11
     template<typename Type>
@@ -1521,7 +1532,7 @@ export namespace mylib {
     // C++17
     template<typename Type, typename... Params>
     inline constexpr bool is_constructible_v =
-        requires(Params... params) { Type(params... ); };
+        requires { Type(mylib::declval<Params>()...); };
 
     // C++11
     template<typename Type, typename... Params>
@@ -1593,7 +1604,7 @@ export namespace mylib {
     // C++17
     template<typename Type, typename... Params>
     inline constexpr bool is_nothrow_constructible_v =
-        requires(Params... params) { { Type(params...) } noexcept; };
+        requires { { Type(mylib::declval<Params>()...) } noexcept; };
 
     // C++11
     template<typename Type, typename... Params>
@@ -1892,8 +1903,8 @@ export namespace mylib {
 
     template<typename To, typename From>
     inline constexpr bool is_assignable_v =
-        requires (To to, From from) {
-            to = from;
+        requires {
+            mylib::declval<To>() = mylib::declval<From>();
         };
 
     template<typename To, typename From>
@@ -1931,8 +1942,296 @@ export namespace mylib {
     
 #   endif
     
-    /*template<typename To, typename From>
-    inline */
+    template<typename To, typename From>
+    inline constexpr bool is_trivially_assignable_v =
+        __is_trivially_assignable(To, From);
+
+    template<typename To, typename From>
+    struct is_trivially_assignable :
+        mylib::bool_constant<__is_trivially_assignable(To, From)>
+    {};
+
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
+    
+    template<typename To, typename From>
+    inline constexpr bool is_nothrow_assignable_v =
+        __is_nothrow_assignable(To, From);
+
+    template<typename To, typename From>
+    struct is_nothrow_assignable :
+        mylib::bool_constant<__is_nothrow_assignable(To, From)>
+    {};
+    
+#   elif defined(__cpp_concepts)
+
+    template<typename To, typename From>
+    inline constexpr bool is_nothrow_assignable_v =
+        requires { { mylib::declval<To>() = mylib::declval<From>() } noexcept; };
+
+    template<typename To, typename From>
+    struct is_nothrow_assignable :
+        mylib::bool_constant<mylib::is_nothrow_assignable_v<To, From>>
+    {};
+    
+    // always false
+#   else
+
+}
+
+namespace mylib::detail {
+
+    template<typename To, typename From>
+    auto test_is_noexcept_assignable(int) noexcept ->
+        mylib::bool_constant<
+            noexcept(mylib::declval<To>() = mylib::declval<From>())
+        >
+    {}
+    
+    template<typename To, typename From>
+    auto test_is_noexcept_assignable(...) noexcept ->
+        mylib::false_type
+    {}
+}
+
+export namespace mylib {
+    
+    template<typename To, typename From>
+    inline constexpr bool is_nothrow_assignable_v =
+        mylib::detail::test_is_noexcept_assignable<To, From>(0);
+
+    template<typename To, typename From>
+    struct is_nothrow_assignable :
+        mylib::bool_constant<mylib::is_nothrow_assignable_v<To, From>>
+    {};
+
+#   endif
+    
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
+    
+    template<typename Type>
+    inline constexpr bool is_copy_assignable_v =
+        __is_assignable(
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_lvalue_reference_t<const Type>
+        );
+
+    template<typename Type>
+    struct is_copy_assignable :
+        mylib::bool_constant<
+            __is_assignable(
+                mylib::add_lvalue_reference_t<Type>,
+                mylib::add_lvalue_reference_t<const Type>
+            )
+        >
+    {};
+    
+    template<typename Type>
+    inline constexpr bool is_trivially_copy_assignable_v =
+        __is_trivially_assignable(
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_lvalue_reference_t<const Type>
+        );
+
+    template<typename Type>
+    struct is_trivially_copy_assignable :
+        mylib::bool_constant<
+            __is_trivially_assignable(
+                mylib::add_lvalue_reference_t<Type>,
+                mylib::add_lvalue_reference_t<const Type>
+            )
+        >
+    {};
+
+    template<typename Type>
+    inline constexpr bool is_nothrow_copy_assignable_v =
+        __is_nothrow_assignable(
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_lvalue_reference_t<const Type>
+        );
+
+    template<typename Type>
+    struct is_nothrow_copy_assignable :
+        mylib::bool_constant<
+            __is_nothrow_assignable(
+                mylib::add_lvalue_reference_t<Type>,
+                mylib::add_lvalue_reference_t<const Type>
+            )
+        >
+    {};
+    
+#   else
+
+    template<typename Type>
+    inline constexpr bool is_copy_assignable_v =
+        mylib::is_assignable_v<
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_lvalue_reference_t<const Type>
+        >;
+
+    template<typename Type>
+    struct is_copy_assignable :
+        mylib::bool_constant<mylib::is_copy_assignable_v<Type>>
+    {};
+
+    template<typename Type>
+    inline constexpr bool is_trivially_copy_assignable_v =
+        mylib::is_trivially_assignable_v<
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_lvalue_reference_t<const Type>
+        >;
+
+    template<typename Type>
+    struct is_trivially_copy_assignable :
+        mylib::bool_constant<mylib::is_trivially_copy_assignable_v<Type>>
+    {};
+
+    template<typename Type>
+    inline constexpr bool is_nothrow_copy_assignable_v =
+        mylib::is_nothrow_assignable_v<
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_lvalue_reference_t<const Type>
+        >;
+
+    template<typename Type>
+    struct is_nothrow_copy_assignable :
+        mylib::bool_constant<mylib::is_nothrow_copy_assignable_v<Type>>
+    {};
+
+#   endif
+
+    #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
+    
+    template<typename Type>
+    inline constexpr bool is_move_assignable_v =
+        __is_assignable(
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_rvalue_reference_t<Type>
+        );
+
+    template<typename Type>
+    struct is_move_assignable :
+        mylib::bool_constant<
+            __is_assignable(
+                mylib::add_lvalue_reference_t<Type>,
+                mylib::add_rvalue_reference_t<Type>
+            )
+        >
+    {};
+    
+    template<typename Type>
+    inline constexpr bool is_trivially_move_assignable_v =
+        __is_trivially_assignable(
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_rvalue_reference_t<Type>
+        );
+
+    template<typename Type>
+    struct is_trivially_move_assignable :
+        mylib::bool_constant<
+            __is_trivially_assignable(
+                mylib::add_lvalue_reference_t<Type>,
+                mylib::add_rvalue_reference_t<Type>
+            )
+        >
+    {};
+
+    template<typename Type>
+    inline constexpr bool is_nothrow_move_assignable_v =
+        __is_nothrow_assignable(
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_rvalue_reference_t<Type>
+        );
+
+    template<typename Type>
+    struct is_nothrow_move_assignable :
+        mylib::bool_constant<
+            __is_nothrow_assignable(
+                mylib::add_lvalue_reference_t<Type>,
+                mylib::add_rvalue_reference_t<Type>
+            )
+        >
+    {};
+    
+#   else
+
+    template<typename Type>
+    inline constexpr bool is_move_assignable_v =
+        mylib::is_assignable_v<
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_rvalue_reference_t<Type>
+        >;
+
+    template<typename Type>
+    struct is_move_assignable :
+        mylib::bool_constant<mylib::is_move_assignable_v<Type>>
+    {};
+
+    template<typename Type>
+    inline constexpr bool is_trivially_move_assignable_v =
+        mylib::is_trivially_assignable_v<
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_rvalue_reference_t<Type>
+        >;
+
+    template<typename Type>
+    struct is_trivially_move_assignable :
+        mylib::bool_constant<mylib::is_trivially_move_assignable_v<Type>>
+    {};
+
+    template<typename Type>
+    inline constexpr bool is_nothrow_move_assignable_v =
+        mylib::is_nothrow_assignable_v<
+            mylib::add_lvalue_reference_t<Type>,
+            mylib::add_rvalue_reference_t<Type>
+        >;
+
+    template<typename Type>
+    struct is_nothrow_move_assignable :
+        mylib::bool_constant<mylib::is_nothrow_move_assignable_v<Type>>
+    {};
+
+#   endif
+
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANGs)
+    
+    template<typename Type>
+    inline constexpr bool is_destructible_v = __is_destructible(Type);
+
+    template<typename Type>
+    struct is_destructible :
+        mylib::bool_constant<__is_destructible(Type)>
+    {};
+
+#   elif defined(__cpp_concepts)
+    
+    template<typename Type>
+    inline constexpr bool is_destructible_v =
+        mylib::is_reference_v<Type> ||
+        requires {
+            mylib::declval<Type>().~Type();
+        };
+
+    template<typename Type>
+    struct is_destructible :
+        mylib::bool_constant<
+            mylib::is_reference_v<Type> ||
+            requires {
+                mylib::declval<Type>().~Type();
+            }
+        >
+    {};
+
+#   else
+
+}
+
+namespace mylib::detail {
+
+}
+
+export namespace mylib {
+
+#   endif
     
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
@@ -2045,8 +2344,8 @@ export namespace mylib {
     // C++17
     template<typename From, typename To>
     inline constexpr bool is_convertible_v =
-        requires(From from) {
-            static_cast<To(*)(To)>(nullptr)(from);
+        requires {
+            static_cast<To(*)(To)>(nullptr)(mylib::declval<From>());
         }               ||
        (mylib::is_void_v<From> &&
         mylib::is_void_v<To>);
@@ -2102,8 +2401,8 @@ export namespace mylib {
     // C++20
     template<typename From, typename To>
     inline constexpr bool is_nothrow_convertible_v =
-        requires(To(*func)(To) noexcept, From from) {
-            { func(from) } noexcept;
+        requires {
+            { static_cast<To (To) noexcept>(nullptr)(mylib::declval<From>()) } noexcept;
         }                      ||
        (mylib::is_void_v<From> &&
         mylib::is_void_v<To>);
