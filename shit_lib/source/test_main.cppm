@@ -20,16 +20,31 @@ using mylib::operator <<;
 using namespace std::literals;
 using namespace mylib::literals;
 
-template<typename... Type>
-struct twice {
-    using type = mylib::type_list<Type..., Type...>;
+template<typename... Types>
+struct fuck {
+    using type = mylib::type_list<Types...>;
 };
+
+template<typename Type, Type left, Type right>
+struct mylib::meta_plus<
+    mylib::integral_constant<Type, left>,
+    mylib::integral_constant<Type, right>
+>
+{
+    using type = mylib::integral_constant<Type, left + right>;
+};
+
+template<typename Type>
+Type add(Type left, Type right)
+{
+    return left + right;
+}
 
 export int main() noexcept
 {
-    using t =
-        mylib::meta_compose<twice, twice, twice>
-      ::meta_func<int, char>
-      ::type;
-    std::cout << typeid(t).name();
+    std::cout <<
+        typeid(
+            mylib::type_list<int>
+          ::pop_back<>
+        ).name();
 }                                                                                                                                                                                                                                                                                                // unused

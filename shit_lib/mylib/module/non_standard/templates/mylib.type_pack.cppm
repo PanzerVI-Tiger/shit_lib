@@ -15,7 +15,7 @@ export namespace mylib {
     // non-standard
     template<typename... TypesPack>
     struct front_pack;
-
+    
     // non-standard
     template<typename Front, typename... TypesPack>
     struct front_pack<Front, TypesPack...> {
@@ -47,7 +47,7 @@ export namespace mylib {
 
     template<size_t index, typename Front, typename... TypesPack>
     struct at_pack<index, Front, TypesPack...> {
-        using type = at_pack<index - 1, TypesPack...>;
+        using type = typename at_pack<index - 1, TypesPack...>::type;
     };
 
     template<typename Front, typename... TypesPack>
