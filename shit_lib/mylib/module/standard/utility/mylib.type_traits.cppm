@@ -15,13 +15,14 @@ import std.core;
 
 #endif
 
+
 export namespace mylib {
 
-    // C++11
+    // non-standard
     template<typename Type, Type typeValue>
-    struct integral_constant {
+    struct constant {
         using value_type = Type;
-        using type       = integral_constant;
+        using type       = constant;
 
         // C++11
         constexpr operator value_type() const noexcept {
@@ -38,7 +39,7 @@ export namespace mylib {
 
     // C++17
     template<bool boolValue>
-    using bool_constant = mylib::integral_constant<bool, boolValue>;
+    using bool_constant = mylib::constant<bool, boolValue>;
 
     // C++11
     using true_type  = mylib::bool_constant<true>;
@@ -48,13 +49,12 @@ export namespace mylib {
     // is ^^ better than vv? 
     // using new methon to implement them all!
 
-    // using true_type  = mylib::integral_constant<bool, true>;
-    // using false_type = mylib::integral_constant<bool, false>;
+    // using true_type  = mylib::constant<bool, true>;
+    // using false_type = mylib::constant<bool, false>;
 
-    // C++11
-    // from utility, but defined in type_traits
+    // non-standard
     template<typename Type, Type... constants>
-    struct integer_sequence {
+    struct sequence {
         using value_type = Type;
 
         // C++11
@@ -478,6 +478,16 @@ export namespace mylib {
     struct is_integral :
         mylib::bool_constant<mylib::is_integral_v<Type>> {
     };
+
+    // C++11
+    template<typename Integer, Integer value>
+        requires mylib::is_integral_v<Integer>
+    using integral_constant = mylib::constant<Integer, value>;
+    
+    // C++11
+    // from utility, but defined in type_traits
+    template<typename Integer, Integer... integers>
+    using integer_sequence = mylib::sequence<Integer, integers...>;
 
     // C++17
     template<typename Type>

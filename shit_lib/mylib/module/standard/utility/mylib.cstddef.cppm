@@ -1,11 +1,5 @@
 module;
 
-#ifdef __INTELLISENSE__
-
-#include <limits>
-
-#endif
-
 #ifndef __cpp_size_t_suffix
 
 #include <cstddef>
@@ -17,12 +11,6 @@ module;
 #undef NULL
 
 export module mylib.cstddef;
-
-#ifndef __INTELLISENSE__
-
-import std.core;
-
-#endif
 
 
 export namespace mylib {
@@ -57,10 +45,10 @@ export namespace mylib {
 
     inline constexpr mylib::nullptr_t NULL = nullptr;
     
-    inline constexpr mylib::size_t    npos = std::numeric_limits<size_t>::max();
+    inline constexpr mylib::size_t    npos = static_cast<mylib::size_t>(-1);
 
     using ptrdiff_t = decltype(&npos - &npos);
     
     struct nullarg
-    {};
+    {}; 
 }

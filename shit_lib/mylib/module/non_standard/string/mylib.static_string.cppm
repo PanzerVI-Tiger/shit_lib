@@ -7,6 +7,8 @@ module;
 
 #endif
 
+#include "macro_meta.hpp"
+
 export module mylib.static_string;
 
 #ifndef __INTELLISENSE__
@@ -191,10 +193,30 @@ export namespace mylib {
     inline namespace literals {
         inline namespace static_string_literals {
             
+            // will crash intellisense
+#           ifndef __INTELLISENSE__
+
             template<mylib::static_string literal>
             constexpr auto operator ""_ss() noexcept {
                 return literal;
             }
+            
+#           else
+
+#           define define_static_string_suffix(Type)                                    \
+            constexpr auto operator ""_ss(const Type* str, size_t size) noexcept        \
+                -> mylib::static_string<255, Type>                                      \
+            {                                                                           \
+                return mylib::static_string<255, Type>{ str };                          \
+            }
+
+            mylib_pp_repeat_each(
+                define_static_string_suffix,
+                mylib_semicolon,
+                char, wchar_t, char8_t, char16_t, char32_t
+            );
+            
+#           endif
         }
     }
 }

@@ -85,6 +85,10 @@ mylib
 |  |  |  |- mylib.vector.cppm
 |  |  |  |- # TODO: more standard container module
 |  |  |
+|  |  |- exception
+|  |  |  |- mylib.exception.cppm
+|  |  |  |- # TODO: more standard exception module
+|  |  |
 |  |  |- io
 |  |  |  |- # TODO: more standard io module
 |  |  |
@@ -105,6 +109,7 @@ mylib
 |  |  |
 |  |  |- utility
 |  |  |  |- mylib.compare.cppm
+|  |  |  |- mylib.cstddef.cppm
 |  |  |  |- mylib.functional.cppm
 |  |  |  |- mylib.tuple.cppm
 |  |  |  |- mylib.type_traits.cppm
@@ -115,14 +120,15 @@ mylib
 |  |
 |  |- non_standard
 |     |- algorithm
-|     |  |- mylib.algorithm.cppm
 |     |  |- mylib.concat.cppm
+|     |  |- mylib.sort.cppm
 |     |  |- # TODO: more non_standard algorithm module
 |     |
 |     |- container
 |     |  |- tree
 |     |  |  |- mylib.binary_tree.cppm
 |     |  |  |- mylib.hppuffman_tree.cppm
+|     |  |  |- mylib.new_binary_tree.cppm
 |     |  |  |- mylib.red_black_tree.cppm
 |     |  |  |- # TODO: more non_standard tree module
 |     |  |
@@ -133,18 +139,26 @@ mylib
 |     |  |- mylib.matrix.cppm
 |     |  |- # TODO: more non_standard container module
 |     |
+|     |- exception
+|     |  |- mylib.assert.cppm
+|     |  |- mylib.iterator_check.cppm
+|     |  |- # TODO: more non_standard exception module
+|     |
 |     |- io
 |     |  |- mylib.stream_output.cppm
 |     |  |- # TODO: more non_standard io module
 |     |
 |     |- string
-|     |  |- mylib.stack_string.cppm
 |     |  |- mylib.char_sequence.cppm
+|     |  |- mylib.static_string.cppm
 |     |  |- mylib.string_literal.cppm
 |     |  |- # TODO: more non_standard string module
 |     |
 |     |- templates
+|     |  |- mylib.meta_function.cppm
 |     |  |- mylib.templates_utility.cppm
+|     |  |- mylib.type_list.cppm
+|     |  |- mylib.type_pack.cppm
 |     |  |- # TODO: more non_standard templates module
 |     |
 |     |- utility

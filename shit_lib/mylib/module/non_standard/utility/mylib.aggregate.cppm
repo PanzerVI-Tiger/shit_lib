@@ -28,6 +28,16 @@ export namespace mylib {
     struct cast_any {
         
         template<typename Type>
+        constexpr operator Type&() const noexcept {
+            union {
+                struct {}                dummpy;
+                remove_reference_t<Type> object;
+            } result{};
+
+            return static_cast<Type&>(result.object);
+        }
+
+        template<typename Type>
         constexpr operator Type&&() const noexcept {
             union {
                 struct {}                dummpy;

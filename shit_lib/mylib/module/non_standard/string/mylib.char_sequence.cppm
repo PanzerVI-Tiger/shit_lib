@@ -8,6 +8,7 @@ module;
 
 #endif
 
+#include "macro_meta.hpp"
 
 export module mylib.char_sequence;
 
@@ -46,7 +47,9 @@ export namespace mylib {
     inline namespace literals {
         inline namespace char_sequence_literals {
             
-            // char sequence
+            // will crash intellisense
+#           ifndef __INTELLISENSE__
+            
             template<mylib::basic_string_literal literal>
             constexpr auto operator ""_cs() noexcept {
                 return[]<size_t... indices>(std::index_sequence<indices...>) constexpr noexcept {
@@ -56,6 +59,23 @@ export namespace mylib {
                         >{};
                 }(std::make_index_sequence<literal.length()>{});
             }
+
+#           else
+
+#           define define_char_sequence_suffix(Type)                                    \
+            constexpr auto operator ""_cs(const Type* str, size_t size) noexcept        \
+                -> mylib::char_sequence<Type>                                           \
+            {                                                                           \
+                return mylib::char_sequence<Type>{};                                    \
+            }
+
+            mylib_pp_repeat_each(
+                define_char_sequence_suffix,
+                mylib_semicolon,
+                char, wchar_t, char8_t, char16_t, char32_t
+            );
+
+#           endif
         }
     }
 }

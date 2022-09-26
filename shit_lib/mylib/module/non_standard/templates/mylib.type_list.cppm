@@ -14,6 +14,31 @@ export namespace mylib {
 
 export namespace mylib {
     
+    template<typename TypeList>
+    struct type_list_size;
+
+    // non-standard
+    // get index of first Type in TypeList,
+    // or mylib::integral_constant<size_t, mylib::npos> if not found
+    template<typename TypeList, typename Type>
+    struct type_list_index_of;
+    
+    template<typename... Types, typename Type>
+    struct type_list_index_of<mylib::type_list<Types...>, Type> :
+        mylib::index_of_in_pack<Type, Types...>
+    {};
+
+    // non-standard
+    // get index of first Type in TypeList, or mylib::npos if not found
+    template<typename TypeList, typename Type>
+    inline constexpr size_t type_list_index_of_v =
+        mylib::type_list_index_of<TypeList, Type>::value;
+
+    // non-standard
+    // push some Types to the front of the TypeList
+    // example: 
+    // type_list_push_front<mylib::type_list<int>, double, char>::type
+    // = mylib::type_list<double, char, int>
     template<typename TypeList, typename... Types>
     struct type_list_push_front;
 
@@ -119,11 +144,11 @@ export namespace mylib {
     typename    Template,
         typename... Types
     > struct to_type_list<Template<Types...>> {
-        using type = mylib::type_list<Types...>::type;
+        using type = mylib::type_list<Types...>;
     };
         
     template<typename Type>
-    using to_type_list_t = typename mylib::to_type_list<Type>::type;
+    using to_type_list_t = typename mylib::to_type_list<Type>::type::type;
 }
 
 namespace mylib::detail {
@@ -159,9 +184,7 @@ export namespace mylib {
         struct helper<mylib::type_list<Types...>> {
             using type =
                 typename mylib::detail::type_list_take_impl<
-                    mylib::type_list<>,
-                    count,
-                    Types...
+                    mylib::type_list<>, count, Types...
                 >::type;
         };
 
@@ -177,9 +200,7 @@ export namespace mylib {
     struct type_list_take<mylib::type_list<Types...>, count> {
         using type =
             typename mylib::detail::type_list_take_impl<
-                mylib::type_list<>,
-                count,
-                Types...
+                mylib::type_list<>, count, Types...
             >::type;
     };
     
@@ -217,68 +238,138 @@ export namespace mylib {
     template<typename TypeList, size_t count>
     using type_list_drop_t = typename mylib::type_list_drop<TypeList, count>::type;
     
-    template<typename... Types>
-    struct type_list_pop_front_impl;
-
-    template<typename Type, typename... Types>
-    struct type_list_pop_front_impl<Type, Types...> {
-        using type = mylib::type_list<Types...>;
+    template<typename TypeList, size_t count = 1>
+    struct type_list_pop_front {
+        using type = typename mylib::type_list_drop_t<TypeList, count>;
     };
 
-    template<typename TypeList>
+    template<typename TypeList, size_t count = 1>
+    using type_list_pop_front_t =
+        typename mylib::type_list_pop_front<TypeList, count>::type;
+
+    template<typename TypeList, size_t count = 1>
+    struct type_list_pop_back;
+    
+    template<typename... Types, size_t count>
+    struct type_list_pop_back<mylib::type_list<Types...>, count> {
+        using type =
+            mylib::type_list_take_t<mylib::type_list<Types...>, sizeof...(Types) - count>;
+    };
+
+    template<typename TypeList, size_t count = 1>
+    using type_list_pop_back_t =
+        typename mylib::type_list_pop_back<TypeList, count>::type;
+}
+
+namespace mylib::detail {
+    
+    template<typename... Types>
     struct type_list_join_impl;
+
+    template<>
+    struct type_list_join_impl<> {
+        using type = mylib::type_list<>;
+    };
+
+    template<typename Type, typename... Types>
+    struct type_list_join_impl<Type, Types...> {
+        using type =
+            mylib::type_list_push_front_t<
+                typename type_list_join_impl<Types...>::type,
+                Type
+            >;
+    };
 
     template<
         template<typename...>
         typename    Template,
         typename... Types0,
         typename... Types1
-    > struct type_list_join_impl<mylib::type_list<Template<Types0...>, Types1...>> {
+    > struct type_list_join_impl<Template<Types0...>, Types1...> {
         using type =
-            mylib::type_list_cat_t<
-                mylib::type_list<Types0...>,
-                typename type_list_join_impl<mylib::type_list<Types1...>>::type
+            mylib::type_list_push_front_t<
+                typename type_list_join_impl<Types1...>::type,
+                mylib::type_list<Types0...>
             >;
     };
+}
 
-    template<typename Type, typename... Types>
-    struct type_list_join_impl<mylib::type_list<Type, Types...>> {
-        using type =
-            mylib::type_list_cat_t<
-                mylib::type_list<Type>,
-                typename type_list_join_impl<mylib::type_list<Types...>>::type
-            >;
-    };
+export namespace mylib {
 
-    template<>
-    struct type_list_join_impl<mylib::type_list<>> {
-        using type = mylib::type_list<>;
+    template<typename TypeList>
+    struct type_list_join;
+
+    template<typename... Types>
+    struct type_list_join<mylib::type_list<Types...>> {
+        using type = typename mylib::detail::type_list_join_impl<Types...>::type;
     };
     
-    template<typename... Types>
-    struct type_list_cartesian_product_helper {
-        template<typename Type>
-        struct meta_fn {
-            using type = mylib::type_list<mylib::type_list<Type, Types>...>;
-        };
-    };
+    template<typename TypeList>
+    using type_list_join_t = typename mylib::type_list_join<TypeList>::type;
 
-    template<typename TypeList0, typename TypeList1>
+    // avoid intellisense show `incomplete type`
+#   ifndef __INTELLISENSE__
+    
+    template<typename... TypeLists>
     struct type_list_cartesian_product;
 
-    template<typename... Types0, typename... Types1>
-    struct type_list_cartesian_product<
-        mylib::type_list<Types0...>, mylib::type_list<Types1...>
-    >
-    {
+    
+    template<typename... Types>
+    struct type_list_cartesian_product<mylib::type_list<Types...>> {
+        using type = mylib::type_list<mylib::type_list<Types>...>;
+    };
+
+    template<typename... Types, typename... TypeLists>
+    struct type_list_cartesian_product<mylib::type_list<Types...>, TypeLists...> {
         using type =
-            mylib::type_list<Types0...>
-          ::template transform<
-                mylib::type_list_cartesian_product_helper<
-                    Types1...
-                >::template meta_fn
+            mylib::type_list_cat_t<
+                typename type_list_cartesian_product<TypeLists...>
+              ::type
+              ::template transform<
+                    mylib::meta_bind_back<
+                        mylib::type_list_push_back, Types
+                    >::meta_fn
+                >...
             >;
     };
+    
+#   else
+
+    template<typename... TypeLists>
+    struct type_list_cartesian_product {
+    private:
+        template<typename... TypeLists>
+        struct helper;
+
+        template<typename... Types>
+        struct helper<mylib::type_list<Types...>> {
+            using type = mylib::type_list<mylib::type_list<Types>...>;
+        };
+
+        template<typename... Types, typename... TypeLists>
+        struct helper<mylib::type_list<Types...>, TypeLists...> {
+            using type =
+                mylib::type_list_cat_t<
+                    typename type_list_cartesian_product<TypeLists...>
+                  ::type
+                  ::template transform<
+                        mylib::meta_bind_back<
+                            mylib::type_list_push_back, Types
+                        >::meta_fn
+                    >...
+                >;
+        };
+
+    public:
+        using type = typename helper<TypeLists...>::type;
+    };
+
+
+#   endif
+
+    template<typename... TypeLists>
+    using type_list_cartesian_product_t =
+        typename mylib::type_list_cartesian_product<TypeLists...>::type;
     
     template<
         template<typename, typename>
@@ -287,17 +378,6 @@ export namespace mylib {
     > struct sort_pack_impl {
         using type = TypeList;        
     };
-    
-    template<
-        template<typename, typename>
-        typename BinaryMetaPredicate,
-        typename partition
-    > struct sort_filter_pred {
-        template<typename Type>
-        struct temp :
-            BinaryMetaPredicate<partition, Type>
-        {};
-    };
         
     template<
         template<typename, typename>
@@ -305,12 +385,9 @@ export namespace mylib {
         typename    Type,
         typename... Types
     > struct sort_pack_impl<BinaryMetaPredicate, mylib::type_list<Type, Types...>> {
-        using list     = mylib::type_list<Types...>;
+        using list = mylib::type_list<Types...>;
         template<typename Type1>
-        using pred     =
-            mylib::sort_filter_pred<
-                BinaryMetaPredicate, Type
-            >::template temp<Type1>;
+        using pred = mylib::meta_bind_front<BinaryMetaPredicate, Type>::meta_fn;
         
         using left_part =
             typename sort_pack_impl<
@@ -418,14 +495,12 @@ namespace mylib::detail {
         
         template<bool = true>
         using join                =
-            typename mylib::type_list_join_impl<
-                mylib::type_list<Types...>
-            >::type;
+            typename mylib::detail::type_list_join_impl<Types...>::type;
 
-        template<typename TypeList>
+        template<typename... TypeList>
         using cartesian_product =
             typename mylib::type_list_cartesian_product<
-                mylib::type_list<Types...>, TypeList
+                mylib::type_list<Types...>, TypeList...
             >::type;
 
         template<
@@ -434,6 +509,12 @@ namespace mylib::detail {
             typename Initial
         > using fold_left =
             mylib::fold_left_pack_t<BinaryMetaFunction, Initial, Types...>;
+        
+        template<
+            template<typename, typename>
+            typename BinaryMetaFunction,
+            typename Initial
+        > using fold = fold_left<BinaryMetaFunction, Initial>;
                     
         template<
             template<typename, typename>
@@ -483,7 +564,7 @@ namespace mylib::detail {
 export namespace mylib {
     
     // as a specialization rather than main template to avoid intellisense show `incomplete type`
-#   ifdef __INTELLISENSE__    
+#   ifdef __INTELLISENSE__
     template<typename... Types>
         requires (sizeof...(Types) != 0)
     struct type_list<Types...> :
@@ -502,12 +583,12 @@ export namespace mylib {
         using drop =
             typename mylib::detail::type_list_drop_impl<count, Types...>::type;
 
-        template<bool = true>
+        template<size_t count = 1>
         using pop_front =
-            typename mylib::type_list_pop_front_impl<Types...>::type;
+            drop<count>;
 
-        template<bool = true>
-        using pop_back = take<sizeof...(Types) - 1>;
+        template<size_t count = 1>
+        using pop_back = take<sizeof...(Types) - count>;
 
         template<bool = true>
         using front = mylib::front_pack_t<Types...>;

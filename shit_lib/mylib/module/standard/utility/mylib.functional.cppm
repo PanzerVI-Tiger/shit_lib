@@ -27,13 +27,13 @@ export namespace mylib {
     struct function_traits
     {};
 
-    // due to too complex, will crash intellisense
+    // due to too complex, may will crash intellisense
 #   ifndef __INTELLISENSE__n
 
     // ref: 0: without     reference qualifier,
     //      1: with lvalue reference qualifier
     //      2: with rvalue reference qualifier
-#   define function_traits_decl(isVararg, isConst, isVolatile, ref, isNoexcept)         \
+#   define define_function_traits(isVararg, isConst, isVolatile, ref, isNoexcept)       \
         template<typename Result, typename... Params>                                   \
         struct function_traits<                                                         \
             Result(                                                                     \
@@ -96,7 +96,7 @@ export namespace mylib {
         }
 
 #   define function_traits_applicator(tuple)                                            \
-        mylib_pp_tuple_apply(tuple, function_traits_decl)
+        mylib_pp_tuple_apply(tuple, define_function_traits)
 
     mylib_pp_repeat_each(
         function_traits_applicator,

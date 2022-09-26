@@ -1,7 +1,9 @@
 export module mylib.meta_functional;
 
+import mylib.utility;
 import mylib.type_pack;
 import mylib.type_traits;
+
 
 namespace mylib {
     
@@ -30,7 +32,7 @@ export namespace mylib {
     
     // non-standard
     template<
-        template<typename>
+        template<typename...>
         typename    MetaFunction,
         template<typename...>
         typename... MetaFunctions
@@ -67,8 +69,7 @@ export namespace mylib {
     
     // non-standard
     template<int index>
-    struct meta_placeholder :
-        mylib::integral_constant<int, index>
+    struct meta_placeholder
     {};
 
     // non-standard
@@ -238,8 +239,20 @@ export namespace mylib {
         using meta_fn_t = typename meta_fn<Types...>::type;
     };
     
+    template<
+        auto invocation
+    > struct meta_function_wrapper {
+        template<typename... Params>
+        struct meta_fn {
+            using type = decltype(invocation(mylib::declval<Params>()...));
+        };
+
+        template<typename... Params>
+        using meta_fn_t = typename meta_fn<Params...>::type;
+    };
+    
 #   ifdef _MSVC_LANG
-        
+    
     // non-standard
     // msvc only
     template<
@@ -313,6 +326,25 @@ export namespace mylib {
     // non-standard
     template<typename Left, typename Right>
     using meta_negate_t = typename mylib::meta_negate<Left, Right>::type;
+
+    
+    template<typename Type, Type left, Type right>
+    struct mylib::meta_plus<
+        mylib::integral_constant<Type, left>,
+        mylib::integral_constant<Type, right>
+    >
+    {
+        using type = mylib::integral_constant<Type, left + right>;
+    };
+
+    template<typename Type, Type left, Type right>
+    struct mylib::meta_multiplies<
+        mylib::integral_constant<Type, left>,
+        mylib::integral_constant<Type, right>
+    >
+    {
+        using type = mylib::integral_constant<Type, left * right>;
+    };
 
     // non-standard
     template<typename Left, typename Right>
