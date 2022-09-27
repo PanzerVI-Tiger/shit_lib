@@ -57,7 +57,6 @@ export namespace mylib {
 
     template<size_t index, typename... TypesPack>
     using at_pack_t = typename mylib::at_pack<index, TypesPack...>::type;
-    
 }
 
 namespace mylib::detail {

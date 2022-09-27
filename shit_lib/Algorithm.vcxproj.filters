@@ -350,6 +350,9 @@
     <ClCompile Include="mylib\module\non_standard\templates\mylib.type_pack.cppm">
       <Filter>mylib\module\non_standard\templates</Filter>
     </ClCompile>
+    <ClCompile Include="test\mylib.type_traits.test.cppm">
+      <Filter>mylib\module\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mylib\head\macro_meta\repet.hpp">

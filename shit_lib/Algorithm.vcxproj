@@ -102,6 +102,7 @@
     <ClCompile Include="mylib\module\standard\utility\mylib.type_traits.cppm" />
     <ClCompile Include="mylib\module\standard\utility\mylib.utility.cppm" />
     <ClCompile Include="source\test_main.cppm" />
+    <ClCompile Include="test\mylib.type_traits.test.cppm" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="mylib\head\macro_meta\repet.hpp" />

@@ -50,6 +50,21 @@ export namespace mylib {
         return static_cast<Type&&>(value);
     }
 
+    
+    // non-standard
+    struct cast_any {
+        
+        template<typename Type>
+        constexpr operator Type&() const noexcept {
+            return {};
+        }
+
+        template<typename Type>
+        constexpr operator Type&&() const noexcept {
+            return {};
+        }
+    };
+
     // non-standard
     template<typename Type1, typename Type2>
         requires std::is_assignable_v<Type1&, const Type2&> // to prevent ambiguity with array overload

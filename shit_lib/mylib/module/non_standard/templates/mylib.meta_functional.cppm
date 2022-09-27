@@ -39,17 +39,18 @@ export namespace mylib {
     > struct meta_compose {
         
         template<typename... Params>
-        struct meta_fn {
-            using type =
+        using meta_fn =
                 typename MetaFunction<
                     typename meta_compose<MetaFunctions...>
                   ::template meta_fn<Params...>
                   ::type
                 >::type;
-        };
 
         template<typename... Params>
         using meta_fn_t = typename meta_fn<Params...>::type;
+
+        template<typename... Params>
+        static constexpr auto meta_fn_v = meta_fn<Params...>::value;
     };
     
     // non-standard
@@ -59,12 +60,13 @@ export namespace mylib {
     > struct meta_compose<MetaFunction> {
         
         template<typename... Params>
-        struct meta_fn {
-            using type = typename MetaFunction<Params...>::type;
-        };
+        using meta_fn = typename MetaFunction<Params...>::type;
         
         template<typename... Params>
         using meta_fn_t = typename meta_fn<Params...>::type;
+
+        template<typename... Params>
+        static constexpr auto meta_fn_v = meta_fn<Params...>::value;
     };
     
     // non-standard
@@ -75,13 +77,13 @@ export namespace mylib {
     // non-standard
     template<typename Type>
     struct is_meta_placeholder :
-        mylib::integral_constant<int, 0>
+        mylib::constant<int, 0>
     {};
 
     // non-standard
     template<int index>
     struct is_meta_placeholder<mylib::meta_placeholder<index>> :
-        mylib::integral_constant<int, index>
+        mylib::constant<int, index>
     {};
     
     // non-standard
@@ -162,9 +164,9 @@ export namespace mylib {
         typename    MetaFunction,
         typename... Arguments
     > struct meta_bind {
-        
+    private:
         template<typename... Types>
-        struct meta_fn {
+        struct meta_fn_helper {
         private:
             template<typename TypeList, typename... Types0>
             struct helper;
@@ -196,15 +198,22 @@ export namespace mylib {
 
             template<typename... Types0>
             struct helper<mylib::type_list<Types0...>> {
-                using type = typename MetaFunction<Types0...>::type;
+                using type = typename MetaFunction<Types0...>;
             };
             
         public:
             using type = typename helper<mylib::type_list<>, Arguments...>::type;
         };
+
+    public:
+        template<typename... Types>
+        using meta_fn = typename meta_fn_helper<Types...>::type;
         
         template<typename... Types>
         using meta_fn_t = typename meta_fn<Types...>::type;
+
+        template<typename... Types>
+        static constexpr auto meta_fn_v = meta_fn<Types...>::value;
     };
         
     // non-standard
@@ -215,12 +224,13 @@ export namespace mylib {
     > struct meta_bind_front {
         
         template<typename... Types>
-        struct meta_fn {
-            using type = typename MetaFunction<Arguments..., Types...>::type;
-        };
+        using meta_fn   = MetaFunction<Arguments..., Types...>;
 
         template<typename... Types>
         using meta_fn_t = typename meta_fn<Types...>::type;
+
+        template<typename... Types>
+        static constexpr auto meta_fn_v = meta_fn<Types...>::value;
     };
     
     // non-standard
@@ -231,47 +241,46 @@ export namespace mylib {
     > struct meta_bind_back {
         
         template<typename... Types>
-        struct meta_fn {
-            using type = typename MetaFunction<Types..., Arguments...>::type;
-        };
+        using meta_fn = typename MetaFunction<Types..., Arguments...>::type;
 
         template<typename... Types>
         using meta_fn_t = typename meta_fn<Types...>::type;
+
+        template<typename... Types>
+        static constexpr auto meta_fn_v = meta_fn<Types...>::value;
     };
     
     template<
         auto invocation
     > struct meta_function_wrapper {
         template<typename... Params>
-        struct meta_fn {
-            using type = decltype(invocation(mylib::declval<Params>()...));
-        };
+        using meta_fn = decltype(invocation(mylib::declval<Params>()...));
 
         template<typename... Params>
         using meta_fn_t = typename meta_fn<Params...>::type;
+
+        template<typename... Types>
+        static constexpr auto meta_fn_v = meta_fn<Types...>::value;
     };
     
-#   ifdef _MSVC_LANG
-    
     // non-standard
-    // msvc only
     template<
         template<typename...>
         typename    MetaFunction,
         typename... Arguments
     > struct meta_currying {
         
-        template<typename... Types>
-        struct meta_fn :
-            mylib::meta_currying<MetaFunction, Arguments..., Types...>
-        {
-            using mylib::meta_currying<MetaFunction, Arguments..., Types...>::meta_fn;
-        };
+        template<typename... Params>
+        using meta_fn   = meta_currying<MetaFunction, Arguments..., Params...>;
 
-        using type = typename MetaFunction<Arguments...>::type;
+        template<typename... Params>
+        using meta_fn_t = typename meta_fn<Params...>::type;
+
+        template<typename... Params>
+        static constexpr auto meta_fn_v = meta_fn<Params...>::value;
+
+        using type = MetaFunction<Arguments...>;
     };
-    
-#   endif
     
     // non-standard
     // used through specialization
@@ -320,32 +329,55 @@ export namespace mylib {
 
     // non-standard
     // used through specialization
-    template<typename Left, typename Right>
+    template<typename operand>
     struct meta_negate;
 
     // non-standard
-    template<typename Left, typename Right>
-    using meta_negate_t = typename mylib::meta_negate<Left, Right>::type;
+    template<typename operand>
+    using meta_negate_t = typename mylib::meta_negate<operand>::type;
 
     
     template<typename Type, Type left, Type right>
     struct mylib::meta_plus<
-        mylib::integral_constant<Type, left>,
-        mylib::integral_constant<Type, right>
-    >
-    {
-        using type = mylib::integral_constant<Type, left + right>;
-    };
+        mylib::constant<Type, left>,
+        mylib::constant<Type, right>
+    > : mylib::constant<Type, left + right>
+    {};
+
+    template<typename Type, Type left, Type right>
+    struct mylib::meta_minus<
+        mylib::constant<Type, left>,
+        mylib::constant<Type, right>
+    > : mylib::constant<Type, left - right>
+    {};
 
     template<typename Type, Type left, Type right>
     struct mylib::meta_multiplies<
-        mylib::integral_constant<Type, left>,
-        mylib::integral_constant<Type, right>
-    >
-    {
-        using type = mylib::integral_constant<Type, left * right>;
-    };
+        mylib::constant<Type, left>,
+        mylib::constant<Type, right>
+    > : mylib::constant<Type, left * right>
+    {};
 
+    template<typename Type, Type left, Type right>
+    struct mylib::meta_divides<
+        mylib::constant<Type, left>,
+        mylib::constant<Type, right>
+    > : mylib::constant<Type, left / right>
+    {};
+
+    template<typename Type, Type left, Type right>
+    struct mylib::meta_modulus<
+        mylib::constant<Type, left>,
+        mylib::constant<Type, right>
+    > : mylib::constant<Type, left % right>
+    {};
+
+    template<typename Type, Type value>
+    struct mylib::meta_negate<
+        mylib::constant<Type, value>
+    > : mylib::negation<mylib::constant<Type, value>>
+    {};
+    
     // non-standard
     template<typename Left, typename Right>
     struct meta_euqal_to :
@@ -412,9 +444,7 @@ export namespace mylib {
     > struct meta_not_fn {
         
         template<typename... Types>
-        struct meta_fn :
-            mylib::negation_t<MetaPredicate<Types...>>
-        {};
+        using meta_fn = mylib::negation_t<MetaPredicate<Types...>>;
     };
     
     template<typename Left, typename Right>

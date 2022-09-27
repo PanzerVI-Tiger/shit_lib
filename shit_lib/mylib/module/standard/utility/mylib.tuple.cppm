@@ -3,6 +3,9 @@ module;
 #ifdef __INTELLISENSE__
 
 #include <utility>
+#include <variant>
+#include <optional>
+
 
 #endif
 
@@ -20,6 +23,9 @@ import mylib.type_traits;
 
 namespace mylib::detail {
     
+    template<typename... Types>
+    struct tuple;
+
     template<
         size_t   index,
         typename Type
@@ -82,10 +88,11 @@ namespace mylib::detail {
 
     template<size_t... indices, typename... Types>
     struct tuple_impl<std::index_sequence<indices...>, Types...> :
-        tuple_data<indices, Types>...
+        mylib::detail::tuple_data<indices, Types>...
     {
         template<size_t index>
-        using base_type = tuple_data<index, mylib::at_pack_t<index, Types...>>;
+        using base_type =
+            mylib::detail::tuple_data<index, mylib::at_pack_t<index, Types...>>;
         
         constexpr tuple_impl() noexcept = default;
         
@@ -106,6 +113,25 @@ namespace mylib::detail {
         auto&& get() const noexcept {
             return base_type<index>::get();
         }
+
+        
+        constexpr std::optional<std::variant<Types...>> operator [](size_t index) const noexcept {
+            if (index >= sizeof...(Types)) {
+                return std::nullopt;
+            }
+
+            std::optional<std::variant<Types...>> arr[]{
+                { 
+                    indices == index ?
+                    std::optional<std::variant<Types...>>{
+                        std::in_place, std::variant<Types...>{ std::in_place_index<indices>, get<indices>() }
+                    }
+                  : std::nullopt
+                }...
+            };
+
+            return arr[index];
+        }
     };
 }
 
@@ -119,6 +145,8 @@ export namespace mylib {
             mylib::detail::tuple_impl<std::index_sequence_for<Types...>, Types...>;
 
         using base_type::base_type;
+
+        using base_type::operator [];
         using base_type::get;
 
         constexpr tuple(const tuple&) noexcept = default;

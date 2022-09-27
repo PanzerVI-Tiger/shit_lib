@@ -23,30 +23,6 @@ import mylib.stream_output;
 
 
 export namespace mylib {
-
-    // maybe will be used??
-    struct cast_any {
-        
-        template<typename Type>
-        constexpr operator Type&() const noexcept {
-            union {
-                struct {}                dummpy;
-                remove_reference_t<Type> object;
-            } result{};
-
-            return static_cast<Type&>(result.object);
-        }
-
-        template<typename Type>
-        constexpr operator Type&&() const noexcept {
-            union {
-                struct {}                dummpy;
-                remove_reference_t<Type> object;
-            } result{};
-
-            return static_cast<Type&&>(result.object);
-        }
-    };
     
     template<typename Type, size_t argumentsSize>
     struct can_n_arguments_construct : false_type {

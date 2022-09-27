@@ -23,12 +23,5 @@ using namespace mylib::literals;
 
 export int main() noexcept
 {
-    std::cout <<
-        typeid(
-            mylib::type_list_cartesian_product_t<
-                mylib::type_list<int, char>,
-                mylib::type_list<short, double>,
-                mylib::type_list<long, wchar_t>
-            >
-        ).name();
+    std::cout << std::extent_v<int[][2], 0>;
 }                                                                                                                                                                                                                                                                                                // unused

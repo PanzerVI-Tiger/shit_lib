@@ -47,7 +47,7 @@ export namespace mylib {
     
     inline constexpr mylib::size_t    npos = static_cast<mylib::size_t>(-1);
 
-    using ptrdiff_t = decltype(&npos - &npos);
+    using ptrdiff_t                        = decltype(&npos - &npos);
     
     struct nullarg
     {}; 

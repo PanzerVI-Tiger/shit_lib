@@ -35,13 +35,18 @@ export namespace mylib {
         mylib::type_list_index_of<TypeList, Type>::value;
 
     // non-standard
-    // push some Types to the front of the TypeList
+    // push Types to the front of the TypeList
     // example: 
     // type_list_push_front<mylib::type_list<int>, double, char>::type
-    // = mylib::type_list<double, char, int>
+    // is mylib::type_list<double, char, int>
     template<typename TypeList, typename... Types>
     struct type_list_push_front;
 
+    // non-standard
+    // push Types to the front of the TypeList
+    // example: 
+    // type_list_push_front_t<mylib::type_list<int>, double, char>
+    // is mylib::type_list<double, char, int>
     template<typename... Types0, typename... Types1>
     struct type_list_push_front<mylib::type_list<Types0...>, Types1...> {
         using type = mylib::type_list<Types1..., Types0...>;
@@ -135,8 +140,8 @@ export namespace mylib {
     struct to_type_list;
 
     template<typename Type, Type... values>
-    struct to_type_list<mylib::integer_sequence<Type, values...>> {
-        using type = mylib::type_list<mylib::integral_constant<Type, values>...>;
+    struct to_type_list<mylib::sequence<Type, values...>> {
+        using type = mylib::type_list<mylib::constant<Type, values>...>;
     };
 
     template<
@@ -308,10 +313,12 @@ export namespace mylib {
     using type_list_join_t = typename mylib::type_list_join<TypeList>::type;
 
     // avoid intellisense show `incomplete type`
-#   ifndef __INTELLISENSE__
+#   ifndef __INTELLISENSE__n
     
     template<typename... TypeLists>
-    struct type_list_cartesian_product;
+    struct type_list_cartesian_product {
+        using type = mylib::type_list<>;
+    };
 
     
     template<typename... Types>
@@ -328,7 +335,7 @@ export namespace mylib {
               ::template transform<
                     mylib::meta_bind_back<
                         mylib::type_list_push_back, Types
-                    >::meta_fn
+                    >::template meta_fn
                 >...
             >;
     };
@@ -355,7 +362,7 @@ export namespace mylib {
                   ::template transform<
                         mylib::meta_bind_back<
                             mylib::type_list_push_back, Types
-                        >::meta_fn
+                        >::template meta_fn
                     >...
                 >;
         };
@@ -366,10 +373,55 @@ export namespace mylib {
 
 
 #   endif
-
+    
     template<typename... TypeLists>
     using type_list_cartesian_product_t =
         typename mylib::type_list_cartesian_product<TypeLists...>::type;
+}
+
+namespace mylib::detail {
+
+    template<size_t count, typename... Types>
+    struct type_list_permutate_impl {
+        using type = mylib::type_list<>;
+    };
+
+    template<typename Type>
+    struct type_list_permutate_impl<1, Type> {
+        using type = mylib::type_list<mylib::type_list<Type>>;
+    };
+
+    template<size_t count, typename Type, typename... Types>
+        requires (count != 0)
+    struct type_list_permutate_impl<count, Type, Types...> {
+        using type =
+            mylib::type_list_cat_t<
+                typename type_list_permutate_impl<sizeof...(Types), Types...>
+              ::type
+              ::template transform<
+                    mylib::meta_bind_back<mylib::type_list_push_front, Type>
+                  ::template meta_fn
+                >,
+                typename type_list_permutate_impl<count - 1, Types..., Type>::type
+            >;
+    };
+}
+
+export namespace mylib {
+    
+    template<typename TypeList>
+    struct type_list_permutate;
+
+    template<typename... Types>
+    struct type_list_permutate<mylib::type_list<Types...>> {
+        using type =
+            typename mylib::detail::type_list_permutate_impl<
+                sizeof...(Types), Types...
+            >::type;
+    };
+
+    template<typename TypeList>
+    using type_list_permutate_t = typename mylib::type_list_permutate<TypeList>::type;
     
     template<
         template<typename, typename>
@@ -386,14 +438,16 @@ export namespace mylib {
         typename... Types
     > struct sort_pack_impl<BinaryMetaPredicate, mylib::type_list<Type, Types...>> {
         using list = mylib::type_list<Types...>;
+        
         template<typename Type1>
-        using pred = mylib::meta_bind_front<BinaryMetaPredicate, Type>::meta_fn;
+        using pred =
+            BinaryMetaPredicate<Type, Type1>;
         
         using left_part =
             typename sort_pack_impl<
                 BinaryMetaPredicate,
                 typename list
-              ::template filter<mylib::meta_not_fn<pred>::meta_fn>
+              ::template filter<mylib::meta_not_fn<pred>::template meta_fn>
             >::type;
         
         using right_part =
@@ -474,15 +528,15 @@ namespace mylib::detail {
         > using to = Template<Types...>;
         
     private:
-        struct to_integer_sequence_impl {
+        struct to_sequence_impl {
             template<typename... IntegralSequences>
             struct helper {
-                using type = mylib::integer_sequence<size_t>;
+                using type = mylib::sequence<size_t>;
             };
 
             template<typename Type, Type... values>
-            struct helper<mylib::integral_constant<Type, values>...> {
-                using type = mylib::integer_sequence<Type, values...>;
+            struct helper<mylib::constant<Type, values>...> {
+                using type = mylib::sequence<Type, values...>;
             };
 
             using type = typename helper<Types...>::type;
@@ -491,7 +545,7 @@ namespace mylib::detail {
     public:
 
         template<bool = true>
-        using to_integer_sequence = typename to_integer_sequence_impl::type;
+        using to_sequence = typename to_sequence_impl::type;
         
         template<bool = true>
         using join                =
@@ -531,7 +585,7 @@ namespace mylib::detail {
 #       else
         
         template<bool = true>
-        using reverse = type_list<>;
+        using reverse = type_list<size_t>;
 
 #       endif
         
@@ -539,7 +593,7 @@ namespace mylib::detail {
             template<typename>
             typename UnaryMetaPredicate
         > using filter = 
-            type_list_cat_t<
+            mylib::type_list_cat_t<
                 mylib::conditional_t<
                     UnaryMetaPredicate<Types>::value,
                     type_list<Types>,
@@ -610,7 +664,7 @@ export namespace mylib {
             typename BinaryMetaFunction
         > using fold_left_first =
             mylib::fold_left_first_pack_t<BinaryMetaFunction, Types...>;
-
+        
         template<
             template<typename, typename>
             typename BinaryMetaFunction
