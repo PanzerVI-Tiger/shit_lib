@@ -4,9 +4,11 @@
 
 
 #define mylib_space()     
-#define mylib_colon()     :
-#define mylib_comma()     ,
-#define mylib_semicolon() ;
+#define mylib_colon()        :
+#define mylib_comma()        ,
+#define mylib_semicolon()    ;
+#define mylib_logical_or()  ||
+#define mylib_logical_and() &&
 
 // sign of operation
 #define mylib_plus_sign()       +

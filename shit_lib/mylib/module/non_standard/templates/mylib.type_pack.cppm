@@ -26,6 +26,7 @@ export namespace mylib {
     template<typename... TypesPack>
     using front_pack_t = typename mylib::front_pack<TypesPack...>::type;
     
+    // non-standard
     template<typename... TypesPack>
     struct back_pack; // empty pack match this
     
@@ -39,6 +40,7 @@ export namespace mylib {
         using type = Back;
     };
 
+    // non-standard
     template<typename... TypesPack>
     using back_pack_t = typename mylib::back_pack<TypesPack...>::type;
     

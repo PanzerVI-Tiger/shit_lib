@@ -40,11 +40,11 @@ export namespace mylib {
         
         template<typename... Params>
         using meta_fn =
-                typename MetaFunction<
+                MetaFunction<
                     typename meta_compose<MetaFunctions...>
                   ::template meta_fn<Params...>
                   ::type
-                >::type;
+                >;
 
         template<typename... Params>
         using meta_fn_t = typename meta_fn<Params...>::type;
@@ -60,7 +60,7 @@ export namespace mylib {
     > struct meta_compose<MetaFunction> {
         
         template<typename... Params>
-        using meta_fn = typename MetaFunction<Params...>::type;
+        using meta_fn   = MetaFunction<Params...>;
         
         template<typename... Params>
         using meta_fn_t = typename meta_fn<Params...>::type;
@@ -71,91 +71,94 @@ export namespace mylib {
     
     // non-standard
     template<int index>
-    struct meta_placeholder
+    struct placeholder
     {};
 
     // non-standard
     template<typename Type>
-    struct is_meta_placeholder :
+    struct is_placeholder :
         mylib::constant<int, 0>
     {};
 
     // non-standard
     template<int index>
-    struct is_meta_placeholder<mylib::meta_placeholder<index>> :
+    struct is_placeholder<mylib::placeholder<index>> :
         mylib::constant<int, index>
     {};
     
     // non-standard
     template<typename Type>
-    inline constexpr int is_meta_placeholder_v = mylib::is_meta_placeholder<Type>::value;
+    inline constexpr int is_placeholder_v = mylib::is_placeholder<Type>::value;
 
-    namespace meta_placeholders {
+    namespace placeholders {
         
         // non-standard
-        using _1  = mylib::meta_placeholder<1>;
+        using _1t  = mylib::placeholder<1>;
         // non-standard
-        using _2  = mylib::meta_placeholder<2>;
+        using _2t  = mylib::placeholder<2>;
         // non-standard
-        using _3  = mylib::meta_placeholder<3>;
+        using _3t  = mylib::placeholder<3>;
         // non-standard
-        using _4  = mylib::meta_placeholder<4>;
+        using _4t  = mylib::placeholder<4>;
         // non-standard
-        using _5  = mylib::meta_placeholder<5>;
+        using _5t  = mylib::placeholder<5>;
         // non-standard
-        using _6  = mylib::meta_placeholder<6>;
+        using _6t  = mylib::placeholder<6>;
         // non-standard
-        using _7  = mylib::meta_placeholder<7>;
+        using _7t  = mylib::placeholder<7>;
         // non-standard
-        using _8  = mylib::meta_placeholder<8>;
+        using _8t  = mylib::placeholder<8>;
         // non-standard
-        using _9  = mylib::meta_placeholder<9>;
+        using _9t  = mylib::placeholder<9>;
         // non-standard
-        using _10 = mylib::meta_placeholder<10>;
+        using _10t = mylib::placeholder<10>;
         // non-standard
-        using _11 = mylib::meta_placeholder<11>;
+        using _11t = mylib::placeholder<11>;
         // non-standard
-        using _12 = mylib::meta_placeholder<12>;
+        using _12t = mylib::placeholder<12>;
         // non-standard
-        using _13 = mylib::meta_placeholder<13>;
+        using _13t = mylib::placeholder<13>;
         // non-standard
-        using _14 = mylib::meta_placeholder<14>;
+        using _14t = mylib::placeholder<14>;
         // non-standard
-        using _15 = mylib::meta_placeholder<15>;
+        using _15t = mylib::placeholder<15>;
         // non-standard
-        using _16 = mylib::meta_placeholder<16>;
+        using _16t = mylib::placeholder<16>;
         // non-standard
-        using _17 = mylib::meta_placeholder<17>;
+        using _17t = mylib::placeholder<17>;
         // non-standard
-        using _18 = mylib::meta_placeholder<18>;
+        using _18t = mylib::placeholder<18>;
         // non-standard
-        using _19 = mylib::meta_placeholder<19>;
+        using _19t = mylib::placeholder<19>;
         // non-standard
-        using _10 = mylib::meta_placeholder<10>;
+        using _10t = mylib::placeholder<10>;
         // non-standard
-        using _21 = mylib::meta_placeholder<21>;
+        using _21t = mylib::placeholder<21>;
         // non-standard
-        using _22 = mylib::meta_placeholder<22>;
+        using _22t = mylib::placeholder<22>;
         // non-standard
-        using _23 = mylib::meta_placeholder<23>;
+        using _23t = mylib::placeholder<23>;
         // non-standard
-        using _24 = mylib::meta_placeholder<24>;
+        using _24t = mylib::placeholder<24>;
         // non-standard
-        using _25 = mylib::meta_placeholder<25>;
+        using _25t = mylib::placeholder<25>;
         // non-standard
-        using _26 = mylib::meta_placeholder<26>;
+        using _26t = mylib::placeholder<26>;
         // non-standard
-        using _27 = mylib::meta_placeholder<27>;
+        using _27t = mylib::placeholder<27>;
         // non-standard
-        using _28 = mylib::meta_placeholder<28>;
+        using _28t = mylib::placeholder<28>;
         // non-standard
-        using _29 = mylib::meta_placeholder<29>;
+        using _29t = mylib::placeholder<29>;
         // non-standard
-        using _30 = mylib::meta_placeholder<30>;
+        using _30t = mylib::placeholder<30>;
         // non-standard
-        using _31 = mylib::meta_placeholder<31>;
+        using _31t = mylib::placeholder<31>;
         // non-standard
-        using _32 = mylib::meta_placeholder<32>;
+        using _32t = mylib::placeholder<32>;
+        // non-standard
+        template<size_t index>
+        using _nt  = mylib::placeholder<index>;
     }
 
     // non-standard
@@ -172,14 +175,14 @@ export namespace mylib {
             struct helper;
 
             template<typename... Types0, typename Type, typename... Types1>
-                requires (mylib::is_meta_placeholder_v<Type> != 0)
+                requires (mylib::is_placeholder_v<Type> != 0)
             struct helper<mylib::type_list<Types0...>, Type, Types1...> {
                 using type =
                     typename helper<
                         mylib::type_list<
                             Types0...,
                             mylib::at_pack_t<
-                                mylib::is_meta_placeholder_v<Type> - 1,
+                                mylib::is_placeholder_v<Type> - 1,
                                 Types...
                             >
                         >,
@@ -241,7 +244,7 @@ export namespace mylib {
     > struct meta_bind_back {
         
         template<typename... Types>
-        using meta_fn = typename MetaFunction<Types..., Arguments...>::type;
+        using meta_fn   = MetaFunction<Types..., Arguments...>;
 
         template<typename... Types>
         using meta_fn_t = typename meta_fn<Types...>::type;
@@ -273,13 +276,7 @@ export namespace mylib {
         template<typename... Params>
         using meta_fn   = meta_currying<MetaFunction, Arguments..., Params...>;
 
-        template<typename... Params>
-        using meta_fn_t = typename meta_fn<Params...>::type;
-
-        template<typename... Params>
-        static constexpr auto meta_fn_v = meta_fn<Params...>::value;
-
-        using type = MetaFunction<Arguments...>;
+        using type      = MetaFunction<Arguments...>;
     };
     
     // non-standard

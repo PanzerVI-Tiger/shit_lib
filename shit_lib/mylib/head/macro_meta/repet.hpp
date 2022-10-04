@@ -883,131 +883,132 @@
     c(57) s() c(58) s() c(59) s() c(60) s() c(61) s() c(62) s() c(63) s() c(64)
 
 #define mylib_pp_repeat_each0(                                                          \
-        c, s                                                                            \
+        c, s, ...                                                                       \
     )                                                                                   
 #define mylib_pp_repeat_each1(                                                          \
-        c, s, e0                                                                        \
+        c, s, e0, ...                                                                   \
     )                                                                                   \
     c(e0)                                                                               
 #define mylib_pp_repeat_each2(                                                          \
-        c, s, e0, e1                                                                    \
+        c, s, e0, e1, ...                                                               \
     )                                                                                   \
     c(e0) s() c(e1)                                                                     
 #define mylib_pp_repeat_each3(                                                          \
-        c, s, e0, e1, e2                                                                \
+        c, s, e0, e1, e2, ...                                                           \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2)                                                           
 #define mylib_pp_repeat_each4(                                                          \
-        c, s, e0, e1, e2, e3                                                            \
+        c, s, e0, e1, e2, e3, ...                                                       \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3)
 #define mylib_pp_repeat_each5(                                                          \
-        c, s, e0, e1, e2, e3, e4                                                        \
+        c, s, e0, e1, e2, e3, e4, ...                                                   \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4)
 #define mylib_pp_repeat_each6(                                                          \
-        c, s, e0, e1, e2, e3, e4, e5                                                    \
+        c, s, e0, e1, e2, e3, e4, e5, ...                                               \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5)
 #define mylib_pp_repeat_each7(                                                          \
-        c, s, e0, e1, e2, e3, e4, e5, e6                                                \
+        c, s, e0, e1, e2, e3, e4, e5, e6, ...                                           \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6)
 #define mylib_pp_repeat_each8(                                                          \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7                                            \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, ...                                       \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7)
 #define mylib_pp_repeat_each9(                                                          \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8                                        \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, ...                                   \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8)
 #define mylib_pp_repeat_each10(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9                                    \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, ...                               \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9)
 #define mylib_pp_repeat_each11(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10                               \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, ...                          \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10)
 #define mylib_pp_repeat_each12(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11                          \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, ...                     \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11)
 #define mylib_pp_repeat_each13(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12                     \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, ...                \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12)
 #define mylib_pp_repeat_each14(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13                \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, ...           \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13)
 #define mylib_pp_repeat_each15(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14           \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, ...      \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14)
 #define mylib_pp_repeat_each16(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15      \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, ... \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)
 #define mylib_pp_repeat_each17(                                                         \
-        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15, e16 \
+        c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
+        e16, ...                                                                        \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
     s() c(e16)
 #define mylib_pp_repeat_each18(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17                                                                        \
+        e16, e17, ...                                                                   \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
     s() c(e16) s() c(e17)
 #define mylib_pp_repeat_each19(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18                                                                   \
+        e16, e17, e18, ...                                                              \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
     s() c(e16) s() c(e17) s() c(e18)                                                    
 #define mylib_pp_repeat_each20(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19                                                              \
+        e16, e17, e18, e19, ...                                                         \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
     s() c(e16) s() c(e17) s() c(e18) s() c(e19)                                         
 #define mylib_pp_repeat_each21(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20                                                         \
+        e16, e17, e18, e19, e20, ...                                                    \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
     s() c(e16) s() c(e17) s() c(e18) s() c(e19) s() c(e20)
 #define mylib_pp_repeat_each22(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21                                                    \
+        e16, e17, e18, e19, e20, e21, ...                                               \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
     s() c(e16) s() c(e17) s() c(e18) s() c(e19) s() c(e20) s() c(e21)
 #define mylib_pp_repeat_each23(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22                                               \
+        e16, e17, e18, e19, e20, e21, e22, ...                                          \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
     s() c(e16) s() c(e17) s() c(e18) s() c(e19) s() c(e20) s() c(e21) s() c(e22)
 #define mylib_pp_repeat_each24(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23                                          \
+        e16, e17, e18, e19, e20, e21, e22, e23, ...                                     \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1015,7 +1016,7 @@
     c(e23)
 #define mylib_pp_repeat_each25(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24                                     \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, ...                                \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1023,7 +1024,7 @@
     c(e23) s() c(e24)
 #define mylib_pp_repeat_each26(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25                                \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, ...                           \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1031,7 +1032,7 @@
     c(e23) s() c(e24) s() c(e25)
 #define mylib_pp_repeat_each27(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26                           \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, ...                      \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1039,7 +1040,7 @@
     c(e23) s() c(e24) s() c(e25) s() c(e26)
 #define mylib_pp_repeat_each28(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27                      \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, ...                 \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1047,7 +1048,7 @@
     c(e23) s() c(e24) s() c(e25) s() c(e26) s() c(e27)
 #define mylib_pp_repeat_each29(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28                 \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, ...            \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1055,7 +1056,7 @@
     c(e23) s() c(e24) s() c(e25) s() c(e26) s() c(e27) s() c(e28)
 #define mylib_pp_repeat_each30(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29            \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, ...       \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1063,7 +1064,7 @@
     c(e23) s() c(e24) s() c(e25) s() c(e26) s() c(e27) s() c(e28) s() c(e29)
 #define mylib_pp_repeat_each31(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30       \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, ...  \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1071,7 +1072,8 @@
     c(e23) s() c(e24) s() c(e25) s() c(e26) s() c(e27) s() c(e28) s() c(e29) s() c(e30)
 #define mylib_pp_repeat_each32(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
-        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31  \
+        e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
+        ...                                                                             \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1081,7 +1083,7 @@
 #define mylib_pp_repeat_each33(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32                                                                             \
+        e32, ...                                                                        \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1091,7 +1093,7 @@
 #define mylib_pp_repeat_each34(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33                                                                        \
+        e32, e33, ...                                                                   \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1101,7 +1103,7 @@
 #define mylib_pp_repeat_each35(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34                                                                   \
+        e32, e33, e34, ...                                                              \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1111,7 +1113,7 @@
 #define mylib_pp_repeat_each36(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35                                                              \
+        e32, e33, e34, e35, ...                                                         \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1121,7 +1123,7 @@
 #define mylib_pp_repeat_each37(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36                                                         \
+        e32, e33, e34, e35, e36, ...                                                    \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1131,7 +1133,7 @@
 #define mylib_pp_repeat_each38(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37                                                    \
+        e32, e33, e34, e35, e36, e37, ...                                               \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1141,7 +1143,7 @@
 #define mylib_pp_repeat_each39(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38                                               \
+        e32, e33, e34, e35, e36, e37, e38, ...                                          \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1152,7 +1154,7 @@
 #define mylib_pp_repeat_each40(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39                                          \
+        e32, e33, e34, e35, e36, e37, e38, e39, ...                                     \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1163,7 +1165,7 @@
 #define mylib_pp_repeat_each41(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40                                     \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, ...                                \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1174,7 +1176,7 @@
 #define mylib_pp_repeat_each42(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41                                \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, ...                           \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1185,7 +1187,7 @@
 #define mylib_pp_repeat_each43(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42                           \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, ...                      \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1196,7 +1198,7 @@
 #define mylib_pp_repeat_each44(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43                      \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, ...                 \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1207,7 +1209,7 @@
 #define mylib_pp_repeat_each45(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44                 \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, ...            \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1218,7 +1220,7 @@
 #define mylib_pp_repeat_each46(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45            \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, ...       \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1229,7 +1231,7 @@
 #define mylib_pp_repeat_each47(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46       \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, ...  \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1241,7 +1243,8 @@
 #define mylib_pp_repeat_each48(                                                         \
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
-        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47  \
+        e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
+        ...                                                                             \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1254,7 +1257,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48                                                                             \
+        e48, ...                                                                        \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1267,7 +1270,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49                                                                        \
+        e48, e49, ...                                                                   \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1280,7 +1283,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50                                                                   \
+        e48, e49, e50, ...                                                              \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1293,7 +1296,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51                                                              \
+        e48, e49, e50, e51, ...                                                         \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1306,7 +1309,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52                                                         \
+        e48, e49, e50, e51, e52, ...                                                    \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1319,7 +1322,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53                                                    \
+        e48, e49, e50, e51, e52, e53, ...                                               \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1333,7 +1336,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54                                               \
+        e48, e49, e50, e51, e52, e53, e54, ...                                          \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1347,7 +1350,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55                                          \
+        e48, e49, e50, e51, e52, e53, e54, e55, ...                                     \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1361,7 +1364,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56                                     \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, ...                                \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1375,7 +1378,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57                                \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, ...                           \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1389,7 +1392,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58                           \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, ...                      \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1403,7 +1406,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59                      \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, ...                 \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1417,7 +1420,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60                 \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, ...            \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1431,7 +1434,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61            \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61, ...       \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1446,7 +1449,7 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61, e62       \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61, e62, ...  \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \
@@ -1461,7 +1464,8 @@
         c, s, e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15,     \
         e16, e17, e18, e19, e20, e21, e22, e23, e24, e25, e26, e27, e28, e29, e30, e31, \
         e32, e33, e34, e35, e36, e37, e38, e39, e40, e41, e42, e43, e44, e45, e46, e47, \
-        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61, e62, e63  \
+        e48, e49, e50, e51, e52, e53, e54, e55, e56, e57, e58, e59, e60, e61, e62, e63, \
+        ...                                                                             \
     )                                                                                   \
     c(e0) s() c(e1) s() c(e2) s() c(e3) s() c(e4) s() c(e5) s() c(e6) s() c(e7) s()     \
     c(e8) s() c(e9) s() c(e10) s() c(e11) s() c(e12) s() c(e13) s() c(e14) s() c(e15)   \

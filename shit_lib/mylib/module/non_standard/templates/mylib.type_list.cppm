@@ -313,7 +313,7 @@ export namespace mylib {
     using type_list_join_t = typename mylib::type_list_join<TypeList>::type;
 
     // avoid intellisense show `incomplete type`
-#   ifndef __INTELLISENSE__n
+#   ifndef __INTELLISENSE__
     
     template<typename... TypeLists>
     struct type_list_cartesian_product {
@@ -427,31 +427,35 @@ export namespace mylib {
         template<typename, typename>
         typename BinaryMetaPredicate,
         typename TypeList
-    > struct sort_pack_impl {
+    > struct type_list_sort {
         using type = TypeList;        
     };
-        
+    
     template<
         template<typename, typename>
         typename    BinaryMetaPredicate,
         typename    Type,
         typename... Types
-    > struct sort_pack_impl<BinaryMetaPredicate, mylib::type_list<Type, Types...>> {
+    > struct type_list_sort<BinaryMetaPredicate, mylib::type_list<Type, Types...>> {
         using list = mylib::type_list<Types...>;
         
         template<typename Type1>
         using pred =
             BinaryMetaPredicate<Type, Type1>;
         
+        template<typename Type1>
+        using not_pred =
+            mylib::negation<pred<Type1>>;
+
         using left_part =
-            typename sort_pack_impl<
+            typename type_list_sort<
                 BinaryMetaPredicate,
                 typename list
-              ::template filter<mylib::meta_not_fn<pred>::template meta_fn>
+              ::template filter<not_pred>
             >::type;
         
         using right_part =
-            typename sort_pack_impl<
+            typename type_list_sort<
                 BinaryMetaPredicate,
                 typename list
               ::template filter<pred>
@@ -603,9 +607,9 @@ namespace mylib::detail {
         
         template<
             template<typename, typename>
-            typename BinaryMetaPredicate
+            typename BinaryMetaPredicate = mylib::meta_less
         > using sort =
-            typename mylib::sort_pack_impl<
+            typename mylib::type_list_sort<
                 BinaryMetaPredicate, type_list<Types...>
             >::type;
 
@@ -631,7 +635,8 @@ export namespace mylib {
         using type = type_list;
 
         template<size_t count>
-        using take = mylib::detail::type_list_take_impl<type_list<>, count, Types...>;
+        using take =
+            typename mylib::detail::type_list_take_impl<type_list<>, count, Types...>::type;
 
         template<size_t count>
         using drop =

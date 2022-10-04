@@ -210,6 +210,7 @@
     <None Include="mylib\module\README.md">
       <Filter>mylib\module</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mylib\module\standard\algorithm\mylib.algorithm.cppm">
@@ -352,6 +353,12 @@
     </ClCompile>
     <ClCompile Include="test\mylib.type_traits.test.cppm">
       <Filter>mylib\module\test</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.value_list.cppm">
+      <Filter>mylib\module\non_standard\templates</Filter>
+    </ClCompile>
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.value_pack.cppm">
+      <Filter>mylib\module\non_standard\templates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

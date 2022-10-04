@@ -54,6 +54,7 @@
     <None Include="mylib\head\cpp\standard\vector.hpp" />
     <None Include="mylib\head\README.md" />
     <None Include="mylib\module\README.md" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mylib\module\mylib.cppm" />
@@ -78,6 +79,8 @@
     <ClCompile Include="mylib\module\non_standard\templates\mylib.templates_utility.cppm" />
     <ClCompile Include="mylib\module\non_standard\templates\mylib.type_list.cppm" />
     <ClCompile Include="mylib\module\non_standard\templates\mylib.type_pack.cppm" />
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.value_list.cppm" />
+    <ClCompile Include="mylib\module\non_standard\templates\mylib.value_pack.cppm" />
     <ClCompile Include="mylib\module\non_standard\utility\mylib.aggregate.cppm" />
     <ClCompile Include="mylib\module\non_standard\utility\mylib.container_traits.cppm" />
     <ClCompile Include="mylib\module\non_standard\utility\mylib.eval.cppm" />
@@ -178,6 +181,7 @@
     <LinkIncremental>true</LinkIncremental>
     <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
     <AllProjectIncludesArePublic>true</AllProjectIncludesArePublic>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -282,5 +286,12 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+    <Import Project="..\packages\fmt.7.0.1\build\fmt.targets" Condition="Exists('..\packages\fmt.7.0.1\build\fmt.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\fmt.7.0.1\build\fmt.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\fmt.7.0.1\build\fmt.targets'))" />
+  </Target>
 </Project>

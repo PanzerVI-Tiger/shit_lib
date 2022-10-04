@@ -24,14 +24,13 @@ import mylib.type_traits;
 export namespace mylib {
 
     template<typename Function>
-    struct function_traits
-    {};
+    struct function_traits;
 
     // due to too complex, may will crash intellisense
 #   ifndef __INTELLISENSE__n
 
     // ref: 0: without     reference qualifier,
-    //      1: with lvalue reference qualifier
+    //      1: with lvalue reference qualifier,
     //      2: with rvalue reference qualifier
 #   define define_function_traits(isVararg, isConst, isVolatile, ref, isNoexcept)       \
         template<typename Result, typename... Params>                                   \
@@ -49,7 +48,7 @@ export namespace mylib {
             mylib_pp_if(isNoexcept)(noexcept)()                                         \
         >                                                                               \
         {                                                                               \
-            using function_type =                                                       \
+            using type =                                                                \
                 Result(                                                                 \
                     Params...                                                           \
                     mylib_pp_if(isVararg)(...)()                                        \
@@ -62,9 +61,255 @@ export namespace mylib {
                 (&&)())                                                                 \
                 mylib_pp_if(isNoexcept)(noexcept)();                                    \
                                                                                         \
+            using function_type  = type;                                                \
+                                                                                        \
             using argument_types = mylib::type_list<Params...>;                         \
                                                                                         \
-            using result_type = Result;                                                 \
+            using result_type    = Result;                                              \
+                                                                                        \
+            using add_vararg =                                                          \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        ...                                                             \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using add_vararg_t = typename add_vararg::type;                             \
+                                                                                        \
+            using add_const =                                                           \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    const                                                               \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using add_const_t = typename add_const::type;                               \
+                                                                                        \
+            using add_volatile =                                                        \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    volatile                                                            \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using add_volatile_t = typename add_volatile::type;                         \
+                                                                                        \
+            using add_lvalueref_qualifier =                                             \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    &                                                                   \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using add_lvalueref_qualifier_t = typename add_lvalueref_qualifier::type;   \
+                                                                                        \
+            using add_rvalueref_qualifier =                                             \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    &&                                                                  \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using add_rvalueref_qualifier_t = typename add_rvalueref_qualifier::type;   \
+                                                                                        \
+            using add_noexcept =                                                        \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    noexcept                                                            \
+                >;                                                                      \
+                                                                                        \
+            using add_noexcept_t = typename add_noexcept::type;                         \
+                                                                                        \
+            using remove_vararg =                                                       \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using remove_vararg_t = typename remove_vararg::type;                       \
+                                                                                        \
+            using remove_const =                                                        \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using remove_const_t = typename remove_const::type;                         \
+                                                                                        \
+            using remove_volatile =                                                     \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using remove_volatile_t = typename remove_volatile::type;                   \
+                                                                                        \
+            using remove_lvalueref_qualifier =                                          \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 2))                                 \
+                    (&&)()                                                              \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using remove_lvalueref_qualifier_t =                                        \
+                typename remove_lvalueref_qualifier::type;                              \
+                                                                                        \
+            using remove_rvalueref_qualifier =                                          \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)()                                                               \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using remove_rvalueref_qualifier_t =                                        \
+                typename remove_rvalueref_qualifier::type;                              \
+                                                                                        \
+            using remove_reference_qualifier =                                          \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using remove_reference_qualifier_t =                                        \
+                typename remove_reference_qualifier::type;                              \
+                                                                                        \
+            using remove_noexcept =                                                     \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                >;                                                                      \
+                                                                                        \
+            using remove_noexcept_t = typename remove_noexcept::type;                   \
+                                                                                        \
+            template<typename NewResult>                                                \
+            using replace_result =                                                      \
+                function_traits<                                                        \
+                    NewResult(                                                          \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            template<typename NewResult>                                                \
+            using replace_result_t = typename replace_result<NewResult>::type;          \
+                                                                                        \
+            template<typename... NewParams>                                             \
+            using replace_arguments =                                                   \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        NewParams...                                                    \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(isConst)(const)()                                       \
+                    mylib_pp_if(isVolatile)(volatile)()                                 \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            template<typename... NewParams>                                             \
+            using replace_arguments_t = typename replace_arguments<NewParams...>::type; \
                                                                                         \
             static constexpr bool is_vararg()               noexcept {                  \
                 return isVararg;                                                        \
@@ -120,10 +365,73 @@ export namespace mylib {
     template<typename Function>
         requires mylib::is_function_v<Function>
     struct function_traits<Function> {
-        using function = Function;
+        using type                         = Function;
+        
+        using function_type                = Function;
 
-        using argument_types = mylib::type_list<int>;
-        using result_type    = void;
+        using argument_types               = mylib::type_list<int>;
+        
+        using result_type                  = void;
+                                           
+        using add_vararg                   = function_traits<Function>;
+                                           
+        using add_vararg_t                 = Function;
+                                           
+        using add_const                    = function_traits<Function>;
+                                           
+        using add_const_t                  = Function;
+                                           
+        using add_volatile                 = function_traits<Function>;
+                                           
+        using add_volatile_t               = Function;
+                                           
+        using add_lvalueref_qualifier      = function_traits<Function>;
+                                           
+        using add_lvalueref_qualifier_t    = Function;
+                                           
+        using add_rvalueref_qualifier      = function_traits<Function>;
+                                           
+        using add_rvalueref_qualifier_t    = Function;
+                                           
+        using remove_vararg                = function_traits<Function>;
+                                           
+        using remove_vararg_t              = Function;
+                                           
+        using remove_const                 = function_traits<Function>;
+                                           
+        using remove_const_t               = Function;
+                                           
+        using remove_volatile              = function_traits<Function>;
+                                           
+        using remove_volatile_t            = Function;
+
+        using remove_lvalueref_qualifier   = function_traits<Function>;
+        
+        using remove_lvalueref_qualifier_t = Function;
+
+        using remove_rvalueref_qualifier   = function_traits<Function>;
+
+        using remove_rvalueref_qualifier_t = Function;
+
+        using remove_reference_qualifier   = function_traits<Function>;
+
+        using remove_reference_qualifier_t = Function;
+
+        using remove_noexcept              = function_traits<Function>;
+
+        using remove_noexcept_t            = Function;
+
+        template<typename NewResult>
+        using replace_result               = function_traits<Function>;
+
+        template<typename NewResult>
+        using replace_result_t             = Function;
+
+        template<typename... NewParams>
+        using replace_arguments            = function_traits<Function>;
+
+        template<typename... NewParams>
+        using replace_arguments_t          = Function;
         
         static constexpr bool is_vararg()               noexcept {
             return false;
@@ -155,26 +463,12 @@ export namespace mylib {
     };
 
 #   endif
-    
-    template<typename MemberPointer>
-    struct member_pointer_traits
-    {};
 
-    template<typename MemberType, typename Class>
-    struct member_pointer_traits<MemberType Class::*>
-    {
-        using member_type = MemberType;
-        using class_type  = Class;
-    };
-    
-    struct function_tag
-    {};
+    template<typename Result, typename... Params>
+    using make_function   = mylib::function_traits<Result (Params...)>;
 
-    struct function_pointer_tag
-    {};
-
-    struct function_object_tag
-    {};
+    template<typename Result, typename... Params>
+    using make_function_t = typename make_function<Result, Params...>::type;
 
     struct member_pointer_tag
     {};
@@ -185,6 +479,43 @@ export namespace mylib {
 
     struct member_function_pointer_tag :
         mylib::member_pointer_tag
+    {};
+    
+    template<typename MemberPointer>
+    struct member_pointer_traits;
+
+    // for member object pointers
+    template<typename MemberType, typename Class>
+        requires (!mylib::is_function_v<MemberType>)
+    struct member_pointer_traits<MemberType Class::*> :
+        mylib::function_traits<MemberType(Class)>
+    {
+        using type                                    = MemberType Class::*;
+        using member_pointer_category                 = mylib::member_object_pointer_tag;
+        
+        using member_type                             = MemberType;
+        using class_type                              = Class;
+        
+        using const_function_type                     = MemberType(const Class);
+        using volatile_function_type                  = MemberType(volatile Class);
+        using const_volatile_function_type            = MemberType(const volatile Class);
+        using lvalue_reference_function_type          = MemberType(Class&);
+        using rvalue_reference_function_type          = MemberType(Class&&);
+        using const_lvalue_reference_function_type    = MemberType(const Class&);
+        using const_rvalue_reference_function_type    = MemberType(const Class&&);
+        using volatile_lvalue_reference_function_type = MemberType(volatile Class&);
+        using volatile_rvalue_reference_function_type = MemberType(volatile Class&&);
+        using cv_lvalue_reference_function_type       = MemberType(const volatile Class&);
+        using cv_rvalue_reference_function_type       = MemberType(const volatile Class&&);
+    };
+    
+    struct function_tag
+    {};
+
+    struct function_pointer_tag
+    {};
+
+    struct function_object_tag
     {};
 
     template<typename Invocation>
@@ -688,7 +1019,7 @@ export namespace mylib {
         }
         
         template<typename... Arguments2>
-        constexpr auto operator ()(Arguments2&&... args) & noexcept {
+        constexpr auto operator ()(Arguments2&&... args) const& noexcept {
             is_invocated = false;
             return
                 curried_function<Invocation, Arguments..., Arguments2...>{
@@ -714,7 +1045,7 @@ export namespace mylib {
         }
         
     private:
-        bool                     is_invocated;
+        mutable bool             is_invocated;
         Invocation               func;
         std::tuple<Arguments...> arguments;
     };

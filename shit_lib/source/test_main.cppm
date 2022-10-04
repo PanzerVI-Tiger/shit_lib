@@ -3,11 +3,9 @@
 //#pragma optimize("", off)
 
 //#include <Windows.h>
-
+#include <fmt/color.h>
 #include "macro_meta.hpp"
-//#include <boost/mpl/front_inserter.hpp>
 //#include <boost/preprocessor.hpp>
-//#include <fast_io.h>
 //#include <Windows.h>
 
 export module mylib.main;
@@ -23,5 +21,8 @@ using namespace mylib::literals;
 
 export int main() noexcept
 {
-    std::cout << std::extent_v<int[][2], 0>;
+    struct X
+    {
+        int i;
+    };
 }                                                                                                                                                                                                                                                                                                // unused

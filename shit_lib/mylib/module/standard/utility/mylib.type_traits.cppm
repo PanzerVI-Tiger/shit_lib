@@ -37,9 +37,13 @@ export namespace mylib {
         static constexpr value_type value = typeValue;
     };
 
+    // C++11
+    template<typename Integer, Integer value>
+    using integral_constant = mylib::constant<Integer, value>;
+
     // C++17
     template<bool boolValue>
-    using bool_constant = mylib::constant<bool, boolValue>;
+    using bool_constant = mylib::integral_constant<bool, boolValue>;
 
     // C++11
     using true_type  = mylib::bool_constant<true>;
@@ -478,11 +482,6 @@ export namespace mylib {
     struct is_integral :
         mylib::bool_constant<mylib::is_integral_v<Type>> {
     };
-
-    // C++11
-    template<typename Integer, Integer value>
-        requires mylib::is_integral_v<Integer>
-    using integral_constant = mylib::constant<Integer, value>;
     
     // C++11
     // from utility, but defined in type_traits
@@ -1086,7 +1085,7 @@ export namespace mylib {
 
     // non-standard
     template<typename Type>
-    inline constexpr bool is_complete_v = requires { sizeof(Type); };
+    inline constexpr bool is_sizable_v = requires { sizeof(Type); };
 
 #   else
 
@@ -1095,12 +1094,12 @@ export namespace mylib {
 namespace mylib::detail {
 
     template<class T>
-    auto test_is_complete(int) ->
+    auto test_is_sizable(int) ->
         decltype(sizeof(T), mylib::true_type{})
     {}
 
     template<class>
-    auto test_is_complete(...) ->
+    auto test_is_sizable(...) ->
         mylib::false_type
     {}
 }
@@ -1109,15 +1108,38 @@ export namespace mylib {
 
     // non-standard
     template<typename Type> 
-    inline constexpr bool is_complete_v =
-        decltype(detail::test_is_complete<Type>(0))::value;
+    inline constexpr bool is_sizable_v =
+        decltype(detail::test_is_sizable<Type>(0))::value;
     
 #   endif
 
     // non-standard
     template<typename Type>
+    struct is_sizable :
+        mylib::bool_constant<mylib::is_sizable_v<Type>>
+    {};
+
+    // non-standard
+    template<typename Type>
+    inline constexpr bool is_complete_v =
+        mylib::is_sizable_v<Type> || mylib::is_function_v<Type> ||
+        mylib::is_reference_v<Type>;
+    
+    // non-standard
+    template<typename Type>
     struct is_complete :
         mylib::bool_constant<mylib::is_complete_v<Type>>
+    {};
+    
+    // non-standard
+    template<typename Type>
+    inline constexpr bool is_incomplete_v =
+        !mylib::is_complete_v<Type>;
+    
+    // non-standard
+    template<typename Type>
+    struct is_incomplete :
+        mylib::bool_constant<mylib::is_incomplete_v<Type>>
     {};
 
     // C++17
@@ -1160,7 +1182,7 @@ export namespace mylib {
 #   if true
        
     // C++17
-    // a non-void types that can be const qualified
+    // a non-void types which can be const qualified
     template<typename Type>
     inline constexpr bool is_object_v =
         mylib::is_const_v<const Type> && !mylib::is_void_v<Type>;
@@ -1170,7 +1192,7 @@ export namespace mylib {
     
     // C++17
     // standard implementation
-    // a type that is one of the scalar types, array types and class type
+    // a type which is one of the scalar types, array types and class type
     template<typename Type>
     inline constexpr bool is_object_v =
         mylib::is_scalar_type_v<Type> || mylib::is_array_v<Type> ||
@@ -1188,14 +1210,14 @@ export namespace mylib {
 #   if true
 
     // C++17
-    // a type that is not fundamental types
+    // a type which is not fundamental types
     template<typename Type>
     inline constexpr bool is_compound_v = !mylib::is_fundamental_v<Type>;
 
 #   else
 
     // C++17
-    // a type that is one of the reference types, pointer types, pointer-to-member types,
+    // a type which is one of the reference types, pointer types, pointer-to-member types,
     // array types, function types, enumeration types, class types
     template<typename Type>
     inline constexpr bool is_compound_v =
@@ -1516,6 +1538,24 @@ export namespace mylib {
     template<typename Type>
     struct is_unbounded_array :
         mylib::bool_constant<mylib::is_unbounded_array_v<Type>>
+    {};
+
+    // non-standard
+    // a type which is complete, or incomplete that can't be completed, or incomplete but
+    // when it be completed doesn't change some type traits template instantiation result,
+    // because that will result in undefined-behavior.
+    template<typename Type>
+    inline constexpr bool is_complete_or_unbounded_or_void_v =
+        mylib::is_complete_v<Type> || mylib::is_unbounded_array_v<Type> ||
+        mylib::is_void_v<Type>;
+
+    // non-standard
+    // a type which is complete, or incomplete that can't be completed, or incomplete but
+    // when it be completed doesn't change some type traits template instantiation result,
+    // because that will result in undefined-behavior.
+    template<typename Type>
+    struct is_complete_or_unbounded_or_void :
+        mylib::bool_constant<mylib::is_complete_or_unbounded_or_void_v<Type>>
     {};
 
     // C++17
@@ -2294,16 +2334,27 @@ export namespace mylib {
 
 #   elif defined(__cpp_concepts)
 
-    // TODO
-    template<typename Type>
-    struct is_destructible :
+    template<
+        typename Type,
+        typename TerminateType = mylib::remove_all_extents_t<Type>
+    > struct is_destructible :
         mylib::bool_constant<
-            mylib::is_reference_v<Type> ||
+        // !mylib::is_void_v<Type>            && 
+        // !mylib::is_function_v<Type>        &&
+           !mylib::is_unbounded_array_v<Type> &&
+           (mylib::is_reference_v<Type>       ||
             requires {
-                mylib::declval<Type>().~Type();
-            }
+                mylib::declval<TerminateType&>()
+               .~TerminateType();
+            })
         >
-    {};
+    {
+        static_assert(
+            mylib::is_complete_or_unbounded_or_void_v<Type>,
+            "Give is_destructible a non-void non-unbounded-array "
+            "incomplete type argument is undefined-behavior!"
+        );
+    };
     
     template<typename Type>
     inline constexpr bool is_destructible_v =
