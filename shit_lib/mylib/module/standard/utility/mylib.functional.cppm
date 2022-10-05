@@ -48,6 +48,8 @@ export namespace mylib {
             mylib_pp_if(isNoexcept)(noexcept)()                                         \
         >                                                                               \
         {                                                                               \
+            using function = function_traits;                                           \
+                                                                                        \
             using type =                                                                \
                 Result(                                                                 \
                     Params...                                                           \
@@ -117,6 +119,23 @@ export namespace mylib {
                 >;                                                                      \
                                                                                         \
             using add_volatile_t = typename add_volatile::type;                         \
+                                                                                        \
+            using add_cv =                                                              \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    const                                                               \
+                    volatile                                                            \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using add_cv_t = typename add_cv::type;                                     \
                                                                                         \
             using add_lvalueref_qualifier =                                             \
                 function_traits<                                                        \
@@ -210,6 +229,21 @@ export namespace mylib {
                 >;                                                                      \
                                                                                         \
             using remove_volatile_t = typename remove_volatile::type;                   \
+                                                                                        \
+            using remove_cv =                                                           \
+                function_traits<                                                        \
+                    Result(                                                             \
+                        Params...                                                       \
+                        mylib_pp_if(isVararg)(...)()                                    \
+                    )                                                                   \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)                                                                 \
+                    (mylib_pp_if(mylib_pp_equal(ref, 2))                                \
+                    (&&)())                                                             \
+                    mylib_pp_if(isNoexcept)(noexcept)()                                 \
+                >;                                                                      \
+                                                                                        \
+            using remove_cv_t = typename remove_cv::type;                               \
                                                                                         \
             using remove_lvalueref_qualifier =                                          \
                 function_traits<                                                        \
@@ -384,6 +418,10 @@ export namespace mylib {
         using add_volatile                 = function_traits<Function>;
                                            
         using add_volatile_t               = Function;
+
+        using add_cv                       = function_traits<Function>;
+
+        using add_cv_t                     = Function;
                                            
         using add_lvalueref_qualifier      = function_traits<Function>;
                                            
@@ -404,6 +442,10 @@ export namespace mylib {
         using remove_volatile              = function_traits<Function>;
                                            
         using remove_volatile_t            = Function;
+
+        using remove_cv                    = function_traits<Function>;
+
+        using remove_cv_t                  = Function;
 
         using remove_lvalueref_qualifier   = function_traits<Function>;
         
@@ -491,6 +533,8 @@ export namespace mylib {
         mylib::function_traits<MemberType(Class)>
     {
         using type                                    = MemberType Class::*;
+        using member_pointer_type                     = MemberType Class::*;
+        
         using member_pointer_category                 = mylib::member_object_pointer_tag;
         
         using member_type                             = MemberType;
@@ -507,8 +551,186 @@ export namespace mylib {
         using volatile_rvalue_reference_function_type = MemberType(volatile Class&&);
         using cv_lvalue_reference_function_type       = MemberType(const volatile Class&);
         using cv_rvalue_reference_function_type       = MemberType(const volatile Class&&);
+
+        using const_function                          =
+            mylib::function_traits<const_function_type>;
+        
+        using volatile_function                       =
+            mylib::function_traits<volatile_function_type>;
+        
+        using const_volatile_function                 =
+            mylib::function_traits<const_volatile_function_type>;
+        
+        using lvalue_reference_function               =
+            mylib::function_traits<lvalue_reference_function_type>;
+        
+        using rvalue_reference_function               =
+            mylib::function_traits<rvalue_reference_function_type>;
+        
+        using const_lvalue_reference_function         =
+            mylib::function_traits<const_lvalue_reference_function_type>;
+        
+        using const_rvalue_reference_function         =
+            mylib::function_traits<const_rvalue_reference_function_type>;
+        
+        using volatile_lvalue_reference_function      =
+            mylib::function_traits<volatile_lvalue_reference_function_type>;
+        
+        using volatile_rvalue_reference_function      =
+            mylib::function_traits<volatile_rvalue_reference_function_type>;
+        
+        using cv_lvalue_reference_function            =
+            mylib::function_traits<cv_lvalue_reference_function_type>;
+        
+        using cv_rvalue_reference_function            =
+            mylib::function_traits<cv_rvalue_reference_function_type>;
+    };
+
+    // for member function pointers
+    template<typename MemberType, typename Class>
+        requires mylib::is_function_v<MemberType>
+    struct member_pointer_traits<MemberType Class::*> :
+        mylib::function_traits<MemberType>
+      ::argument_types
+      ::template push_front<Class>
+      ::template to<
+            mylib::function_traits<MemberType>
+          ::template replace_arguments
+        >
+    {
+        using type                                    = MemberType Class::*;
+        using member_pointer_type                     = MemberType Class::*;
+        
+        using member_pointer_category                 = mylib::member_function_pointer_tag;
+        
+        using member_type                             = MemberType;
+        using class_type                              = Class;
+        
+    private:
+        template<typename ObjectArgument>
+        using make_function                      =
+            typename mylib::function_traits<MemberType>
+          ::argument_types
+          ::template push_front<ObjectArgument>
+          ::template to<
+                mylib::function_traits<MemberType>
+              ::template replace_arguments
+            >;
+        
+    public:
+        using const_function                          = make_function<const Class>;
+        using volatile_function                       = make_function<volatile Class>;
+        using const_volatile_function                 = make_function<const volatile Class>;
+        using lvalue_reference_function               = make_function<Class&>;
+        using rvalue_reference_function               = make_function<Class&&>;
+        using const_lvalue_reference_function         = make_function<const Class&>;
+        using const_rvalue_reference_function         = make_function<const Class&&>;
+        using volatile_lvalue_reference_function      = make_function<volatile Class&>;
+        using volatile_rvalue_reference_function      = make_function<volatile Class&&>;
+        using cv_lvalue_reference_function            = make_function<const volatile Class&>;
+        using cv_rvalue_reference_function            = make_function<const volatile Class&&>;
+                                                      
+        using const_function_type                     =
+            typename const_function::type;
+        
+        using volatile_function_type                  =
+            typename volatile_function::type;
+        
+        using const_volatile_function_type            =
+            typename const_volatile_function::type;
+        
+        using lvalue_reference_function_type          =
+            typename lvalue_reference_function::type;
+        
+        using rvalue_reference_function_type          =
+            typename rvalue_reference_function::type;
+        
+        using const_lvalue_reference_function_type    =
+            typename const_lvalue_reference_function::type;
+        
+        using const_rvalue_reference_function_type    =
+            typename const_rvalue_reference_function::type;
+        
+        using volatile_lvalue_reference_function_type =
+            typename volatile_lvalue_reference_function::type;
+        
+        using volatile_rvalue_reference_function_type =
+            typename volatile_rvalue_reference_function::type;
+        
+        using cv_lvalue_reference_function_type       =
+            typename cv_lvalue_reference_function::type;
+        
+        using cv_rvalue_reference_function_type       =
+            typename cv_rvalue_reference_function::type;
     };
     
+    struct static_or_explict_object_argument_call_operator_tag
+    {};
+
+    struct implict_object_argument_call_operator_tag
+    {};
+
+    // valid only for function objects that have only one operator () overload
+    template<typename FunctionObject>
+    struct function_object_traits;
+
+    // for function object with a static or explict object argument operator ()
+    template<typename FunctionObject>
+        requires
+            requires {
+                requires mylib::is_function_pointer_v<
+                    decltype(&FunctionObject::operator ())
+                >;
+            }
+    struct function_object_traits<FunctionObject> :
+        mylib::function_traits<decltype(FunctionObject::operator ())>
+    {
+        using type                     = FunctionObject;
+        using function_object_type     = FunctionObject;
+
+        using function_object_category =
+            mylib::static_or_explict_object_argument_call_operator_tag;
+
+        static constexpr bool
+        is_implict_object_argument_call_operator() noexcept {
+            return false;
+        }
+
+        static constexpr bool
+        is_static_or_explict_object_argument_call_operator() noexcept {
+            return true;
+        }
+    };
+
+    // for function object with a implict object argument operator ()
+    template<typename FunctionObject>
+        requires
+            requires {
+                // use is_member_function_pointer_v will crash intellisene
+                requires (!mylib::is_function_pointer_v<
+                    decltype(&FunctionObject::operator ())
+                >);
+            }
+    struct function_object_traits<FunctionObject> :
+        mylib::member_pointer_traits<decltype(&FunctionObject::operator ())>
+    {
+        using type                     = FunctionObject;
+        using function_object_type     = FunctionObject;
+        
+        using function_object_category =
+            mylib::implict_object_argument_call_operator_tag;
+
+        static constexpr bool
+        is_implict_object_argument_call_operator() noexcept {
+            return true;
+        }
+
+        static constexpr bool
+        is_static_or_explict_object_argument_call_operator() noexcept {
+            return false;
+        }
+    };
+
     struct function_tag
     {};
 
@@ -531,6 +753,8 @@ export namespace mylib {
         mylib::function_traits<Function>
     {
         using type                = Function;
+        using invocation_type     = Function;
+        
         using invocation_category = mylib::function_tag;
     };
 
@@ -541,12 +765,14 @@ export namespace mylib {
         mylib::function_traits<mylib::remove_pointer_t<FunctionPointer>>
     {
         using type                = FunctionPointer;
+        using invocation_type     = FunctionPointer;
+
         using invocation_category = mylib::function_pointer_tag;
     };
 
 #   ifndef __INTELLISENSE__
 
-    // for function object with non-static operator ()
+    // for function object with non-static implict object operator ()
     template<typename FunctionObject>
         requires
             requires { &FunctionObject::operator (); } &&
@@ -561,12 +787,12 @@ export namespace mylib {
         using type                = FunctionObject;
         using invocation_category = mylib::member_function_pointer_tag;
         
-        static constexpr bool is_static() noexcept {
+        static constexpr bool is_static_or_explict_object_argument() noexcept {
             return false;
         }
     };
             
-    // for function object with static operator ()
+    // for function object with static  or explict object argument operator ()
     template<typename FunctionObject>
         requires
             requires { FunctionObject::operator (); } &&
@@ -577,7 +803,7 @@ export namespace mylib {
         using type                = FunctionObject;
         using invocation_category = mylib::member_function_pointer_tag;
 
-        static constexpr bool is_static() noexcept {
+        static constexpr bool is_static_or_explict_object_argument() noexcept {
             return true;
         }
     };
@@ -593,7 +819,7 @@ export namespace mylib {
         using type                = FunctionObject;
         using invocation_category = mylib::member_function_pointer_tag;
 
-        static constexpr bool is_static() noexcept {
+        static constexpr bool is_static_or_explict_object_argument() noexcept {
             return false;
         }
     };
