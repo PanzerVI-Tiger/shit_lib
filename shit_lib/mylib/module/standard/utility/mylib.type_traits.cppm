@@ -4,6 +4,7 @@ module;
 
 #include <tuple>
 #include <cstddef>
+#include <utility>
 
 #endif
 
@@ -66,6 +67,20 @@ export namespace mylib {
             return sizeof...(constants);
         }
     };
+
+    // C++11
+    template<bool cond, typename Member = void>
+    struct enable_if
+    {};
+
+    template<typename Member>
+    struct enable_if<true, Member> {
+        using type = Member;
+    };
+
+    // C++14
+    template<bool cond, typename Member = void>
+    using enable_if_t = typename mylib::enable_if<cond, Member>::type;
 
     // C++17
     template<typename BoolConstant>
@@ -170,7 +185,7 @@ export namespace mylib {
     template<typename BoolConstant1, typename... BoolConstants>
     struct disjunction<BoolConstant1, BoolConstants...> :
         mylib::detail::disjunction_impl<
-        BoolConstant1::value, BoolConstant1, BoolConstants...
+            BoolConstant1::value, BoolConstant1, BoolConstants...
         > {
     };
 
@@ -643,7 +658,7 @@ export namespace mylib {
 
     // C++17
     template<typename Type>
-    inline constexpr bool is_rvalue_reference_v<Type&> = true;
+    inline constexpr bool is_rvalue_reference_v<Type&&> = true;
 
     // C++11
     template<typename Type>
@@ -941,6 +956,69 @@ export namespace mylib {
     template<typename Type>
     struct is_function_pointer :
         mylib::bool_constant<mylib::is_function_pointer_v<Type>>
+    {};
+    
+#   ifdef __cpp_concepts
+
+    // non-standard
+    template<typename Type>
+    inline constexpr bool is_static_or_explict_object_argument_call_operator_v =
+        requires {
+            requires (mylib::is_function_pointer_v<decltype(&Type::operator ())>);
+        };
+
+#   else
+
+}
+
+namespace mylib::detail {
+
+    // non-standard
+    template<
+        typename Type,
+        mylib::enable_if_t<
+            mylib::is_function_pointer_v<decltype(&Type::operator ())>,
+            int
+        > = 0
+    > mylib::true_type
+    test_is_static_or_explict_object_argument_call_operator(int) noexcept
+    {}
+
+    // non-standard
+    template<typename Type>
+    mylib::false_type
+    test_is_static_or_explict_object_argument_call_operator(...) noexcept
+    {}
+}
+
+export namespace mylib {
+
+    // non-standard
+    template<typename Type>
+    inline constexpr bool is_static_or_explict_object_argument_call_operator_v =
+        decltype(
+            mylib::detail::test_is_static_or_explict_object_argument_call_operator<Type>(0)
+        )::value;
+
+#   endif
+
+    // non-standard
+    template<typename Type>
+    struct is_static_or_explict_object_argument_call_operator :
+        mylib::bool_constant<
+            mylib::is_static_or_explict_object_argument_call_operator_v<Type>
+        >
+    {};
+
+    // non-standard
+    template<typename Type>
+    inline constexpr bool is_implict_object_argument_call_operator_v =
+        !mylib::is_static_or_explict_object_argument_call_operator_v<Type>;
+
+    // non-standard
+    template<typename Type>
+    struct is_implict_object_argument_call_operator :
+        mylib::bool_constant<mylib::is_implict_object_argument_call_operator_v<Type>>
     {};
 
 #   ifdef __clang__
@@ -2322,7 +2400,7 @@ export namespace mylib {
 
 #   endif
 
-#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANGs)
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
     template<typename Type>
     inline constexpr bool is_destructible_v = __is_destructible(Type);
@@ -2334,10 +2412,14 @@ export namespace mylib {
 
 #   elif defined(__cpp_concepts)
 
+}
+
+namespace mylib::detail {
+
     template<
         typename Type,
         typename TerminateType = mylib::remove_all_extents_t<Type>
-    > struct is_destructible :
+    > struct is_destructible_impl :
         mylib::bool_constant<
         // !mylib::is_void_v<Type>            && 
         // !mylib::is_function_v<Type>        &&
@@ -2355,10 +2437,20 @@ export namespace mylib {
             "incomplete type argument is undefined-behavior!"
         );
     };
+}    
+
+export namespace mylib {
     
+    // C++17
     template<typename Type>
     inline constexpr bool is_destructible_v =
-        mylib::is_destructible<Type>::value;
+        mylib::detail::is_destructible_impl<Type>::value;
+
+    // C++11
+    template<typename Type>
+    struct is_destructible :
+        mylib::detail::is_destructible_impl<Type>
+    {};
 
 #   else
 
@@ -2366,12 +2458,315 @@ export namespace mylib {
 
 namespace mylib::detail {
 
+    template<
+        typename Type,
+        typename TerminateType = mylib::remove_all_extents_t<Type>
+    > auto test_is_destructible(int) noexcept ->
+        decltype(
+            mylib::declval<TerminateType&>().~TerminateType(),
+            mylib::true_type{}
+        )
+    {}
+
+    template<typename Type>
+    auto test_is_destructible(...) noexcept ->
+        mylib::false_type
+    {}
 }
 
 export namespace mylib {
 
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_destructible_v =
+        mylib::detail::test_is_destructible<Type>(0);
+
+    // C++11
+    template<typename Type>
+    struct is_destructible :
+        mylib::bool_constant<mylib::is_destructible_v<Type>>
+    {};
+
 #   endif
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_trivially_destructible_v =
+        __is_trivially_destructible(Type);
+
+    // C++11
+    template<typename Type>
+    struct is_trivially_destructible :
+        mylib::bool_constant<__is_trivially_destructible(Type)>
+    {};
+
+#   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_nothrow_destructible_v =
+        __is_nothrow_destructible(Type);
+
+    // C++11
+    template<typename Type>
+    struct is_nothrow_destructible :
+        mylib::bool_constant<__is_nothrow_destructible(Type)>
+    {};
     
+#   elif defined(__cpp_concepts)
+
+}
+
+namespace mylib::detail {
+
+    template<
+        typename Type,
+        typename TerminateType = mylib::remove_all_extents_t<Type>
+    > struct is_nothrow_destructible_impl :
+        mylib::bool_constant<
+        // !mylib::is_void_v<Type>            && 
+        // !mylib::is_function_v<Type>        &&
+           !mylib::is_unbounded_array_v<Type> &&
+           (mylib::is_reference_v<Type>       ||
+            requires {
+                { 
+                    mylib::declval<TerminateType&>()
+                    .~TerminateType()
+                } noexcept;
+            })
+        >
+    {
+        static_assert(
+            mylib::is_complete_or_unbounded_or_void_v<Type>,
+            "Give is_nothrow_destructible a non-void non-unbounded-array "
+            "incomplete type argument is undefined-behavior!"
+        );
+    };
+}
+
+export namespace mylib {
+    
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_nothrow_destructible_v =
+        mylib::detail::is_nothrow_destructible_impl<Type>::value;
+
+    // C++11
+    template<typename Type>
+    struct is_nothrow_destructible :
+        mylib::detail::is_nothrow_destructible_impl<Type>
+    {};
+
+#   else
+
+}
+
+namespace mylib::detail {
+
+    template<
+        typename Type,
+        typename TerminateType = mylib::remove_all_extents_t<Type>
+    > mylib::true_type test_is_nothrow_destructible(int)
+        noexcept(mylib::declval<TerminateType&>().~TerminateType())
+    {}
+
+    template<typename Type>
+    mylib::false_type test_is_nothrow_destructible(...) noexcept
+    {}
+}
+
+export namespace mylib {
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool is_nothrow_destructible_v =
+        mylib::detail::test_is_nothrow_destructible<Type>(0);
+
+    // C++11
+    template<typename Type>
+    struct is_nothrow_destructible :
+        mylib::bool_constant<mylib::is_nothrow_destructible_v<Type>>
+    {};
+
+#   endif
+
+    // C++17
+    template<typename Type>
+    inline constexpr bool has_virtual_destructor_v = __has_virtual_destructor(Type);
+
+    // C++11
+    template<typename Type>
+    struct has_virtual_destructor :
+        mylib::bool_constant<__has_virtual_destructor(Type)>
+    {};
+
+#   ifdef __cpp_concepts
+    
+}
+
+namespace mylib/* ::detail */ {
+    
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_swappable_with_impl =
+        requires {
+            swap(mylib::declval<Type1>(), mylib::declval<Type2>());
+            swap(mylib::declval<Type2>(), mylib::declval<Type1>());
+        }       ||
+        requires {
+            std::swap(mylib::declval<Type1>(), mylib::declval<Type2>());
+            std::swap(mylib::declval<Type2>(), mylib::declval<Type1>());
+        };
+}
+
+export namespace mylib {
+
+    // C++17
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_swappable_with_v =
+        mylib::is_swappable_with_impl<Type1, Type2>;
+
+    // C++11
+    template<typename Type1, typename Type2>
+    struct is_swappable_with :
+        mylib::bool_constant<mylib::is_swappable_with_v<Type1, Type2>>
+    {};
+
+#   else
+
+}
+
+namespace mylib/* ::detail */ {
+
+    template<typename Type1, typename Type2>
+    auto test_is_swappable_with(int) ->
+        decltype(
+            swap(mylib::declval<Type1>(), mylib::declval<Type2>()),
+            swap(mylib::declval<Type2>(), mylib::declval<Type1>()),
+            std::swap(mylib::declval<Type1>(), mylib::declval<Type2>()),
+            std::swap(mylib::declval<Type2>(), mylib::declval<Type1>()),
+            mylib::true_type{}
+        )
+    {}
+
+    template<typename Type1, typename Type2>
+    auto test_is_swappable_with(...) noexcept ->
+        mylib::false_type
+    {}
+}
+
+export namespace mylib {
+
+    // C++17
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_swappable_with_v =
+        mylib::test_is_swappable_with<Type1, Type2>(0);
+
+    // C++11
+    template<typename Type1, typename Type2>
+    struct is_swappable_with :
+        mylib::bool_constant<mylib::is_swappable_with_v<Type1, Type2>>
+    {};
+
+#   endif
+
+    // C++17
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_swappable_v =
+        mylib::is_swappable_with_v<
+            mylib::add_lvalue_reference_t<Type1>,
+            mylib::add_lvalue_reference_t<Type2>
+        >;
+
+    // C++11
+    template<typename Type1, typename Type2>
+    struct is_swappable :
+        mylib::bool_constant<mylib::is_swappable_v<Type1, Type2>>
+    {};
+
+#   ifdef __cpp_concepts
+
+}
+
+namespace mylib/* ::detail */ {
+
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_nothrow_swappable_with_impl =
+        requires {
+            { swap(mylib::declval<Type1>(), mylib::declval<Type2>()) } noexcept;
+            { swap(mylib::declval<Type2>(), mylib::declval<Type1>()) } noexcept;
+        }       ||
+        requires {
+            { std::swap(mylib::declval<Type1>(), mylib::declval<Type2>()) } noexcept;
+            { std::swap(mylib::declval<Type2>(), mylib::declval<Type1>()) } noexcept;
+        };
+}
+    
+export namespace mylib {
+
+    // C++17
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_nothrow_swappable_with_v =
+        mylib::is_nothrow_swappable_with_impl<Type1, Type2>;
+
+    // C++11
+    template<typename Type1, typename Type2>
+    struct is_nothrow_swappable_with :
+        mylib::bool_constant<mylib::is_nothrow_swappable_with_v<Type1, Type2>>
+    {};
+
+#   else
+
+}
+
+namespace mylib/* ::detail */ {
+
+    template<typename Type1, typename Type2>
+    auto test_is_nothrow_swappable_with(int) noexcept ->
+        mylib::bool_constant< 
+            noexcept(
+                swap(mylib::declval<Type1>(), mylib::declval<Type2>()),
+                swap(mylib::declval<Type2>(), mylib::declval<Type1>()),
+                std::swap(mylib::declval<Type1>(), mylib::declval<Type2>()),
+                std::swap(mylib::declval<Type2>(), mylib::declval<Type1>())
+            )
+        >
+    {}
+
+    template<typename Type1, typename Type2>
+    auto test_is_nothrow_swappable_with(...) noexcept ->
+        mylib::false_type
+    {}
+}
+
+export namespace mylib {
+
+    // C++17
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_nothrow_swappable_with_v =
+        mylib::test_is_nothrow_swappable_with<Type1, Type2>(0);
+
+    // C++11
+    template<typename Type1, typename Type2>
+    struct is_nothrow_swappable_with :
+        mylib::bool_constant<mylib::is_nothrow_swappable_with_v<Type1, Type2>>
+    {};
+
+#   endif
+
+    // C++17
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_nothrow_swappable_v =
+        mylib::is_nothrow_swappable_with_v<
+            mylib::add_lvalue_reference_t<Type1>,
+            mylib::add_lvalue_reference_t<Type2>
+        >;
+
+    // C++11
+    template<typename Type1, typename Type2>
+    struct is_nothrow_swappable :
+        mylib::bool_constant<mylib::is_nothrow_swappable_v<Type1, Type2>>
+    {};
+
 #   if defined(__clang) || defined(__GNUC__) || defined(_MSVC_LANG)
     
     // C++17
@@ -2584,6 +2979,16 @@ export namespace mylib {
     template<typename From, typename To>
     struct is_nothrow_convertible :
         mylib::bool_constant<mylib::is_nothrow_convertible_v<From, To>>
+    {};
+
+    // C++20
+    template<typename Type1, typename Type2>
+    inline constexpr bool is_layout_compatible_v = __is_layout_compatible(Type1, Type2);
+
+    // C++20
+    template<typename Type1, typename Type2>
+    struct is_layout_compatible :
+        mylib::bool_constant<mylib::is_layout_compatible_v<Type1, Type2>>
     {};
 
     // C++17

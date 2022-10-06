@@ -33,6 +33,7 @@ export namespace mylib {
     //      1: with lvalue reference qualifier,
     //      2: with rvalue reference qualifier
 #   define define_function_traits(isVararg, isConst, isVolatile, ref, isNoexcept)       \
+        /* non-standard */                                                              \
         template<typename Result, typename... Params>                                   \
         struct function_traits<                                                         \
             Result(                                                                     \
@@ -159,7 +160,8 @@ export namespace mylib {
                     )                                                                   \
                     mylib_pp_if(isConst)(const)()                                       \
                     mylib_pp_if(isVolatile)(volatile)()                                 \
-                    &&                                                                  \
+                    mylib_pp_if(mylib_pp_equal(ref, 1))                                 \
+                    (&)(&&)                                                             \
                     mylib_pp_if(isNoexcept)(noexcept)()                                 \
                 >;                                                                      \
                                                                                         \
@@ -676,12 +678,7 @@ export namespace mylib {
 
     // for function object with a static or explict object argument operator ()
     template<typename FunctionObject>
-        requires
-            requires {
-                requires mylib::is_function_pointer_v<
-                    decltype(&FunctionObject::operator ())
-                >;
-            }
+        requires mylib::is_static_or_explict_object_argument_call_operator_v<FunctionObject>
     struct function_object_traits<FunctionObject> :
         mylib::function_traits<decltype(FunctionObject::operator ())>
     {
@@ -704,13 +701,7 @@ export namespace mylib {
 
     // for function object with a implict object argument operator ()
     template<typename FunctionObject>
-        requires
-            requires {
-                // use is_member_function_pointer_v will crash intellisene
-                requires (!mylib::is_function_pointer_v<
-                    decltype(&FunctionObject::operator ())
-                >);
-            }
+        requires mylib::is_implict_object_argument_call_operator_v<FunctionObject>
     struct function_object_traits<FunctionObject> :
         mylib::member_pointer_traits<decltype(&FunctionObject::operator ())>
     {
@@ -740,6 +731,7 @@ export namespace mylib {
     struct function_object_tag
     {};
 
+    // non-invocation
     template<typename Invocation>
     struct invocation_traits
     {

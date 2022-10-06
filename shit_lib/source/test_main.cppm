@@ -20,9 +20,4 @@ using namespace mylib::literals;
 
 export int main() noexcept
 {
-    struct X {
-        void operator ()(this X self)
-        {}
-    };
-    std::cout << typeid(mylib::function_object_traits<X>::function_object_category).name();
 }                                                                                                                                                                                                                                                                                                // unused
