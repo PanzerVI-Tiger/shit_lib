@@ -2,9 +2,9 @@ module;
 
 #ifdef __INTELLISENSE__
 
-import <vector>;
-import <utility>;
-import <algorithm>;
+#include <vector>
+#include <utility>
+#include <algorithm>
 
 #endif
 
@@ -19,8 +19,7 @@ import std.core;
 #endif
 
 
-
-export namespace mylib::inline sorts {
+export namespace mylib {
 
     template<typename BidirectionalIterator, typename Predicate>
     constexpr void bubble_sort(
