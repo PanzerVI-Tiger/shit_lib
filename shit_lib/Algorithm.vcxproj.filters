@@ -109,6 +109,15 @@
     <Filter Include="mylib\module\test">
       <UniqueIdentifier>{7f733437-19a0-4212-9178-dd9f53c6fa07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="mylib\module\standard\utility\mylib.type_traits">
+      <UniqueIdentifier>{12f31ffe-ffff-4eb0-8331-2a1f5fbf94d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\utility\mylib.functional">
+      <UniqueIdentifier>{ac60f938-6577-4f57-81d9-a8fd637de5af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mylib\module\standard\utility\mylib.utility">
+      <UniqueIdentifier>{c6bd7608-8705-49d1-94dd-9e69974b1525}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mylib\head\cpp\cxxstd.hpp">
