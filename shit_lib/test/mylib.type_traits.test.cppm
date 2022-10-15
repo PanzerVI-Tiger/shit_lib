@@ -1,5 +1,3 @@
-module mylib.type_traits.test;
-
 import mylib.cstddef;
 import mylib.type_traits;
 

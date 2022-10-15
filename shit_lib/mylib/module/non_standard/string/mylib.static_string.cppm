@@ -27,10 +27,10 @@ import mylib.templates_utility;
 export namespace mylib {
     
     template<
+        typename CharType,
         size_t   maxStringSize,
-        typename CharType   = char,
         typename CharTraits = std::char_traits<CharType>
-    > struct static_string {
+    > struct basic_static_string {
 
         using traits_type     = std::char_traits<CharType>;
         using value_type      = CharType;
@@ -41,45 +41,45 @@ export namespace mylib {
         using pointer         = CharType*;
         using const_pointer   = const CharType*;
         
-        constexpr static_string() : 
+        constexpr basic_static_string() : 
             stringSize{}, charArray{}
         {}
 
         // copy
         template<size_t rightSize>
-        constexpr static_string(
-            const static_string<rightSize, CharType, CharTraits>& other
+        constexpr basic_static_string(
+            const basic_static_string<CharType, rightSize, CharTraits>& other
         ) : stringSize{ std::min(maxStringSize, other.stringSize) }, charArray{} {
             traits_type::copy(charArray, other.charArray, stringSize);
         }
         
         template<size_t size>
-        constexpr static_string(const CharType(&str)[size]) noexcept :
+        constexpr basic_static_string(const CharType(&str)[size]) noexcept :
             stringSize{ maxStringSize }, charArray{} 
         {
             traits_type::copy(charArray, str, stringSize);
         };
 
         template<CharType... chars>
-        constexpr static_string(mylib::char_sequence<CharType, chars...>) noexcept :
+        constexpr basic_static_string(mylib::char_sequence<CharType, chars...>) noexcept :
             stringSize{ std::min(maxStringSize - 1, sizeof...(chars)) }, charArray{ chars... }
         {};
         
-        constexpr static_string(const CharType* str) noexcept :
+        constexpr basic_static_string(const CharType* str) noexcept :
             stringSize{ std::min(traits_type::length(str), maxStringSize) }, charArray{} 
         {           
             traits_type::copy(charArray, str, stringSize);
         };
 
-        constexpr static_string(mylib::basic_string_literal<CharType> str) noexcept :
+        constexpr basic_static_string(mylib::basic_string_literal<CharType> str) noexcept :
             stringSize{ std::min(str.size(), maxStringSize) }, charArray{} 
         {
             traits_type::copy(charArray, str.data(), stringSize);
         };
 
         template<size_t rightSize>
-        constexpr static_string operator =(
-            const static_string<rightSize, CharType, CharTraits>& right
+        constexpr basic_static_string operator =(
+            const basic_static_string<CharType, rightSize, CharTraits>& right
         ) noexcept {
             
             stringSize = std::min(maxStringSize, right.stringSize);
@@ -90,7 +90,7 @@ export namespace mylib {
 
         template<size_t rightSize>
         constexpr bool operator ==(
-            const static_string<rightSize, CharType, CharTraits>& right
+            const basic_static_string<CharType, rightSize, CharTraits>& right
         ) const noexcept {
             return 
                 length() == right.length() &&
@@ -101,27 +101,28 @@ export namespace mylib {
 
         template<size_t rightSize>
         constexpr std::strong_ordering operator <=>(
-            const static_string<rightSize, CharType, CharTraits>& right
+            const basic_static_string<CharType, rightSize, CharTraits>& right
         ) const noexcept {
             
-            auto compareResult = traits_type::compare(
-                c_str(), right.c_str(), std::min(size(), right.size())
-            ) <=> 0;
+            auto compareResult = length() <=> right.length();
 
             [[unlikely]]
-            if (compareResult == std::strong_ordering::equal) {
-                return length() <=> right.length();
-            } else {
+            if (compareResult != std::strong_ordering::equal) {
                 return compareResult;
+            } else {
+                return
+                    traits_type::compare(
+                        c_str(), right.c_str(), std::min(size(), right.size())
+                    ) <=> 0;
             }
         }
         
-        constexpr operator std::string() noexcept {
-            return std::string{ c_str(), capacity() };
+        constexpr operator std::basic_string<CharType, CharTraits>() const noexcept {
+            return std::basic_string<CharType, CharTraits>{ c_str(), capacity() };
         }
 
-        constexpr operator std::string_view() noexcept {
-            return std::string_view{ c_str(), capacity() };
+        constexpr operator std::basic_string_view<CharType, CharTraits>() const noexcept {
+            return std::basic_string_view<CharType, CharTraits>{ c_str(), capacity() };
         }
 
         constexpr CharType& operator [](size_type index) noexcept {
@@ -162,20 +163,80 @@ export namespace mylib {
 
     template<
         size_t size, typename CharType
-    > static_string(const CharType(&str)[size]) ->
-        static_string<size - 1, CharType>;
+    > basic_static_string(const CharType(&str)[size]) ->
+        basic_static_string<CharType, size - 1>;
 
     template<
         size_t   rightSize,
         typename CharType,
         typename CharTraits
-    > static_string(
-        const static_string<rightSize, CharType, CharTraits>&other
-    ) -> static_string<rightSize, CharType, CharTraits>;
+    > basic_static_string(
+        const basic_static_string<CharType, rightSize, CharTraits>&other
+    ) -> basic_static_string<CharType, rightSize, CharTraits>;
     
     template<typename CharType, CharType... chars>
-    static_string(const char_sequence<CharType, chars...>& str) ->
-        static_string<sizeof...(chars), CharType>;
+    basic_static_string(const char_sequence<CharType, chars...>& str) ->
+        basic_static_string<CharType, sizeof...(chars)>;
+
+    template<
+        size_t   size,
+        typename CharType,
+        typename CharTraits = std::char_traits<CharType>
+    > auto make_static_string(
+        const CharType(&str)[size]
+    ) noexcept ->
+        mylib::basic_static_string<CharType, size - 1, CharTraits>
+    {
+        return { str };
+    }
+
+    template<
+        size_t   size,
+        typename CharType,
+        typename CharTraits = std::char_traits<CharType>
+    > auto make_static_string(
+        const CharType* str
+    ) noexcept ->
+        mylib::basic_static_string<CharType, size - 1, CharTraits>
+    {
+        return { str };
+    }
+
+    template<
+        size_t   size,
+        typename CharType,
+        typename CharTraits = std::char_traits<CharType>
+    > auto make_static_string(
+        const basic_static_string<CharType, size, CharTraits>& str
+    ) noexcept ->
+        mylib::basic_static_string<CharType, size, CharTraits>
+    {
+        return { str };
+    }
+
+    template<
+        size_t   size,
+        typename CharType,
+        typename CharTraits
+    > auto make_static_string(
+        std::basic_string<CharType, CharTraits> str
+    ) noexcept ->
+        mylib::basic_static_string<CharType, size - 1, CharTraits>
+    {
+        return { str.c_str() };
+    }
+
+    template<
+        size_t   size,
+        typename CharType,
+        typename CharTraits
+    > auto make_static_string(
+        std::basic_string_view<CharType, CharTraits> str
+    ) noexcept ->
+        mylib::basic_static_string<CharType, size - 1, CharTraits>
+    {
+        return { str.data() };
+    }
 
     template<
         size_t   stringSize,
@@ -183,7 +244,7 @@ export namespace mylib {
         typename CharTraits
     > std::ostream& operator <<(
         std::ostream& os,
-        const static_string<stringSize, CharType, CharTraits>& str
+        const basic_static_string<CharType, stringSize, CharTraits>& str
     ) noexcept {
         os << str.data();
         
@@ -191,12 +252,12 @@ export namespace mylib {
     }
 
     inline namespace literals {
-        inline namespace static_string_literals {
+        inline namespace basic_static_string_literals {
             
             // will crash intellisense
 #           ifndef __INTELLISENSE__
 
-            template<mylib::static_string literal>
+            template<mylib::basic_static_string literal>
             constexpr auto operator ""_ss() noexcept {
                 return literal;
             }
@@ -205,9 +266,9 @@ export namespace mylib {
 
 #           define define_static_string_suffix(Type)                                    \
             constexpr auto operator ""_ss(const Type* str, size_t size) noexcept        \
-                -> mylib::static_string<255, Type>                                      \
+                -> mylib::basic_static_string<Type, 255>                                \
             {                                                                           \
-                return mylib::static_string<255, Type>{ str };                          \
+                return mylib::basic_static_string<Type, 255>{ str };                    \
             }
 
             mylib_pp_repeat_each(
