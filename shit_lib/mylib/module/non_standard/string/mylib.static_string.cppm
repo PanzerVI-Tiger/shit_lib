@@ -179,9 +179,9 @@ export namespace mylib {
         basic_static_string<CharType, sizeof...(chars)>;
 
     template<
-        size_t   size,
         typename CharType,
-        typename CharTraits = std::char_traits<CharType>
+        typename CharTraits = std::char_traits<CharType>,
+        size_t   size
     > auto make_static_string(
         const CharType(&str)[size]
     ) noexcept ->
@@ -197,7 +197,7 @@ export namespace mylib {
     > auto make_static_string(
         const CharType* str
     ) noexcept ->
-        mylib::basic_static_string<CharType, size - 1, CharTraits>
+        mylib::basic_static_string<CharType, size, CharTraits>
     {
         return { str };
     }
@@ -221,7 +221,7 @@ export namespace mylib {
     > auto make_static_string(
         std::basic_string<CharType, CharTraits> str
     ) noexcept ->
-        mylib::basic_static_string<CharType, size - 1, CharTraits>
+        mylib::basic_static_string<CharType, size, CharTraits>
     {
         return { str.c_str() };
     }
@@ -233,7 +233,7 @@ export namespace mylib {
     > auto make_static_string(
         std::basic_string_view<CharType, CharTraits> str
     ) noexcept ->
-        mylib::basic_static_string<CharType, size - 1, CharTraits>
+        mylib::basic_static_string<CharType, size, CharTraits>
     {
         return { str.data() };
     }

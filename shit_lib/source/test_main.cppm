@@ -23,7 +23,7 @@ using namespace mylib::literals;
 
 export int main() noexcept
 {
-    constexpr auto str = U"我的MnZn"_ss + U"，嘿嘿嘿"_ss;
+    constexpr auto str = mylib::concat(U"我的MnZn"_ss, U"，嘿嘿嘿"_ss, U", 咬你!"_ss);
     std::cout
         << typeid(str).name() << '\n'
         << stdf::path(str.operator std::u32string()).string();
